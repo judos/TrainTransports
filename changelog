@@ -6,6 +6,7 @@ Features:
 
 Changelog:
 
+- improved render loop
 - scrolling depends on current zoom factor
 - improved swing/jframe rendering routine
 - refactoring, only 2 layers now for map, floor is handled by map
