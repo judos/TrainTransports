@@ -1,0 +1,50 @@
+packet format:
+
+layer 4:
+	same as below.
+	
+	Serializes objects (type=1)
+		byte[] represents serialized object
+	sends raw data (type=2)
+		byte[] is data
+	sending of files (type=3):
+		packetData: fileMsgNr, data
+		fileMsgNr (int) means:
+			0-Integer.MaxValue = current part number that is sent, data is the partData
+			-1 = awaiting answer for new file transmission:
+				 data is serialized FileDescription {
+				 	size(long),parts(int),sourcePath(string),description(string)
+				 }
+			-2 = accepted file transmission
+			-3 = denied file transmission
+			-4 = request the following parts (int lastPartReceived),(int[] parts)
+			-5 = file transmission completed (sent from receiver)
+
+
+layer 3:
+	normal packet:
+		type (byte), packetNr (int), data(byte[])
+	big packets:
+		type(byte), packetNr (int), id;index;count(short), data(byte[])
+	constraints: type=[1,63], max. 255 MB of data = (8187bytes -6controlBytes) * Short.MaxValue
+		                      for unsplit packages: 8187bytes 
+	big packets: type+64 flag
+
+
+layer 2:
+	type (byte), packetNr (int), data(byte[])
+	constraints: type=[1,127], max. 8187 byte data
+	confirmation: type+128 flag
+		packet will be resent until confirmation type=0 is received
+	confirmation packet=
+		type=0, confirmedNrs (int[])
+
+
+layer 1:
+	type (byte), data (byte[])
+	constraints: max. 8191 byte data
+
+
+layer 0:
+	data (byte[])
+	constraints: max. 8192 byte data

@@ -1,0 +1,18 @@
+Features:
+
+- build tool shows connecting tracks
+- zooming with mouse wheel
+- toolbar to select build tools
+
+Changelog:
+
+- scrolling depends on current zoom factor
+- improved swing/jframe rendering routine
+- refactoring, only 2 layers now for map, floor is handled by map
+- map uses SimpleList's now, no ConcurrentModificationExceptions :)
+- smooth zooming with mousewheel, middleclick-> f=1
+- changed to active rendering engine
+- InputManager handles input from MouseWheel
+- scrolling with wasd
+- InputManager handles input from keyboard
+- borderless scrolling (map is infinitely big)
