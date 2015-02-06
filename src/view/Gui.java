@@ -1,12 +1,16 @@
 package view;
 
+import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Frame;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseWheelListener;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import model.input.InputProvider;
 import ch.judos.generic.graphics.Drawable2d;
 import ch.judos.generic.graphics.fullscreen.FullScreenOrWindowed;
 
@@ -80,8 +84,24 @@ public class Gui implements Drawable2d {
 		return this.frame.getSize();
 	}
 
-	public Frame getFrame() {
-		return this.frame;
+	public InputProvider getInputProvider() {
+		return new InputProvider() {
+			@Override
+			public void addMouseListener(MouseListener m) {
+				frame.getContentPane().addMouseListener(m);
+			}
+
+			@Override
+			public void addKeyListener(KeyListener k) {
+				frame.addKeyListener(k);
+			}
+
+			@Override
+			public void addMouseWheelListener(MouseWheelListener m) {
+				frame.getContentPane().addMouseWheelListener(m);
+			}
+
+		};
 	}
 
 	@Override
@@ -90,6 +110,10 @@ public class Gui implements Drawable2d {
 		g.clearRect(0, 0, size.width, size.height);
 		if (this.drawable != null)
 			this.drawable.paint(g);
+	}
+
+	public Component getComponent() {
+		return this.frame.getContentPane();
 	}
 
 }

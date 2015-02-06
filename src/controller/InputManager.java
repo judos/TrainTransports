@@ -1,11 +1,14 @@
 package controller;
 
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 import model.input.InputType;
@@ -39,9 +42,9 @@ public class InputManager implements MouseListener, KeyListener, MouseWheelListe
 
 	public InputManager(Gui w) {
 		this.window = w;
-		this.window.getFrame().addMouseListener(this);
-		this.window.getFrame().addKeyListener(this);
-		this.window.getFrame().addMouseWheelListener(this);
+		this.window.getInputProvider().addMouseListener(this);
+		this.window.getInputProvider().addKeyListener(this);
+		this.window.getInputProvider().addMouseWheelListener(this);
 		this.listeners = new ArrayList<MouseHandler>();
 		this.listenersKey = new ArrayList<KeyHandler>();
 		this.mouseWheel = new ArrayList<MouseWheelHandler>();
@@ -77,17 +80,23 @@ public class InputManager implements MouseListener, KeyListener, MouseWheelListe
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		handle(new MouseEvent2(InputType.PRESSED_AND_RELEASED, e));
+		handle(new MouseEvent2(InputType.PRESSED_AND_RELEASED, e, transform(e)));
+	}
+
+	private Point transform(MouseEvent e) {
+		AffineTransform op = this.scroll.getTransformScreenToMap();
+		Point2D pointOnMap = op.transform(e.getPoint(), null);
+		return new Point((int) pointOnMap.getX(), (int) pointOnMap.getY());
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		handle(new MouseEvent2(InputType.PRESS, e));
+		handle(new MouseEvent2(InputType.PRESS, e, transform(e)));
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		handle(new MouseEvent2(InputType.RELEASE, e));
+		handle(new MouseEvent2(InputType.RELEASE, e, transform(e)));
 	}
 
 	protected void handle(MouseEvent2 e) {

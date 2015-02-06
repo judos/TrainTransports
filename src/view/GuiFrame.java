@@ -8,6 +8,7 @@ import java.awt.image.BufferStrategy;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import model.input.InputProvider;
 import ch.judos.generic.games.unitCoordination.PointF;
 import ch.judos.generic.graphics.Drawable2d;
 
@@ -15,7 +16,7 @@ import ch.judos.generic.graphics.Drawable2d;
  * @since 01.02.2015
  * @author Julian Schelker
  */
-public class GuiFrame extends JFrame {
+public class GuiFrame extends JFrame implements InputProvider {
 
 	private Drawable2d			drawable;
 	private JPanel				panel;
@@ -32,6 +33,8 @@ public class GuiFrame extends JFrame {
 		this.setIgnoreRepaint(true);
 		// this.setResizable(false);
 		// this.setFocusTraversalKeysEnabled(false);
+
+		this.getContentPane().requestFocusInWindow();
 		this.setVisible(true);
 		this.createBufferStrategy(2);
 	}

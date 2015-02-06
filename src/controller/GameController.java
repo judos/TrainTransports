@@ -20,7 +20,7 @@ public class GameController {
 		this.inputManager = mm;
 
 		Scroll s = new Scroll(m.getViewSize(), mm);
-		s.setRelativeTo(m.getFrame());
+		s.setRelativeTo(m.getComponent());
 		mm.setScrollObject(s);
 		this.draw.setScrollObject(s);
 

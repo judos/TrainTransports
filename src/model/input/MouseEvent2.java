@@ -9,17 +9,23 @@ import java.awt.event.MouseEvent;
  */
 public class MouseEvent2 {
 
-	private InputType	type;
+	protected InputType	type;
+	protected Point		screenPosition;
+	protected int		button;
+	protected Point		mapPosition;
 
-	private Point		screenPosition;
-	private int			button;
+	public MouseEvent2(InputType type, MouseEvent event, Point onMap) {
+		this.type = type;
+		this.screenPosition = event.getPoint();
+		this.mapPosition = onMap;
+		this.button = event.getButton();
+	}
 
-	public MouseEvent2() {}
-
-	public MouseEvent2(InputType t, MouseEvent e) {
-		this.type = t;
-		this.screenPosition = e.getPoint();
-		this.button = e.getButton();
+	/**
+	 * @return the mapPosition
+	 */
+	public Point getMapPosition() {
+		return mapPosition;
 	}
 
 	/**

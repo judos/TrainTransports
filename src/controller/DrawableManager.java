@@ -59,8 +59,8 @@ public class DrawableManager implements Drawable2d {
 		this.scroll = s;
 	}
 
-	public Component getFrame() {
-		return this.window.getFrame();
+	public Component getComponent() {
+		return this.window.getComponent();
 	}
 
 }

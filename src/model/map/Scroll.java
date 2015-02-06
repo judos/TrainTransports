@@ -56,19 +56,13 @@ public class Scroll extends BorderlessScrolling implements KeyHandler, MouseWhee
 	}
 
 	public void updateAndTransform(Graphics2D g) {
-		double diff = (this.targetZoom - this.zoom);
-		double diffDir = Math.signum(diff);
-		diff = Math.abs(diff);
-		double diffChange = diff * 0.05;
-		if (diffChange > 0 && diffChange < 0.001 * this.targetZoom) {
-			diffChange = Math.min(0.001 * this.targetZoom, diff);
-		}
-		this.zoom += diffDir * diffChange;
+		updateZoomFactor();
 
 		AffineTransform t = g.getTransform();
 		applyTransformTo(t);
 		g.setTransform(t);
 
+		// scroll with keys
 		if (this.scrollLeft)
 			scrollLeft();
 		if (this.scrollRight)
@@ -77,14 +71,44 @@ public class Scroll extends BorderlessScrolling implements KeyHandler, MouseWhee
 			scrollUp();
 		if (this.scrollDown)
 			scrollDown();
+		// scroll by mouse
 		update();
 	}
 
+	protected void updateZoomFactor() {
+		double diff = (this.targetZoom - this.zoom);
+		double diffDir = Math.signum(diff);
+		diff = Math.abs(diff);
+		double diffChange = diff * 0.05;
+		if (diffChange > 0 && diffChange < 0.001 * this.targetZoom) {
+			diffChange = Math.min(0.001 * this.targetZoom, diff);
+		}
+		this.zoom += diffDir * diffChange;
+	}
+
+	/**
+	 * adds the transformation that maps map coordiantes to screen coordiantes
+	 * 
+	 * @param t
+	 */
 	public void applyTransformTo(AffineTransform t) {
 		t.translate(this.viewPort.width / 2, this.viewPort.height / 2);
 		t.scale(this.zoom, this.zoom);
 		t.translate(-this.viewPort.width / 2, -this.viewPort.height / 2);
 		t.translate(-this.locX, -this.locY);
+	}
+
+	/**
+	 * @return transformation that maps screen coordinates to map coordinates
+	 */
+	public AffineTransform getTransformScreenToMap() {
+		// must be exact revers of applyTransformTo
+		AffineTransform t = new AffineTransform();
+		t.translate(this.locX, this.locY);
+		t.translate(this.viewPort.width / 2, this.viewPort.height / 2);
+		t.scale(1. / this.zoom, 1. / this.zoom);
+		t.translate(-this.viewPort.width / 2, -this.viewPort.height / 2);
+		return t;
 	}
 
 	@Override
@@ -118,5 +142,4 @@ public class Scroll extends BorderlessScrolling implements KeyHandler, MouseWhee
 		}
 		return false;
 	}
-
 }
