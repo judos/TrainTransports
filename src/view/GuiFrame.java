@@ -42,6 +42,10 @@ public class GuiFrame extends JFrame implements InputProvider {
 	public void renderScreen() {
 		try {
 			BufferStrategy strategy = getBufferStrategy();
+
+			strategy.show();
+			Toolkit.getDefaultToolkit().sync();
+
 			Graphics2D g = (Graphics2D) strategy.getDrawGraphics();
 			if (!this.isUndecorated()) {
 				PointF t =
@@ -54,8 +58,6 @@ public class GuiFrame extends JFrame implements InputProvider {
 				g.setClip(0, 0, getWidth(), getHeight());
 			this.drawable.paint(g);
 			g.dispose();
-			strategy.show();
-			Toolkit.getDefaultToolkit().sync();
 
 		} catch (IllegalStateException e) {}
 	}
