@@ -13,10 +13,10 @@ public class StraightTrack extends Track {
 	protected Point	start;
 	protected Point	end;
 
-	public static class Builder {
+	public static class NoConstraintBuilder extends TrackBuilder {
 		private StraightTrack	track;
 
-		public Builder(Point start) {
+		public NoConstraintBuilder(Point start) {
 			this.track = new StraightTrack(start, start);
 		}
 
@@ -28,8 +28,19 @@ public class StraightTrack extends Track {
 			this.track.start = start;
 		}
 
+		@Override
 		public Track getTrack() {
 			return this.track;
+		}
+
+		@Override
+		public void updateWithTarget(Point mapTarget) {
+			this.track.end = mapTarget;
+		}
+
+		@Override
+		public boolean isValid() {
+			return true;
 		}
 	}
 

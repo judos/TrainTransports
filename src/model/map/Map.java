@@ -1,7 +1,9 @@
 package model.map;
 
 import java.awt.Graphics2D;
+import java.awt.Point;
 
+import model.TrackBuildConstraint;
 import model.objects.Track;
 import view.Floor;
 import ch.judos.generic.data.concurrent.SimpleList;
@@ -41,6 +43,10 @@ public class Map implements Drawable2d {
 
 	public void removeTrack(Track t) {
 		this.tracks.remove(t);
+	}
+
+	public TrackBuildConstraint[] getTrackConnectionsFrom(Point mapPosition) {
+		return null;
 	}
 
 }

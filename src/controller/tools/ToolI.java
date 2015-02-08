@@ -3,6 +3,7 @@ package controller.tools;
 import model.input.KeyHandler;
 import model.input.MouseHandler;
 import model.map.Map;
+import model.map.Scroll;
 import ch.judos.generic.graphics.Drawable2d;
 
 /**
@@ -16,6 +17,6 @@ public interface ToolI extends Drawable2d, MouseHandler, KeyHandler {
 	 */
 	public void dispose();
 
-	public void initialize(Map map);
+	public void initialize(Map map, Scroll scroll);
 
 }

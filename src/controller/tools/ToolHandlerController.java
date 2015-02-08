@@ -9,6 +9,7 @@ import model.input.KeyHandler;
 import model.input.MouseEvent2;
 import model.input.MouseHandler;
 import model.map.Map;
+import model.map.Scroll;
 import ch.judos.generic.graphics.Drawable2d;
 
 /**
@@ -19,9 +20,11 @@ public class ToolHandlerController implements ToolHandlerI, Drawable2d, MouseHan
 		KeyHandler {
 	private ToolI	currentTool;
 	private Map		map;
+	private Scroll	scroll;
 
-	public ToolHandlerController(Map map) {
+	public ToolHandlerController(Map map, Scroll scroll) {
 		this.map = map;
+		this.scroll = scroll;
 	}
 
 	@Override
@@ -30,7 +33,7 @@ public class ToolHandlerController implements ToolHandlerI, Drawable2d, MouseHan
 			this.currentTool.dispose();
 		this.currentTool = t;
 		if (this.currentTool != null)
-			this.currentTool.initialize(this.map);
+			this.currentTool.initialize(this.map, this.scroll);
 	}
 
 	@Override

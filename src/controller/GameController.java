@@ -37,7 +37,7 @@ public class GameController {
 
 		this.map = new Map();
 
-		this.toolHandler = new ToolHandlerController(this.map);
+		this.toolHandler = new ToolHandlerController(this.map, this.scroll);
 		this.menuController = new MenuController(this.toolHandler);
 
 		this.debug = new DebugInformationView();
