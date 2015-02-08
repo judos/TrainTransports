@@ -31,7 +31,7 @@ public class InputManager implements MouseListener, KeyListener, MouseWheelListe
 	 * if this is set to true, an Listener handling an event will break the chain, and no further
 	 * objects will receive the same event
 	 */
-	public static boolean					breakChain	= false;
+	public static boolean					breakChain	= true;
 
 	private Gui								window;
 	private ArrayList<MouseHandler>			listeners;
@@ -50,12 +50,8 @@ public class InputManager implements MouseListener, KeyListener, MouseWheelListe
 		this.mouseWheel = new ArrayList<MouseWheelHandler>();
 	}
 
-	public void add(MouseWheelHandler handler) {
+	public void addLast(MouseWheelHandler handler) {
 		this.mouseWheel.add(handler);
-	}
-
-	public void addFirst(MouseHandler handler) {
-		this.listeners.add(0, handler);
 	}
 
 	public void addLast(MouseHandler handler) {
@@ -64,10 +60,6 @@ public class InputManager implements MouseListener, KeyListener, MouseWheelListe
 
 	public void remove(MouseHandler handler) {
 		this.listeners.remove(handler);
-	}
-
-	public void addFirst(KeyHandler handler) {
-		this.listenersKey.add(0, handler);
 	}
 
 	public void addLast(KeyHandler handler) {

@@ -12,7 +12,6 @@ import java.util.TimerTask;
 
 import model.input.InputProvider;
 import ch.judos.generic.graphics.Drawable2d;
-import ch.judos.generic.graphics.fullscreen.FullScreenOrWindowed;
 
 /**
  * @since 27.01.2015
@@ -20,10 +19,9 @@ import ch.judos.generic.graphics.fullscreen.FullScreenOrWindowed;
  */
 public class Gui implements Drawable2d {
 
-	private GuiFrame				frame;
-	private Timer					timer;
-	private Drawable2d				drawable;
-	private FullScreenOrWindowed	fs;
+	private GuiFrame	frame;
+	private Timer		timer;
+	private Drawable2d	drawable;
 
 	public Gui() {
 		this.frame = new GuiFrame(this);

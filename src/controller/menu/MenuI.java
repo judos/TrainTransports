@@ -1,13 +1,17 @@
 package controller.menu;
 
+import java.awt.Graphics2D;
+import java.awt.Point;
+
 import model.input.KeyHandler;
 import model.input.MouseHandler;
-import ch.judos.generic.graphics.Drawable2d;
 
 /**
  * @since 07.02.2015
  * @author Julian Schelker
  */
-public interface MenuI extends MouseHandler, KeyHandler, Drawable2d {
+public interface MenuI extends MouseHandler, KeyHandler {
+
+	public void paint(Graphics2D g, Point mouse);
 
 }

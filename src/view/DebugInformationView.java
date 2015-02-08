@@ -10,7 +10,6 @@ import model.input.KeyEvent2;
 import model.input.KeyHandler;
 import ch.judos.generic.control.ActionCounter;
 import ch.judos.generic.graphics.Drawable2d;
-import controller.InputManager;
 
 /**
  * @since 31.01.2015
@@ -23,8 +22,7 @@ public class DebugInformationView implements Drawable2d, KeyHandler {
 	private Font			font;
 	private boolean			fpsOn;
 
-	public DebugInformationView(InputManager mm) {
-		mm.addLast(this);
+	public DebugInformationView() {
 		this.displayed = true;
 		this.fps = new ActionCounter();
 		this.fpsOn = false;

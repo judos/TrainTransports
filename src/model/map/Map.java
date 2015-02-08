@@ -16,7 +16,7 @@ public class Map implements Drawable2d {
 	private SimpleList<Track>	tracks;
 	private Floor				floor;
 
-	public Map(Scroll s) {
+	public Map() {
 		this.tracks = new SimpleList<Track>();
 		this.floor = new Floor();
 	}

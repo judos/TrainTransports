@@ -14,7 +14,6 @@ import model.input.MouseHandler;
 import model.input.MouseWheelEvent2;
 import model.input.MouseWheelHandler;
 import ch.judos.generic.games.BorderlessScrolling;
-import controller.InputManager;
 
 /**
  * @since 27.01.2015
@@ -31,11 +30,8 @@ public class Scroll extends BorderlessScrolling implements KeyHandler, MouseWhee
 	private double				targetZoom;
 	private static final double	ORIGINAL_ZOOM_VALUE	= 0.9;
 
-	public Scroll(Dimension viewPort, InputManager mm) {
+	public Scroll(Dimension viewPort) {
 		super(viewPort);
-		mm.addFirst((KeyHandler) this);
-		mm.add((MouseWheelHandler) this);
-		mm.addFirst((MouseHandler) this);
 		this.zoom = ORIGINAL_ZOOM_VALUE;
 		this.targetZoom = ORIGINAL_ZOOM_VALUE;
 	}

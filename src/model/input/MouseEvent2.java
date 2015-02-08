@@ -15,10 +15,14 @@ public class MouseEvent2 {
 	protected Point		mapPosition;
 
 	public MouseEvent2(InputType type, MouseEvent event, Point onMap) {
+		this(type, event.getPoint(), onMap, event.getButton());
+	}
+
+	protected MouseEvent2(InputType type, Point screen, Point onMap, int button) {
 		this.type = type;
-		this.screenPosition = event.getPoint();
+		this.screenPosition = screen;
 		this.mapPosition = onMap;
-		this.button = event.getButton();
+		this.button = button;
 	}
 
 	/**
@@ -36,7 +40,7 @@ public class MouseEvent2 {
 	}
 
 	/**
-	 * @return the position
+	 * @return a copy of the position
 	 */
 	public Point getScreenPosition() {
 		return this.screenPosition;
@@ -47,6 +51,11 @@ public class MouseEvent2 {
 	 */
 	public int getButton() {
 		return this.button;
+	}
+
+	public MouseEvent2 deepCopy() {
+		return new MouseEvent2(type, this.screenPosition.getLocation(), this.mapPosition
+			.getLocation(), this.button);
 	}
 
 }

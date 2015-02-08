@@ -6,7 +6,6 @@ import java.awt.Toolkit;
 import java.awt.image.BufferStrategy;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 import model.input.InputProvider;
 import ch.judos.generic.games.unitCoordination.PointF;
@@ -19,7 +18,6 @@ import ch.judos.generic.graphics.Drawable2d;
 public class GuiFrame extends JFrame implements InputProvider {
 
 	private Drawable2d			drawable;
-	private JPanel				panel;
 	private static final long	serialVersionUID	= -2940010842021558595L;
 
 	public GuiFrame(Drawable2d drawable) {
