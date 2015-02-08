@@ -1,5 +1,7 @@
 package model;
 
+import java.awt.Point;
+
 /**
  * a point in 2d[int] space that hints into a direction
  * 
@@ -42,6 +44,14 @@ public class DirectedPoint {
 	 */
 	public float getAngle() {
 		return angle;
+	}
+
+	public double distance(Point otherPoint) {
+		return Math.hypot(this.x - otherPoint.x, this.y - otherPoint.y);
+	}
+
+	public Point getPoint() {
+		return new Point(this.x, this.y);
 	}
 
 }

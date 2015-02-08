@@ -13,46 +13,57 @@ public class CurvedTrack extends Track {
 
 	private Point	center;
 
-	// always clock-wise
-	private float	startAngle;
-	private float	endAngle;
+	// always clock-wise oriented, angle is stored in RADIAN
+	private double	startAngle;
+	// always clock-wise oriented, angle is stored in RADIAN
+	private double	endAngle;
 
 	private int		radius;
 
-	public CurvedTrack(int radius) {
-		this.center = new Point(200, 200);
+	public static CurvedTrack createWithDegreeAngles(int radius, Point center,
+			double angleStart, double angleEnd) {
+		double degreeToRadianFactor = Math.PI / 180;
+		return new CurvedTrack(radius, center, angleStart * degreeToRadianFactor,
+			angleEnd * degreeToRadianFactor);
+	}
+
+	public CurvedTrack(int radius, Point center, double angleStart, double angleEnd) {
+		this.center = center;
 		this.radius = radius;
-		this.startAngle = 0;
-		this.endAngle = 360;
+		this.startAngle = angleStart;
+		this.endAngle = angleEnd;
 	}
 
 	@Override
 	public void paint(Graphics2D g, int layer) {
-		final float degreeToRadianFactor = (float) (Math.PI / 180);
 		AffineTransform t = g.getTransform();
 		g.translate(this.center.x, this.center.y);
-		g.rotate(this.startAngle * degreeToRadianFactor);
-		// +359 +1 prevents that modulo caps off 360° curves
-		float deltaAngle = (this.endAngle + 359 - this.startAngle) % 360 + 1;
+		g.rotate(this.startAngle);
+		double deltaAngle =
+			(this.endAngle + 2 * Math.PI - this.startAngle) % (2 * Math.PI);
 
 		if (layer == 0) {
 			g.setColor(bedColour);
-			float perimeter = (float) (Math.PI * 2 * this.radius * deltaAngle / 360);
+			float perimeter =
+				(float) (Math.PI * 2 * this.radius * deltaAngle / (2 * Math.PI));
 			int sleepers = (int) (perimeter / sleeperDistance);
 			g.translate(0, -this.radius);
 			for (int i = 0; i < sleepers; i++) {
 				g.fillRect(-sleeperWidth / 2, -sleeperLength / 2, sleeperWidth,
 					sleeperLength);
-				g.rotate(deltaAngle * degreeToRadianFactor / sleepers, 0, this.radius);
+				g.rotate(deltaAngle / sleepers, 0, this.radius);
 			}
 		}
 		if (layer == 1) {
 			g.setColor(railColour);
 			g.setStroke(railStroke);
 			int r = this.radius + railDistance / 2;
-			g.drawArc(-r, -r, r * 2, r * 2, 90, -(int) deltaAngle);
+			double radianToDegreeFactor = 180.d / Math.PI;
+			g.drawArc(-r, -r, r * 2, r * 2, 90,
+				-(int) (deltaAngle * radianToDegreeFactor));
 			r = this.radius - railDistance / 2;
-			g.drawArc(-r, -r, r * 2, r * 2, 90, -(int) deltaAngle);
+			g.drawArc(-r, -r, r * 2, r * 2, 90,
+				-(int) (deltaAngle * radianToDegreeFactor));
 		}
 
 		g.setTransform(t);
@@ -66,4 +77,8 @@ public class CurvedTrack extends Track {
 
 	}
 
+	@Override
+	public Track copy() {
+		return new CurvedTrack(this.radius, this.center, this.startAngle, this.endAngle);
+	}
 }

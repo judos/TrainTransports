@@ -3,6 +3,7 @@ package controller.tools;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
+import java.util.List;
 
 import model.Mouse;
 import model.TrackBuildConstraint;
@@ -11,7 +12,7 @@ import model.input.KeyEvent2;
 import model.input.MouseEvent2;
 import model.map.Map;
 import model.objects.StraightTrack;
-import model.objects.StraightTrack.NoConstraintBuilder;
+import model.objects.TrackBuilder;
 
 /**
  * @since 08.02.2015
@@ -19,9 +20,11 @@ import model.objects.StraightTrack.NoConstraintBuilder;
  */
 public class BuildSimpleTrackTool implements ToolI {
 
-	private Map					map;
-	private NoConstraintBuilder	track;
-	private State				state;
+	private Map							map;
+	private TrackBuilder				track;
+	private State						state;
+	private int							currentConnection;
+	private List<TrackBuildConstraint>	constraints;
 
 	enum State {
 		// the tool is ready and no input is processed yet
@@ -37,8 +40,8 @@ public class BuildSimpleTrackTool implements ToolI {
 	}
 
 	private void setInitialState() {
-		this.track = new StraightTrack.NoConstraintBuilder(new Point(-10, 0));
-		this.track.setEnd(new Point(10, 0));
+		this.track =
+			new StraightTrack.NoConstraintBuilder(new Point(-10, 0), new Point(10, 0));
 		this.state = State.READY;
 	}
 
@@ -87,11 +90,17 @@ public class BuildSimpleTrackTool implements ToolI {
 			setInitialState();
 		if (m.getType() == InputType.PRESS && m.getButton() == MouseEvent.BUTTON1) {
 			if (this.state == State.READY) {
-				TrackBuildConstraint[] connections =
+				List<TrackBuildConstraint> connections =
 					this.map.getTrackConnectionsFrom(m.getMapPosition());
-				if (connections == null)
+				if (connections == null || connections.size() == 0)
 					this.track =
 						new StraightTrack.NoConstraintBuilder(m.getMapPosition());
+				else {
+					this.constraints = connections;
+					this.currentConnection = 0;
+					this.track =
+						new StraightTrack.WithConstraintBuilder(connections.get(0));
+				}
 
 				this.state = State.STARTED;
 			} else if (this.state == State.STARTED) {

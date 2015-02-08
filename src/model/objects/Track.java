@@ -15,17 +15,17 @@ import view.DrawableLayered;
  */
 public abstract class Track implements DrawableLayered {
 
-	protected ArrayList<DirectedPoint>	mainConnections;
-	protected static final int			railDistance	= 20;
-	protected static final int			railSize		= 4;
-	protected static final int			sleeperLength	= railDistance + 10;
-	protected static final int			sleeperWidth	= 10;
-	protected static final int			sleeperDistance	= sleeperWidth + 5;
-	protected static final Color		bedColour		= Color.ORANGE.darker();
-	protected static final Color		railColour		= Color.DARK_GRAY;
-	protected static final Color		connectionColor	= Color.BLUE;
+	public static final int				railDistance	= 20;
+	public static final int				railSize		= 4;
+	public static final int				sleeperLength	= railDistance + 10;
+	public static final int				sleeperWidth	= 10;
+	public static final int				sleeperDistance	= sleeperWidth + 5;
+	public static final Color			bedColour		= Color.ORANGE.darker();
+	public static final Color			railColour		= Color.DARK_GRAY;
+	public static final Color			connectionColor	= Color.BLUE;
+	public static final Stroke			railStroke		= new BasicStroke(railSize);
 
-	protected static final Stroke		railStroke		= new BasicStroke(railSize);
+	protected ArrayList<DirectedPoint>	mainConnections;
 
 	public Track() {
 		this.mainConnections = new ArrayList<DirectedPoint>();
@@ -51,4 +51,6 @@ public abstract class Track implements DrawableLayered {
 			g.drawLine(d.getX(), d.getY(), d.getX() + dx, d.getY() + dy);
 		}
 	}
+
+	public abstract Track copy();
 }

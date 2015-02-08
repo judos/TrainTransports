@@ -11,6 +11,10 @@ import ch.judos.generic.graphics.Drawable2d;
  */
 public abstract class TrackBuilder implements Drawable2d {
 
+	public TrackBuilder() {
+
+	}
+
 	public abstract Track getTrack();
 
 	public abstract void updateWithTarget(Point mapTarget);
@@ -21,5 +25,12 @@ public abstract class TrackBuilder implements Drawable2d {
 	public void paint(Graphics2D g) {
 		this.getTrack().paint(g, 0);
 		this.getTrack().paint(g, 1);
+	}
+
+	/**
+	 * @return a newly initialized copy of the current track layout
+	 */
+	public Track getTrackNew() {
+		return getTrack().copy();
 	}
 }

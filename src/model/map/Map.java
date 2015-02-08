@@ -2,7 +2,10 @@ package model.map;
 
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.util.ArrayList;
+import java.util.List;
 
+import model.DirectedPoint;
 import model.TrackBuildConstraint;
 import model.objects.Track;
 import view.Floor;
@@ -51,8 +54,15 @@ public class Map implements Drawable2d {
 		this.tracks.remove(t);
 	}
 
-	public TrackBuildConstraint[] getTrackConnectionsFrom(Point mapPosition) {
-		return null;
+	public List<TrackBuildConstraint> getTrackConnectionsFrom(Point mapPosition) {
+		ArrayList<TrackBuildConstraint> result = new ArrayList<TrackBuildConstraint>();
+		for (Track t : this.tracks) {
+			for (DirectedPoint point : t.getMainConnections()) {
+				if (point.distance(mapPosition) < Track.sleeperLength / 2)
+					result.add(new TrackBuildConstraint(point));
+			}
+		}
+		return result;
 	}
 
 	public void drawConnections(Graphics2D g) {

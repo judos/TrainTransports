@@ -5,6 +5,8 @@ import java.awt.Point;
 import java.awt.geom.AffineTransform;
 
 import model.DirectedPoint;
+import model.TrackBuildConstraint;
+import ch.judos.generic.games.unitCoordination.PointF;
 
 /**
  * @since 28.01.2015
@@ -14,41 +16,6 @@ public class StraightTrack extends Track {
 
 	protected Point	start;
 	protected Point	end;
-
-	public static class NoConstraintBuilder extends TrackBuilder {
-		private StraightTrack	track;
-
-		public NoConstraintBuilder(Point start) {
-			this.track = new StraightTrack(start, start);
-		}
-
-		public void setEnd(Point end) {
-			this.track.end = end;
-		}
-
-		public void setStart(Point start) {
-			this.track.start = start;
-		}
-
-		@Override
-		public Track getTrack() {
-			return this.track;
-		}
-
-		@Override
-		public void updateWithTarget(Point mapTarget) {
-			this.track.end = mapTarget;
-		}
-
-		@Override
-		public boolean isValid() {
-			return true;
-		}
-
-		public Track getTrackNew() {
-			return new StraightTrack(this.track.start, this.track.end);
-		}
-	}
 
 	public StraightTrack(Point start, Point end) {
 		this.start = start;
@@ -88,6 +55,80 @@ public class StraightTrack extends Track {
 		this.mainConnections.add(new DirectedPoint(this.end.x, this.end.y, angle));
 		this.mainConnections.add(new DirectedPoint(this.start.x, this.start.y,
 			(float) (angle - Math.PI)));
+	}
+
+	public static class WithConstraintBuilder extends TrackBuilder {
+
+		private TrackBuildConstraint	constraint;
+		private StraightTrack			track;
+
+		public WithConstraintBuilder(TrackBuildConstraint trackBuildConstraint) {
+			this.constraint = trackBuildConstraint;
+			Point start = this.constraint.getDirPoint().getPoint();
+			this.track = new StraightTrack(start, start);
+		}
+
+		@Override
+		public void updateWithTarget(Point mapTarget) {
+			DirectedPoint start = this.constraint.getDirPoint();
+			double beta =
+				Math.atan2(mapTarget.y - start.getY(), mapTarget.x - start.getX());
+			double length =
+				Math.hypot(mapTarget.y - start.getY(), mapTarget.x - start.getX());
+
+			double actualLength = length * Math.cos(beta - start.getAngle());
+			PointF end =
+				new PointF(actualLength * Math.cos(start.getAngle()), actualLength
+					* Math.sin(start.getAngle()));
+			end.addI(this.track.start);
+			this.track.end = end.getPoint();
+		}
+
+		@Override
+		public boolean isValid() {
+			return true;
+		}
+
+		@Override
+		public Track getTrack() {
+			return this.track;
+		}
+	}
+
+	public static class NoConstraintBuilder extends TrackBuilder {
+		private StraightTrack	track;
+
+		public NoConstraintBuilder(Point start) {
+			this(start, start);
+		}
+
+		public NoConstraintBuilder(Point start, Point end) {
+			this.track = new StraightTrack(start, end);
+		}
+
+		public void setEnd(Point end) {
+			this.track.end = end;
+		}
+
+		@Override
+		public void updateWithTarget(Point mapTarget) {
+			this.track.end = mapTarget;
+		}
+
+		@Override
+		public boolean isValid() {
+			return true;
+		}
+
+		@Override
+		public Track getTrack() {
+			return this.track;
+		}
+	}
+
+	@Override
+	public Track copy() {
+		return new StraightTrack(this.start, this.end);
 	}
 
 }

@@ -1,5 +1,7 @@
 package controller;
 
+import java.awt.Point;
+
 import model.Mouse;
 import model.input.KeyHandler;
 import model.input.MouseHandler;
@@ -48,8 +50,8 @@ public class GameController {
 		this.inputManager.addLast((MouseWheelHandler) this.scroll);
 
 		// just for testing
-		map.addTrack(new CurvedTrack(160));
-		map.addTrack(new CurvedTrack(100));
+		map.addTrack(new CurvedTrack(160, new Point(200, 200), 0f, Math.PI));
+		map.addTrack(new CurvedTrack(100, new Point(200, 200), 0f, Math.PI));
 	}
 
 	private void addInputMouseListeners() {
