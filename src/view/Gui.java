@@ -62,6 +62,7 @@ public class Gui implements Drawable2d {
 				}
 			}
 		};
+		t.setPriority(Thread.MAX_PRIORITY);
 		t.start();
 	}
 

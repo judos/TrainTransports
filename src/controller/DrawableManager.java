@@ -3,7 +3,6 @@ package controller;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 
 import model.map.Scroll;
@@ -30,12 +29,13 @@ public class DrawableManager implements Drawable2d {
 	@Override
 	public void paint(Graphics2D g) {
 
-		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-			RenderingHints.VALUE_ANTIALIAS_ON);
-		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-			RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-		g.setRenderingHint(RenderingHints.KEY_RENDERING,
-			RenderingHints.VALUE_RENDER_SPEED);
+		// TODO: check whether antiAliasing can be implemented without frame drops
+		// g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+		// RenderingHints.VALUE_ANTIALIAS_ON);
+		// g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+		// RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+		// g.setRenderingHint(RenderingHints.KEY_RENDERING,
+		// RenderingHints.VALUE_RENDER_SPEED);
 
 		AffineTransform original = g.getTransform();
 		if (this.scroll != null)

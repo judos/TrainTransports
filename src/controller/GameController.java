@@ -14,6 +14,7 @@ public class GameController {
 	private DrawableManager	draw;
 	private InputManager	inputManager;
 	private Map				map;
+	private MenuController	menuController;
 
 	public GameController(DrawableManager m, InputManager mm) {
 		this.draw = m;
@@ -29,6 +30,8 @@ public class GameController {
 		BuildTrackHandler build = new BuildTrackHandler(map, s);
 		mm.addFirst(build);
 		this.draw.addDrawable(build);
+		this.menuController = new MenuController(mm);
+		this.draw.addDrawable(this.menuController);
 
 		DebugInformationView debug = new DebugInformationView(mm);
 		this.draw.addDrawable(debug);
