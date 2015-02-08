@@ -9,9 +9,9 @@ import java.awt.Point;
  * @author Julian Schelker
  */
 public class DirectedPoint {
-	protected int	x;
-	protected int	y;
-	protected float	angle;
+	protected int		x;
+	protected int		y;
+	protected double	angle;
 
 	/**
 	 * @param x
@@ -19,7 +19,7 @@ public class DirectedPoint {
 	 * @param angle in RADIAN <br>
 	 *            0°= [+1|0], oriented clockwise, 90°= [0|+1], ...
 	 */
-	public DirectedPoint(int x, int y, float angle) {
+	public DirectedPoint(int x, int y, double angle) {
 		this.x = x;
 		this.y = y;
 		this.angle = angle;
@@ -42,7 +42,7 @@ public class DirectedPoint {
 	/**
 	 * @return the angle in RADIAN
 	 */
-	public float getAngle() {
+	public double getAngle() {
 		return angle;
 	}
 

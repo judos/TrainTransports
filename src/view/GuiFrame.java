@@ -30,7 +30,7 @@ public class GuiFrame extends JFrame implements InputProvider {
 		this.setAlwaysOnTop(false);
 		this.setIgnoreRepaint(true);
 		// this.setResizable(false);
-		// this.setFocusTraversalKeysEnabled(false);
+		this.setFocusTraversalKeysEnabled(false);
 
 		this.getContentPane().requestFocusInWindow();
 		this.setVisible(true);
@@ -46,8 +46,8 @@ public class GuiFrame extends JFrame implements InputProvider {
 
 			Graphics2D g = (Graphics2D) strategy.getDrawGraphics();
 			if (!this.isUndecorated()) {
-				PointF t =
-					new PointF(this.getContentPane().getLocationOnScreen()).subtract(this
+				PointF t = new PointF(this.getContentPane()
+						.getLocationOnScreen()).subtract(this
 						.getLocationOnScreen());
 				g.translate(t.x, t.y);
 				Dimension size = this.getContentPane().getSize();
@@ -57,7 +57,8 @@ public class GuiFrame extends JFrame implements InputProvider {
 			this.drawable.paint(g);
 			g.dispose();
 
-		} catch (IllegalStateException e) {}
+		} catch (IllegalStateException e) {
+		}
 	}
 
 	@Override
