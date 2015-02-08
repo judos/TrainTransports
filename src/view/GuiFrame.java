@@ -61,4 +61,12 @@ public class GuiFrame extends JFrame implements InputProvider {
 
 		} catch (IllegalStateException e) {}
 	}
+
+	@Override
+	public Dimension getSize() {
+		if (this.isUndecorated())
+			return super.getSize();
+		else
+			return this.getContentPane().getSize();
+	}
 }

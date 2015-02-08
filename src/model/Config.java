@@ -6,7 +6,7 @@ package model;
  */
 public interface Config {
 	public static final int	fps				= 60;
-	public static final int	scrollBorder	= 150;
+	public static final int	scrollBorder	= 20;
 	public static final int	scrollSpeed		= 750;
 
 }
