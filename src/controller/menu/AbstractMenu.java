@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import model.Constants;
@@ -36,6 +37,8 @@ public class AbstractMenu implements MenuI {
 
 	@Override
 	public boolean handles(MouseEvent2 event) {
+		if (event.getType() != InputType.PRESS || event.getButton() != MouseEvent.BUTTON1)
+			return false;
 		Point point = event.getScreenPosition();
 		for (int i = 0; i < this.entries.size(); i++) {
 			MenuEntry m = this.entries.get(i);

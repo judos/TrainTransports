@@ -75,8 +75,10 @@ public class MenuController implements Drawable2d, MouseHandler, KeyHandler,
 
 	@Override
 	public void popMenu(MenuI menu) {
-		if (menu instanceof MainMenu)
+		if (menu instanceof MainMenu) {
+			System.exit(0);
 			return;
+		}
 		if (this.menuStack.peek() == menu)
 			this.menuStack.pop();
 	}

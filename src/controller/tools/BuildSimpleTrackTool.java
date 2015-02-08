@@ -1,10 +1,14 @@
 package controller.tools;
 
 import java.awt.Graphics2D;
+import java.awt.Point;
 
+import model.Mouse;
 import model.input.KeyEvent2;
 import model.input.MouseEvent2;
 import model.map.Map;
+import model.objects.StraightTrack;
+import model.objects.StraightTrack.Builder;
 
 /**
  * @since 08.02.2015
@@ -12,7 +16,8 @@ import model.map.Map;
  */
 public class BuildSimpleTrackTool implements ToolI {
 
-	private Map	map;
+	private Map		map;
+	private Builder	track;
 
 	enum State {
 		// the tool is ready and no input is processed yet
@@ -24,6 +29,8 @@ public class BuildSimpleTrackTool implements ToolI {
 	@Override
 	public void initialize(Map map) {
 		this.map = map;
+		this.track = new StraightTrack.Builder(new Point(-10, 0));
+		this.track.setEnd(new Point(10, 0));
 	}
 
 	@Override
@@ -34,19 +41,22 @@ public class BuildSimpleTrackTool implements ToolI {
 
 	@Override
 	public void paint(Graphics2D g) {
-		// TODO Auto-generated method stub
+		Point p = Mouse.getMousePoint();
+		g.translate(p.x, p.y);
+		this.track.getTrack().paint(g, 0);
+		this.track.getTrack().paint(g, 1);
 
+		g.translate(-p.x, -p.y);
 	}
 
 	@Override
 	public boolean handles(MouseEvent2 m) {
-		// TODO Auto-generated method stub
+
 		return false;
 	}
 
 	@Override
 	public boolean handles(KeyEvent2 e) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

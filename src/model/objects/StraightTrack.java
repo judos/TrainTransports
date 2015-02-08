@@ -11,7 +11,27 @@ import java.awt.geom.AffineTransform;
 public class StraightTrack extends Track {
 
 	protected Point	start;
-	public Point	end;
+	protected Point	end;
+
+	public static class Builder {
+		private StraightTrack	track;
+
+		public Builder(Point start) {
+			this.track = new StraightTrack(start, start);
+		}
+
+		public void setEnd(Point end) {
+			this.track.end = end;
+		}
+
+		public void setStart(Point start) {
+			this.track.start = start;
+		}
+
+		public Track getTrack() {
+			return this.track;
+		}
+	}
 
 	public StraightTrack(Point start, Point end) {
 		this.start = start;

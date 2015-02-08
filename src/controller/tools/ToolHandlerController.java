@@ -1,7 +1,9 @@
 package controller.tools;
 
 import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
 
+import model.input.InputType;
 import model.input.KeyEvent2;
 import model.input.KeyHandler;
 import model.input.MouseEvent2;
@@ -27,7 +29,8 @@ public class ToolHandlerController implements ToolHandlerI, Drawable2d, MouseHan
 		if (this.currentTool != null)
 			this.currentTool.dispose();
 		this.currentTool = t;
-		this.currentTool.initialize(this.map);
+		if (this.currentTool != null)
+			this.currentTool.initialize(this.map);
 	}
 
 	@Override
@@ -45,6 +48,12 @@ public class ToolHandlerController implements ToolHandlerI, Drawable2d, MouseHan
 
 	@Override
 	public boolean handles(KeyEvent2 e) {
+		if (e.getType() == InputType.PRESS && e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+			if (this.currentTool != null) {
+				setTool(null);
+				return true;
+			}
+		}
 		if (this.currentTool != null)
 			return this.currentTool.handles(e);
 		return false;
