@@ -25,8 +25,8 @@ public class StraightTrack extends Track {
 
 	@Override
 	public void paint(Graphics2D g, int layer) {
-		int length =
-			(int) Math.hypot(this.start.x - this.end.x, this.start.y - this.end.y);
+		int length = (int) Math.hypot(this.start.x - this.end.x, this.start.y
+				- this.end.y);
 		AffineTransform t = g.getTransform();
 		g.translate(this.start.x, this.start.y);
 		g.rotate(Math.atan2(this.end.y - this.start.y, this.end.x - this.start.x));
@@ -50,11 +50,11 @@ public class StraightTrack extends Track {
 
 	@Override
 	protected void initializeMainConnections() {
-		float angle =
-			(float) Math.atan2(this.end.y - this.start.y, this.end.x - this.start.x);
+		float angle = (float) Math.atan2(this.end.y - this.start.y, this.end.x
+				- this.start.x);
 		this.mainConnections.add(new DirectedPoint(this.end.x, this.end.y, angle));
 		this.mainConnections.add(new DirectedPoint(this.start.x, this.start.y,
-			(float) (angle - Math.PI)));
+				(float) (angle - Math.PI)));
 	}
 
 	public static class WithConstraintBuilder extends TrackBuilder {
@@ -71,21 +71,21 @@ public class StraightTrack extends Track {
 		@Override
 		public void updateWithTarget(Point mapTarget) {
 			DirectedPoint start = this.constraint.getDirPoint();
-			double beta =
-				Math.atan2(mapTarget.y - start.getY(), mapTarget.x - start.getX());
-			double length =
-				Math.hypot(mapTarget.y - start.getY(), mapTarget.x - start.getX());
+			double beta = Math.atan2(mapTarget.y - start.getY(),
+					mapTarget.x - start.getX());
+			double length = Math.hypot(mapTarget.y - start.getY(),
+					mapTarget.x - start.getX());
 
 			double actualLength = length * Math.cos(beta - start.getAngle());
-			PointF end =
-				new PointF(actualLength * Math.cos(start.getAngle()), actualLength
-					* Math.sin(start.getAngle()));
+			PointF end = new PointF(actualLength * Math.cos(start.getAngle()),
+					actualLength * Math.sin(start.getAngle()));
 			end.addI(this.track.start);
 			this.track.end = end.getPoint();
 		}
 
 		@Override
 		public boolean isValid() {
+			// TODO: implement
 			return true;
 		}
 
@@ -117,6 +117,7 @@ public class StraightTrack extends Track {
 
 		@Override
 		public boolean isValid() {
+			// TODO: implement
 			return true;
 		}
 

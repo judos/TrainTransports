@@ -50,8 +50,8 @@ public class GameController {
 		this.inputManager.addLast((MouseWheelHandler) this.scroll);
 
 		// just for testing
-		map.addTrack(new CurvedTrack(160, new Point(200, 200), 0f, Math.PI));
-		map.addTrack(new CurvedTrack(100, new Point(200, 200), 0f, Math.PI));
+		map.addTrack(new CurvedTrack(160, new Point(200, 200), 0f, Math.PI - 2));
+		map.addTrack(new CurvedTrack(100, new Point(200, 200), 1f, Math.PI - 1));
 	}
 
 	private void addInputMouseListeners() {
