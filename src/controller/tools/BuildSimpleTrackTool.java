@@ -114,7 +114,6 @@ public class BuildSimpleTrackTool implements ToolI {
 		if (m.getType() == InputType.PRESS && m.getButton() == MouseEvent.BUTTON1) {
 			if (this.state == State.READY) {
 				this.constraints = this.map.getTrackConnectionsFrom(m.getMapPosition());
-				System.out.println("starting: " + m.getMapPosition());
 				this.startingPoint = m.getMapPosition();
 				selectTrackBuilder();
 				this.state = State.STARTED;

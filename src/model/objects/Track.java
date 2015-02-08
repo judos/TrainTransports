@@ -42,12 +42,14 @@ public abstract class Track implements DrawableLayered {
 		g.setColor(connectionColor);
 		for (DirectedPoint d : this.mainConnections) {
 			// querlinie
-			int dx = (int) (sleeperLength / 2 * Math.cos(d.getAngle() + Math.PI / 2));
-			int dy = (int) (sleeperLength / 2 * Math.sin(d.getAngle() + Math.PI / 2));
+			int dx = (int) ((double) sleeperLength / 2 * Math.cos(d.getAngle() + Math.PI
+					/ 2));
+			int dy = (int) ((double) sleeperLength / 2 * Math.sin(d.getAngle() + Math.PI
+					/ 2));
 			g.drawLine(d.getX() + dx, d.getY() + dy, d.getX() - dx, d.getY() - dy);
 			// pfeil richtung
-			dx = (int) (15 * Math.cos(d.getAngle()));
-			dy = (int) (15 * Math.sin(d.getAngle()));
+			dx = (int) (15.d * Math.cos(d.getAngle()));
+			dy = (int) (15.d * Math.sin(d.getAngle()));
 			g.drawLine(d.getX(), d.getY(), d.getX() + dx, d.getY() + dy);
 		}
 	}

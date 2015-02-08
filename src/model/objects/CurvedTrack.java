@@ -119,6 +119,8 @@ public class CurvedTrack extends Track {
 
 		@Override
 		public void updateWithTarget(Point mapTarget) {
+			if (this.start == null)
+				return;
 			double phi = Math.atan2(start.y - mapTarget.y, mapTarget.x - start.x);
 			double alpha = Math.hypot(mapTarget.y - start.y, mapTarget.x - start.x)
 					/ (2 * STANDARD_CURVE_RADIUS) * Math.PI;
@@ -172,17 +174,14 @@ public class CurvedTrack extends Track {
 		@Override
 		public void updateWithTarget(Point mapTarget) {
 			DirectedPoint start = this.constraint.getDirPoint();
-			double alpha = Math.hypot(mapTarget.y - start.getX(),
-					mapTarget.x - start.getY())
-					/ (2 * STANDARD_CURVE_RADIUS) * Math.PI;
-			if (alpha > Math.PI)
-				alpha = Math.PI;
-
 			this.track.center = new Point((int) (start.getX() + this.track.radius
-					* Math.cos(start.getAngle())),
-					(int) (start.getY() - this.track.radius * Math.sin(start.getAngle())));
-			this.track.startAngle = start.getAngle();
-			this.track.endAngle = this.track.startAngle + alpha;
+					* Math.cos(start.getAngle() - Math.PI / 2)),
+					(int) (start.getY() + this.track.radius
+							* Math.sin(start.getAngle() - Math.PI / 2)));
+			double alpha = Math.atan2(mapTarget.y - this.track.center.y, mapTarget.x
+					- this.track.center.x);
+			this.track.startAngle = alpha + Math.PI / 2;
+			this.track.endAngle = start.getAngle() + Math.PI;
 		}
 
 		@Override
