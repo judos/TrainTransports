@@ -86,12 +86,14 @@ public class Scroll extends BorderlessScrolling implements KeyHandler, MouseWhee
 	 * adds the transformation that maps map coordiantes to screen coordiantes
 	 * 
 	 * @param t
+	 * @return
 	 */
-	public void applyTransformTo(AffineTransform t) {
+	public AffineTransform applyTransformTo(AffineTransform t) {
 		t.translate(this.viewPort.width / 2, this.viewPort.height / 2);
 		t.scale(this.zoom, this.zoom);
 		t.translate(-this.viewPort.width / 2, -this.viewPort.height / 2);
 		t.translate(-this.locX, -this.locY);
+		return t;
 	}
 
 	/**

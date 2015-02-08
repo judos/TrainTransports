@@ -3,7 +3,6 @@ package controller.tools;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
-import java.awt.geom.AffineTransform;
 
 import model.Mouse;
 import model.TrackBuildConstraint;
@@ -11,7 +10,6 @@ import model.input.InputType;
 import model.input.KeyEvent2;
 import model.input.MouseEvent2;
 import model.map.Map;
-import model.map.Scroll;
 import model.objects.StraightTrack;
 import model.objects.StraightTrack.NoConstraintBuilder;
 
@@ -24,7 +22,6 @@ public class BuildSimpleTrackTool implements ToolI {
 	private Map					map;
 	private NoConstraintBuilder	track;
 	private State				state;
-	private Scroll				scroll;
 
 	enum State {
 		// the tool is ready and no input is processed yet
@@ -34,9 +31,8 @@ public class BuildSimpleTrackTool implements ToolI {
 	}
 
 	@Override
-	public void initialize(Map map, Scroll scroll) {
+	public void initialize(Map map) {
 		this.map = map;
-		this.scroll = scroll;
 		setInitialState();
 	}
 
@@ -53,11 +49,16 @@ public class BuildSimpleTrackTool implements ToolI {
 	}
 
 	@Override
-	public void paint(Graphics2D g) {
+	public void drawAbsolute(Graphics2D g) {
 		if (this.state == State.READY) {
-			drawConnections(g);
 			drawSampleTrack(g);
-		} else if (this.state == State.STARTED) {
+		} else if (this.state == State.STARTED) {}
+	}
+
+	@Override
+	public void drawInMap(Graphics2D g) {
+		drawConnections(g);
+		if (this.state == State.READY) {} else if (this.state == State.STARTED) {
 			drawCurrentTrackLayout(g);
 		}
 	}
@@ -68,12 +69,7 @@ public class BuildSimpleTrackTool implements ToolI {
 
 	private void drawCurrentTrackLayout(Graphics2D g) {
 		this.track.updateWithTarget(Mouse.getMouseMapPoint());
-		AffineTransform original = g.getTransform();
-		AffineTransform t = g.getTransform();
-		this.scroll.applyTransformTo(t);
-		g.setTransform(t);
 		this.track.paint(g);
-		g.setTransform(original);
 	}
 
 	private void drawSampleTrack(Graphics2D g) {

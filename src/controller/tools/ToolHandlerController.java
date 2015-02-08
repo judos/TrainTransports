@@ -2,6 +2,7 @@ package controller.tools;
 
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
+import java.awt.geom.AffineTransform;
 
 import model.input.InputType;
 import model.input.KeyEvent2;
@@ -33,13 +34,18 @@ public class ToolHandlerController implements ToolHandlerI, Drawable2d, MouseHan
 			this.currentTool.dispose();
 		this.currentTool = t;
 		if (this.currentTool != null)
-			this.currentTool.initialize(this.map, this.scroll);
+			this.currentTool.initialize(this.map);
 	}
 
 	@Override
 	public void paint(Graphics2D g) {
-		if (this.currentTool != null)
-			this.currentTool.paint(g);
+		if (this.currentTool != null) {
+			AffineTransform original = g.getTransform();
+			g.setTransform(this.scroll.applyTransformTo(g.getTransform()));
+			this.currentTool.drawInMap(g);
+			g.setTransform(original);
+			this.currentTool.drawAbsolute(g);
+		}
 	}
 
 	@Override
