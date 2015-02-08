@@ -14,7 +14,8 @@ public class DirectedPoint {
 	/**
 	 * @param x
 	 * @param y
-	 * @param angle 0°= [+1|0], oriented clockwise, 90°= [0|+1], ...
+	 * @param angle in RADIAN <br>
+	 *            0°= [+1|0], oriented clockwise, 90°= [0|+1], ...
 	 */
 	public DirectedPoint(int x, int y, float angle) {
 		this.x = x;
@@ -37,7 +38,7 @@ public class DirectedPoint {
 	}
 
 	/**
-	 * @return the angle
+	 * @return the angle in RADIAN
 	 */
 	public float getAngle() {
 		return angle;

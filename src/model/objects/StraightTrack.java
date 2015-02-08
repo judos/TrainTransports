@@ -4,6 +4,8 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.AffineTransform;
 
+import model.DirectedPoint;
+
 /**
  * @since 28.01.2015
  * @author Julian Schelker
@@ -42,11 +44,16 @@ public class StraightTrack extends Track {
 		public boolean isValid() {
 			return true;
 		}
+
+		public Track getTrackNew() {
+			return new StraightTrack(this.track.start, this.track.end);
+		}
 	}
 
 	public StraightTrack(Point start, Point end) {
 		this.start = start;
 		this.end = end;
+		initializeMainConnections();
 	}
 
 	@Override
@@ -76,7 +83,11 @@ public class StraightTrack extends Track {
 
 	@Override
 	protected void initializeMainConnections() {
-		// TODO:
+		float angle =
+			(float) Math.atan2(this.end.y - this.start.y, this.end.x - this.start.x);
+		this.mainConnections.add(new DirectedPoint(this.end.x, this.end.y, angle));
+		this.mainConnections.add(new DirectedPoint(this.start.x, this.start.y,
+			(float) (angle - Math.PI)));
 	}
 
 }

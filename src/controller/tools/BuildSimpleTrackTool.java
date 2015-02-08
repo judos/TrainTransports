@@ -64,11 +64,13 @@ public class BuildSimpleTrackTool implements ToolI {
 	}
 
 	private void drawConnections(Graphics2D g) {
-		// TODO:
+		this.map.drawConnections(g);
 	}
 
 	private void drawCurrentTrackLayout(Graphics2D g) {
-		this.track.updateWithTarget(Mouse.getMouseMapPoint());
+		Point mouse = Mouse.getMouseMapPoint();
+		if (mouse != null)
+			this.track.updateWithTarget(mouse);
 		this.track.paint(g);
 	}
 
@@ -94,7 +96,7 @@ public class BuildSimpleTrackTool implements ToolI {
 				this.state = State.STARTED;
 			} else if (this.state == State.STARTED) {
 				this.track.updateWithTarget(m.getMapPosition());
-				this.map.addTrack(this.track.getTrack());
+				this.map.addTrack(this.track.getTrackNew());
 				setInitialState();
 			}
 		}

@@ -17,6 +17,7 @@ public class Map implements Drawable2d {
 
 	private SimpleList<Track>	tracks;
 	private Floor				floor;
+	private boolean				drawConnections;
 
 	public Map() {
 		this.tracks = new SimpleList<Track>();
@@ -28,6 +29,11 @@ public class Map implements Drawable2d {
 		for (int layer = 0; layer <= 1; layer++) {
 			this.floor.paint(g, layer);
 			drawTracks(g, layer);
+		}
+		if (this.drawConnections) {
+			for (Track t : this.tracks)
+				t.paintConnections(g);
+			this.drawConnections = false;
 		}
 	}
 
@@ -47,6 +53,10 @@ public class Map implements Drawable2d {
 
 	public TrackBuildConstraint[] getTrackConnectionsFrom(Point mapPosition) {
 		return null;
+	}
+
+	public void drawConnections(Graphics2D g) {
+		this.drawConnections = true;
 	}
 
 }
