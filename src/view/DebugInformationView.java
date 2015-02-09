@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 
+import model.Mouse;
 import model.input.InputType;
 import model.input.KeyEvent2;
 import model.input.KeyHandler;
@@ -53,6 +54,8 @@ public class DebugInformationView implements Drawable2d, KeyHandler {
 	public boolean handles(KeyEvent2 e) {
 		if (e.getType() == InputType.PRESS && e.getKeyCode() == KeyEvent.VK_F3)
 			this.displayed = !this.displayed;
+		if (e.getType() == InputType.PRESS && e.getKeyCode() == KeyEvent.VK_SPACE)
+			Mouse.toggleLock();
 		return false;
 	}
 

@@ -2,11 +2,11 @@ package model.objects;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.geom.AffineTransform;
 
 import model.DirectedPoint;
 import model.TrackBuildConstraint;
+import model.TrackType;
 import ch.judos.generic.data.geometry.Angle;
 import ch.judos.generic.data.geometry.PointF;
 import ch.judos.generic.data.geometry.PointI;
@@ -111,19 +111,21 @@ public class CurvedTrack extends Track {
 	public static class NoConstraintBuilder extends TrackBuilder {
 
 		private CurvedTrack	track;
-		private Point		start;
+		private PointI		start;
+		private boolean		isLeft;
 
-		public NoConstraintBuilder(int radius, Point center, double angleStart,
+		public NoConstraintBuilder(int radius, PointI center, double angleStart,
 				double angleEnd) {
 			this.track = new CurvedTrack(radius, new PointF(center), angleStart, angleEnd);
 		}
 
-		public NoConstraintBuilder(Point startingPoint) {
+		public NoConstraintBuilder(PointI startingPoint, TrackType trackType) {
 			this.track = new CurvedTrack(STANDARD_CURVE_RADIUS,
 					new PointF(startingPoint), 0, 0);
 			if (startingPoint == null)
 				System.out.println("Constructing with null value");
 			this.start = startingPoint;
+			this.isLeft = trackType == TrackType.LEFT;
 		}
 		@Override
 		public Track getTrack() {
@@ -131,21 +133,41 @@ public class CurvedTrack extends Track {
 		}
 
 		@Override
+		public void paint(Graphics2D g) {
+			// XXX: debug code
+			super.paint(g);
+			g.setColor(Color.red);
+			g.fillRect(this.track.center.getXI(), this.track.center.getYI(), 5, 5);
+			g.setColor(Color.green);
+			if (this.start != null)
+				g.fillRect(this.start.x, this.start.y, 5, 5);
+		}
+
+		@Override
 		public void updateWithTarget(PointI mapTarget) {
 			if (this.start == null)
 				return;
-			double phi = Math.atan2(start.y - mapTarget.y, mapTarget.x - start.x);
-			double alpha = Math.hypot(mapTarget.y - start.y, mapTarget.x - start.x)
-					/ (2 * STANDARD_CURVE_RADIUS) * Math.PI;
-			if (alpha > Math.PI)
-				alpha = Math.PI;
-			double beta = (Math.PI - alpha) / 2;
+			Angle alpha = this.start.getAAngleTo(mapTarget);
+			Angle beta = Angle.fromRadianUncapped(this.start.distance(mapTarget)
+					/ (2 * STANDARD_CURVE_RADIUS) * Math.PI);
+			beta.setIfHigherTo(Math.PI);
+			Angle phi = (Angle.A_180.sub(beta)).div(2);
 
-			this.track.center = new PointF(this.start.x + (float) this.track.radius
-					* Math.cos(beta + phi), this.start.y - this.track.radius
-					* Math.sin(beta + phi));
-			this.track.endAngle = -Math.PI / 2 - phi - beta;
-			this.track.startAngle = this.track.endAngle - alpha;
+			Angle fromStartToCenter;
+			if (this.isLeft)
+				fromStartToCenter = alpha.sub(phi);
+			else
+				fromStartToCenter = alpha.add(phi);
+			this.track.center = this.start.f().movePoint(fromStartToCenter,
+					STANDARD_CURVE_RADIUS);
+
+			Angle addEnd;
+			if (this.isLeft)
+				addEnd = Angle.A_270;
+			else
+				addEnd = Angle.A_90;
+			this.track.endAngle = alpha.sub(phi).add(addEnd).getRadian();
+			this.track.startAngle = this.track.endAngle - beta.getRadian();
 
 		}
 
@@ -175,6 +197,7 @@ public class CurvedTrack extends Track {
 
 		@Override
 		public void paint(Graphics2D g) {
+			// XXX: debug code
 			super.paint(g);
 			g.setColor(Color.red);
 			g.fillRect(this.track.center.getXI(), this.track.center.getYI(), 5, 5);

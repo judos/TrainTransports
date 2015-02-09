@@ -14,16 +14,24 @@ import ch.judos.generic.data.geometry.PointI;
 public class Mouse {
 	private static Component	componentX;
 	private static Scroll		scrollX;
+	private static boolean		locked;
+	private static Point		mp;
+
+	private static Point mouse() {
+		if (locked)
+			return mp;
+		return componentX.getMousePosition();
+	}
 
 	public static PointI getMousePoint() {
-		Point r = componentX.getMousePosition();
+		Point r = mouse();
 		if (r != null)
 			return new PointI(r);
-		return new PointI(-1, -1);
+		return null;
 	}
 
 	public static PointI getMouseMapPoint() {
-		Point p = componentX.getMousePosition();
+		Point p = mouse();
 		if (p == null)
 			return null;
 		AffineTransform t = scrollX.getTransformScreenToMap();
@@ -35,5 +43,11 @@ public class Mouse {
 	public static void initialize(Scroll scroll, Component component) {
 		scrollX = scroll;
 		componentX = component;
+	}
+
+	public static void toggleLock() {
+		locked = !locked;
+		if (locked)
+			mp = componentX.getMousePosition();
 	}
 }

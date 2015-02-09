@@ -136,7 +136,8 @@ public class BuildSimpleTrackTool implements ToolI {
 			}
 		} else {
 			if (constraints == null || constraints.size() == 0)
-				this.track = new CurvedTrack.NoConstraintBuilder(this.startingPoint);
+				this.track = new CurvedTrack.NoConstraintBuilder(this.startingPoint,
+						this.trackType);
 			else {
 				this.currentConnection = 0;
 				this.track = new CurvedTrack.WithConstraintBuilder(constraints.get(0));

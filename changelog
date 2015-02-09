@@ -6,6 +6,7 @@ Features:
 
 Changelog:
 
+- right curved tracks can also be built without connection points now
 - migrated to own Point, Line classes
 - tracks can be removed, also visual feedback for remove tool
 - build straight and curved tracks, can also use connection points

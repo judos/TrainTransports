@@ -143,7 +143,6 @@ public class StraightTrack extends Track {
 		if (dist > Track.sleeperLength / 2)
 			return false;
 		dist = l.ptLineDistAlongOutside(point);
-		System.out.println(Math.abs(dist));
 		if (Math.abs(dist) > 0)
 			return false;
 		return true;

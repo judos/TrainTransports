@@ -47,9 +47,11 @@ public class MenuController
 
 		g.translate(dx, dy);
 		PointI p = Mouse.getMousePoint();
-		p.translate(-dx, -dy);
-		if (!p.inRectFromZero(MENU_WIDTH, MENU_HEIGHT))
-			p = null;
+		if (p != null) {
+			p.translate(-dx, -dy);
+			if (!p.inRectFromZero(MENU_WIDTH, MENU_HEIGHT))
+				p = null;
+		}
 		g.setClip(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		this.menuStack.peek().paint(g, p);
 		g.setTransform(t);
