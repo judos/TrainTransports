@@ -36,10 +36,12 @@ public class RemoveTrackTool implements ToolI {
 	@Override
 	public void drawAbsolute(Graphics2D g) {
 		PointI mouse = Mouse.getMousePoint();
-		g.setColor(Color.red);
-		g.setStroke(stroke);
-		g.drawLine(mouse.x - 10, mouse.y - 10, mouse.x + 10, mouse.y + 10);
-		g.drawLine(mouse.x - 10, mouse.y + 10, mouse.x + 10, mouse.y - 10);
+		if (mouse != null) {
+			g.setColor(Color.red);
+			g.setStroke(stroke);
+			g.drawLine(mouse.x - 10, mouse.y - 10, mouse.x + 10, mouse.y + 10);
+			g.drawLine(mouse.x - 10, mouse.y + 10, mouse.x + 10, mouse.y - 10);
+		}
 	}
 
 	@Override
