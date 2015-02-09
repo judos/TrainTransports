@@ -183,11 +183,13 @@ public class CurvedTrack extends Track {
 
 		private CurvedTrack				track;
 		private TrackBuildConstraint	constraint;
+		private boolean					isLeft;
 
-		public WithConstraintBuilder(TrackBuildConstraint c) {
+		public WithConstraintBuilder(TrackBuildConstraint c, TrackType trackType) {
 			this.track = new CurvedTrack(STANDARD_CURVE_RADIUS, c.getDirPoint()
 					.getPointF(), 0, 0);
 			this.constraint = c;
+			this.isLeft = trackType == TrackType.LEFT;
 		}
 
 		@Override
@@ -210,14 +212,20 @@ public class CurvedTrack extends Track {
 		@Override
 		public void updateWithTarget(PointI mapTarget) {
 			DirectedPoint start = this.constraint.getDirPoint();
-			this.track.center = new PointF(start.getX() + (double) this.track.radius
-					* Math.cos(start.getAngle() - Math.PI / 2), start.getY()
-					+ (double) this.track.radius
-					* Math.sin(start.getAngle() - Math.PI / 2));
-			double alpha = Math.atan2(mapTarget.y - this.track.center.y, mapTarget.x
-					- this.track.center.x);
-			this.track.startAngle = alpha + Math.PI / 2;
-			this.track.endAngle = start.getAngle() + Math.PI;
+
+			Angle dAngle = (this.isLeft ? Angle.A_270 : Angle.A_90);
+
+			this.track.center = start.getPointF().movePoint(
+					dAngle.add(start.getAAngle()), this.track.radius);
+
+			Angle beta = this.track.center.getAAngleTo(mapTarget);
+			if (this.isLeft) {
+				this.track.startAngle = beta.add(Angle.A_90).getRadian();
+				this.track.endAngle = start.getAAngle().sub(Angle.A_180).getRadian();
+			} else {
+				this.track.startAngle = start.getAAngle().getRadian();
+				this.track.endAngle = beta.add(Angle.A_90).getRadian();
+			}
 		}
 		@Override
 		public boolean isValid() {

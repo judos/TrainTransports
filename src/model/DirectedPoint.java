@@ -1,5 +1,6 @@
 package model;
 
+import ch.judos.generic.data.geometry.Angle;
 import ch.judos.generic.data.geometry.PointF;
 import ch.judos.generic.data.geometry.PointI;
 
@@ -11,7 +12,7 @@ import ch.judos.generic.data.geometry.PointI;
  */
 public class DirectedPoint {
 	protected PointI	pos;
-	protected double	angle;
+	protected Angle		angle;
 
 	/**
 	 * @param x
@@ -20,9 +21,10 @@ public class DirectedPoint {
 	 *            in RADIAN <br>
 	 *            0°= [+1|0], oriented clockwise, 90°= [0|+1], ...
 	 */
+	// TODO: use class Angle instead of double
 	public DirectedPoint(int x, int y, double angle) {
 		this.pos = new PointI(x, y);
-		this.angle = angle;
+		this.angle = Angle.fromRadian(angle);
 	}
 
 	/**
@@ -42,7 +44,12 @@ public class DirectedPoint {
 	/**
 	 * @return the angle in RADIAN
 	 */
+	@Deprecated
 	public double getAngle() {
+		return angle.getRadian();
+	}
+
+	public Angle getAAngle() {
 		return angle;
 	}
 
