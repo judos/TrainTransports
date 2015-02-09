@@ -1,7 +1,8 @@
 package model.input;
 
-import java.awt.Point;
 import java.awt.event.MouseEvent;
+
+import ch.judos.generic.data.geometry.PointI;
 
 /**
  * @since 28.01.2015
@@ -10,15 +11,15 @@ import java.awt.event.MouseEvent;
 public class MouseEvent2 {
 
 	protected InputType	type;
-	protected Point		screenPosition;
+	protected PointI	screenPosition;
 	protected int		button;
-	protected Point		mapPosition;
+	protected PointI	mapPosition;
 
-	public MouseEvent2(InputType type, MouseEvent event, Point onMap) {
-		this(type, event.getPoint(), onMap, event.getButton());
+	public MouseEvent2(InputType type, MouseEvent event, PointI onMap) {
+		this(type, new PointI(event.getPoint()), onMap, event.getButton());
 	}
 
-	protected MouseEvent2(InputType type, Point screen, Point onMap, int button) {
+	protected MouseEvent2(InputType type, PointI screen, PointI onMap, int button) {
 		this.type = type;
 		this.screenPosition = screen;
 		this.mapPosition = onMap;
@@ -28,7 +29,7 @@ public class MouseEvent2 {
 	/**
 	 * @return the mapPosition
 	 */
-	public Point getMapPosition() {
+	public PointI getMapPosition() {
 		return mapPosition;
 	}
 
@@ -42,7 +43,7 @@ public class MouseEvent2 {
 	/**
 	 * @return a copy of the position
 	 */
-	public Point getScreenPosition() {
+	public PointI getScreenPosition() {
 		return this.screenPosition;
 	}
 
@@ -54,8 +55,8 @@ public class MouseEvent2 {
 	}
 
 	public MouseEvent2 deepCopy() {
-		return new MouseEvent2(type, this.screenPosition.getLocation(), this.mapPosition
-			.getLocation(), this.button);
+		return new MouseEvent2(type, this.screenPosition.deepCopy(),
+				this.mapPosition.deepCopy(), this.button);
 	}
 
 }

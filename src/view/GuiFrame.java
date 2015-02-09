@@ -8,7 +8,7 @@ import java.awt.image.BufferStrategy;
 import javax.swing.JFrame;
 
 import model.input.InputProvider;
-import ch.judos.generic.games.unitCoordination.PointF;
+import ch.judos.generic.data.geometry.PointF;
 import ch.judos.generic.graphics.Drawable2d;
 
 /**

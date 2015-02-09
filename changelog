@@ -6,6 +6,10 @@ Features:
 
 Changelog:
 
+- migrated to own Point, Line classes
+- tracks can be removed, also visual feedback for remove tool
+- build straight and curved tracks, can also use connection points
+- menu system
 - improved render loop
 - scrolling depends on current zoom factor
 - improved swing/jframe rendering routine

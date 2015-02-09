@@ -1,8 +1,8 @@
 package model.objects;
 
 import java.awt.Graphics2D;
-import java.awt.Point;
 
+import ch.judos.generic.data.geometry.PointI;
 import ch.judos.generic.graphics.Drawable2d;
 
 /**
@@ -17,7 +17,7 @@ public abstract class TrackBuilder implements Drawable2d {
 
 	public abstract Track getTrack();
 
-	public abstract void updateWithTarget(Point mapTarget);
+	public abstract void updateWithTarget(PointI mapTarget);
 
 	public abstract boolean isValid();
 

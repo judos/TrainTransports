@@ -1,12 +1,14 @@
 package model.objects;
 
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.geom.AffineTransform;
 
 import model.DirectedPoint;
 import model.TrackBuildConstraint;
-import ch.judos.generic.games.unitCoordination.PointF;
+import ch.judos.generic.data.geometry.LineI;
+import ch.judos.generic.data.geometry.PointF;
+import ch.judos.generic.data.geometry.PointI;
+import ch.judos.generic.graphics.ColorUtils;
 
 /**
  * @since 28.01.2015
@@ -14,10 +16,10 @@ import ch.judos.generic.games.unitCoordination.PointF;
  */
 public class StraightTrack extends Track {
 
-	protected Point	start;
-	protected Point	end;
+	protected PointI	start;
+	protected PointI	end;
 
-	public StraightTrack(Point start, Point end) {
+	public StraightTrack(PointI start, PointI end) {
 		this.start = start;
 		this.end = end;
 		initializeMainConnections();
@@ -25,27 +27,33 @@ public class StraightTrack extends Track {
 
 	@Override
 	public void paint(Graphics2D g, int layer) {
-		int length = (int) Math.hypot(this.start.x - this.end.x, this.start.y
-				- this.end.y);
+		double length = this.start.distance(this.end);
 		AffineTransform t = g.getTransform();
 		g.translate(this.start.x, this.start.y);
-		g.rotate(Math.atan2(this.end.y - this.start.y, this.end.x - this.start.x));
+		g.rotate(this.start.getAngleTo(this.end));
 
 		if (layer == 0) {
-			g.setColor(bedColour);
+			if (this.colorOver != null)
+				g.setColor(ColorUtils.mix(bedColour, this.colorOver));
+			else
+				g.setColor(bedColour);
+			// TODO: draw sleepers distributed better
 			for (int x = 0; x < length; x += sleeperDistance) {
 				g.fillRect(x, -sleeperLength / 2, sleeperWidth, sleeperLength);
 			}
 		}
 		if (layer == 1) {
-			// g.setColor(Color.LIGHT_GRAY);
-			// g.drawLine(this.start.x, this.start.y, this.end.x, this.end.y);
-			g.setColor(railColour);
-			g.fillRect(0, -railDistance / 2 - railSize / 2, length, railSize);
-			g.fillRect(0, railDistance / 2 - railSize / 2, length, railSize);
+			if (this.colorOver != null)
+				g.setColor(ColorUtils.mix(railColour, this.colorOver));
+			else
+				g.setColor(railColour);
+			g.fillRect(0, -railDistance / 2 - railSize / 2, (int) length, railSize);
+			g.fillRect(0, railDistance / 2 - railSize / 2, (int) length, railSize);
 		}
 
 		g.setTransform(t);
+
+		super.paint(g, layer);
 	}
 
 	@Override
@@ -64,12 +72,12 @@ public class StraightTrack extends Track {
 
 		public WithConstraintBuilder(TrackBuildConstraint trackBuildConstraint) {
 			this.constraint = trackBuildConstraint;
-			Point start = this.constraint.getDirPoint().getPoint();
+			PointI start = this.constraint.getDirPoint().getPoint();
 			this.track = new StraightTrack(start, start);
 		}
 
 		@Override
-		public void updateWithTarget(Point mapTarget) {
+		public void updateWithTarget(PointI mapTarget) {
 			DirectedPoint start = this.constraint.getDirPoint();
 			double beta = Math.atan2(mapTarget.y - start.getY(),
 					mapTarget.x - start.getX());
@@ -80,7 +88,7 @@ public class StraightTrack extends Track {
 			PointF end = new PointF(actualLength * Math.cos(start.getAngle()),
 					actualLength * Math.sin(start.getAngle()));
 			end.addI(this.track.start);
-			this.track.end = end.getPoint();
+			this.track.end = end.getPointRounded();
 		}
 
 		@Override
@@ -98,20 +106,16 @@ public class StraightTrack extends Track {
 	public static class NoConstraintBuilder extends TrackBuilder {
 		private StraightTrack	track;
 
-		public NoConstraintBuilder(Point start) {
+		public NoConstraintBuilder(PointI start) {
 			this(start, start);
 		}
 
-		public NoConstraintBuilder(Point start, Point end) {
+		public NoConstraintBuilder(PointI start, PointI end) {
 			this.track = new StraightTrack(start, end);
 		}
 
-		public void setEnd(Point end) {
-			this.track.end = end;
-		}
-
 		@Override
-		public void updateWithTarget(Point mapTarget) {
+		public void updateWithTarget(PointI mapTarget) {
 			this.track.end = mapTarget;
 		}
 
@@ -130,6 +134,19 @@ public class StraightTrack extends Track {
 	@Override
 	public Track copy() {
 		return new StraightTrack(this.start, this.end);
+	}
+
+	@Override
+	public boolean contains(PointI point) {
+		LineI l = new LineI(this.start, this.end);
+		double dist = l.ptLineDist(point);
+		if (dist > Track.sleeperLength / 2)
+			return false;
+		dist = l.ptLineDistAlongOutside(point);
+		System.out.println(Math.abs(dist));
+		if (Math.abs(dist) > 0)
+			return false;
+		return true;
 	}
 
 }

@@ -3,7 +3,6 @@ package controller.menu;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -13,6 +12,7 @@ import model.Constants;
 import model.input.InputType;
 import model.input.KeyEvent2;
 import model.input.MouseEvent2;
+import ch.judos.generic.data.geometry.PointI;
 import controller.tools.ToolHandlerI;
 
 /**
@@ -39,7 +39,7 @@ public class AbstractMenu implements MenuI {
 	public boolean handles(MouseEvent2 event) {
 		if (event.getType() != InputType.PRESS || event.getButton() != MouseEvent.BUTTON1)
 			return false;
-		Point point = event.getScreenPosition();
+		PointI point = event.getScreenPosition();
 		for (int i = 0; i < this.entries.size(); i++) {
 			MenuEntry m = this.entries.get(i);
 			if (point.x >= 0 && point.x < m.width) {
@@ -58,7 +58,7 @@ public class AbstractMenu implements MenuI {
 	public boolean handles(KeyEvent2 e) {
 		int key = e.getKeyCode();
 		if (e.getType() == InputType.PRESS && key >= KeyEvent.VK_1
-			&& key <= KeyEvent.VK_9) {
+				&& key <= KeyEvent.VK_9) {
 			int nrPressedS0 = key - KeyEvent.VK_1;
 			if (nrPressedS0 < this.entries.size()) {
 				this.entries.get(nrPressedS0).r.run();
@@ -73,7 +73,7 @@ public class AbstractMenu implements MenuI {
 	}
 
 	@Override
-	public void paint(Graphics2D g, Point mouse) {
+	public void paint(Graphics2D g, PointI mouse) {
 		Rectangle clip = g.getClipBounds();
 		g.setStroke(new BasicStroke());
 		g.setColor(Color.LIGHT_GRAY);

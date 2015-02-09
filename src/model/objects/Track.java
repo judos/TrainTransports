@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import model.DirectedPoint;
 import view.DrawableLayered;
+import ch.judos.generic.data.geometry.PointI;
 
 /**
  * @since 29.01.2015
@@ -26,6 +27,7 @@ public abstract class Track implements DrawableLayered {
 	public static final Stroke			railStroke		= new BasicStroke(railSize);
 
 	protected ArrayList<DirectedPoint>	mainConnections;
+	protected Color						colorOver;
 
 	public Track() {
 		this.mainConnections = new ArrayList<DirectedPoint>();
@@ -54,5 +56,17 @@ public abstract class Track implements DrawableLayered {
 		}
 	}
 
+	@Override
+	public void paint(Graphics2D g, int layer) {
+		if (layer == 1)
+			this.colorOver = null;
+	}
+
 	public abstract Track copy();
+
+	public void setColor(Color color) {
+		this.colorOver = color;
+	}
+
+	public abstract boolean contains(PointI point);
 }

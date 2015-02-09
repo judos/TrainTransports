@@ -1,7 +1,6 @@
 package controller.tools;
 
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.List;
@@ -16,6 +15,7 @@ import model.map.Map;
 import model.objects.CurvedTrack;
 import model.objects.StraightTrack;
 import model.objects.TrackBuilder;
+import ch.judos.generic.data.geometry.PointI;
 
 /**
  * @since 08.02.2015
@@ -29,7 +29,7 @@ public class BuildSimpleTrackTool implements ToolI {
 	private int							currentConnection;
 	private List<TrackBuildConstraint>	constraints;
 	private TrackType					trackType;
-	private Point						startingPoint;
+	private PointI						startingPoint;
 
 	enum State {
 		// the tool is ready and no input is processed yet
@@ -48,13 +48,13 @@ public class BuildSimpleTrackTool implements ToolI {
 	private void updatePreviewAndBuilder() {
 		if (this.state == State.READY) {
 			if (this.trackType == TrackType.STRAIGHT)
-				this.track = new StraightTrack.NoConstraintBuilder(new Point(5, -10),
-						new Point(5, 10));
+				this.track = new StraightTrack.NoConstraintBuilder(new PointI(5, -10),
+						new PointI(5, 10));
 			if (this.trackType == TrackType.LEFT)
-				this.track = new CurvedTrack.NoConstraintBuilder(40, new Point(-20, 0),
+				this.track = new CurvedTrack.NoConstraintBuilder(40, new PointI(-20, 0),
 						Math.PI / 2 - 0.6, Math.PI / 2 + 0.3);
 			if (this.trackType == TrackType.RIGHT)
-				this.track = new CurvedTrack.NoConstraintBuilder(40, new Point(60, 0),
+				this.track = new CurvedTrack.NoConstraintBuilder(40, new PointI(60, 0),
 						-Math.PI / 2 - 0.3, -Math.PI / 2 + 0.6);
 		} else {
 			selectTrackBuilder();
@@ -94,14 +94,14 @@ public class BuildSimpleTrackTool implements ToolI {
 	}
 
 	private void drawCurrentTrackLayout(Graphics2D g) {
-		Point mouse = Mouse.getMouseMapPoint();
+		PointI mouse = Mouse.getMouseMapPoint();
 		if (mouse != null)
 			this.track.updateWithTarget(mouse);
 		this.track.paint(g);
 	}
 
 	private void drawSampleTrack(Graphics2D g) {
-		Point p = Mouse.getMousePoint();
+		PointI p = Mouse.getMousePoint();
 		g.translate(p.x, p.y);
 		this.track.paint(g);
 		g.translate(-p.x, -p.y);

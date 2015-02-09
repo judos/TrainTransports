@@ -1,6 +1,7 @@
 package model;
 
-import java.awt.Point;
+import ch.judos.generic.data.geometry.PointF;
+import ch.judos.generic.data.geometry.PointI;
 
 /**
  * a point in 2d[int] space that hints into a direction
@@ -9,19 +10,18 @@ import java.awt.Point;
  * @author Julian Schelker
  */
 public class DirectedPoint {
-	protected int		x;
-	protected int		y;
+	protected PointI	pos;
 	protected double	angle;
 
 	/**
 	 * @param x
 	 * @param y
-	 * @param angle in RADIAN <br>
+	 * @param angle
+	 *            in RADIAN <br>
 	 *            0°= [+1|0], oriented clockwise, 90°= [0|+1], ...
 	 */
 	public DirectedPoint(int x, int y, double angle) {
-		this.x = x;
-		this.y = y;
+		this.pos = new PointI(x, y);
 		this.angle = angle;
 	}
 
@@ -29,14 +29,14 @@ public class DirectedPoint {
 	 * @return the x
 	 */
 	public int getX() {
-		return x;
+		return this.pos.x;
 	}
 
 	/**
 	 * @return the y
 	 */
 	public int getY() {
-		return y;
+		return this.pos.y;
 	}
 
 	/**
@@ -46,12 +46,12 @@ public class DirectedPoint {
 		return angle;
 	}
 
-	public double distance(Point otherPoint) {
-		return Math.hypot(this.x - otherPoint.x, this.y - otherPoint.y);
+	public PointI getPoint() {
+		return this.pos;
 	}
 
-	public Point getPoint() {
-		return new Point(this.x, this.y);
+	public PointF getPointF() {
+		return new PointF(this.pos);
 	}
 
 }

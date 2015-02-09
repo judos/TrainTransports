@@ -1,10 +1,10 @@
 package controller.menu;
 
 import java.awt.Graphics2D;
-import java.awt.Point;
 
 import model.input.KeyHandler;
 import model.input.MouseHandler;
+import ch.judos.generic.data.geometry.PointI;
 
 /**
  * @since 07.02.2015
@@ -12,6 +12,6 @@ import model.input.MouseHandler;
  */
 public interface MenuI extends MouseHandler, KeyHandler {
 
-	public void paint(Graphics2D g, Point mouse);
+	public void paint(Graphics2D g, PointI mouse);
 
 }

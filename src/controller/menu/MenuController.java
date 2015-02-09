@@ -1,7 +1,6 @@
 package controller.menu;
 
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
@@ -12,6 +11,7 @@ import model.input.KeyEvent2;
 import model.input.KeyHandler;
 import model.input.MouseEvent2;
 import model.input.MouseHandler;
+import ch.judos.generic.data.geometry.PointI;
 import ch.judos.generic.graphics.Drawable2d;
 import controller.tools.ToolHandlerI;
 
@@ -19,8 +19,12 @@ import controller.tools.ToolHandlerI;
  * @since 07.02.2015
  * @author Julian Schelker
  */
-public class MenuController implements Drawable2d, MouseHandler, KeyHandler,
-		MenuNavigationI {
+public class MenuController
+		implements
+			Drawable2d,
+			MouseHandler,
+			KeyHandler,
+			MenuNavigationI {
 
 	public static final int	MENU_WIDTH	= 600;
 	public static final int	MENU_HEIGHT	= 100;
@@ -42,9 +46,9 @@ public class MenuController implements Drawable2d, MouseHandler, KeyHandler,
 		this.dy = clip.height - MENU_HEIGHT;
 
 		g.translate(dx, dy);
-		Point p = Mouse.getMousePoint();
+		PointI p = Mouse.getMousePoint();
 		p.translate(-dx, -dy);
-		if (!(p.x >= 0 && p.x < MENU_WIDTH && p.y >= 0 && p.y < MENU_HEIGHT))
+		if (!p.inRectFromZero(MENU_WIDTH, MENU_HEIGHT))
 			p = null;
 		g.setClip(0, 0, MENU_WIDTH, MENU_HEIGHT);
 		this.menuStack.peek().paint(g, p);
@@ -56,8 +60,8 @@ public class MenuController implements Drawable2d, MouseHandler, KeyHandler,
 	public boolean handles(MouseEvent2 m) {
 		MouseEvent2 copy = m.deepCopy();
 		copy.getScreenPosition().translate(-dx, -dy);
-		Shape menuShape =
-			new Rectangle(0, 0, MenuController.MENU_WIDTH, MenuController.MENU_HEIGHT);
+		Shape menuShape = new Rectangle(0, 0, MenuController.MENU_WIDTH,
+				MenuController.MENU_HEIGHT);
 		if (!menuShape.contains(copy.getScreenPosition()))
 			return false;
 		return this.menuStack.peek().handles(copy);

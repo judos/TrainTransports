@@ -1,7 +1,6 @@
 package model.map;
 
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +9,7 @@ import model.TrackBuildConstraint;
 import model.objects.Track;
 import view.Floor;
 import ch.judos.generic.data.concurrent.SimpleList;
+import ch.judos.generic.data.geometry.PointI;
 import ch.judos.generic.graphics.Drawable2d;
 
 /**
@@ -54,11 +54,11 @@ public class Map implements Drawable2d {
 		this.tracks.remove(t);
 	}
 
-	public List<TrackBuildConstraint> getTrackConnectionsFrom(Point mapPosition) {
+	public List<TrackBuildConstraint> getTrackConnectionsFrom(PointI mapPosition) {
 		ArrayList<TrackBuildConstraint> result = new ArrayList<TrackBuildConstraint>();
 		for (Track t : this.tracks) {
 			for (DirectedPoint point : t.getMainConnections()) {
-				if (point.distance(mapPosition) < Track.sleeperLength / 2)
+				if (point.getPoint().distance(mapPosition) < Track.sleeperLength / 2)
 					result.add(new TrackBuildConstraint(point));
 			}
 		}
@@ -67,6 +67,17 @@ public class Map implements Drawable2d {
 
 	public void drawConnections(Graphics2D g) {
 		this.drawConnections = true;
+	}
+
+	public List<Track> getTrackByPoint(PointI point) {
+		ArrayList<Track> result = new ArrayList<Track>();
+		if (point == null)
+			return result;
+		for (Track t : this.tracks) {
+			if (t.contains(point))
+				result.add(t);
+		}
+		return result;
 	}
 
 }

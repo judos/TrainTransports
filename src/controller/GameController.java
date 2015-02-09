@@ -1,7 +1,5 @@
 package controller;
 
-import java.awt.Point;
-
 import model.Mouse;
 import model.input.KeyHandler;
 import model.input.MouseHandler;
@@ -10,6 +8,7 @@ import model.map.Map;
 import model.map.Scroll;
 import model.objects.CurvedTrack;
 import view.DebugInformationView;
+import ch.judos.generic.data.geometry.PointF;
 import controller.menu.MenuController;
 import controller.tools.ToolHandlerController;
 
@@ -50,8 +49,9 @@ public class GameController {
 		this.inputManager.addLast((MouseWheelHandler) this.scroll);
 
 		// just for testing
-		map.addTrack(new CurvedTrack(160, new Point(200, 200), 0f, Math.PI - 2));
-		map.addTrack(new CurvedTrack(100, new Point(200, 200), 1f, Math.PI - 1));
+		map.addTrack(new CurvedTrack(160, new PointF(200, 200), 0f, Math.PI - 2));
+		// map.addTrack(new CurvedTrack(100, new PointF(200, 200), 1f, Math.PI -
+		// 1));
 	}
 
 	private void addInputMouseListeners() {

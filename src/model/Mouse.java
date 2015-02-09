@@ -3,9 +3,9 @@ package model;
 import java.awt.Component;
 import java.awt.Point;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Point2D;
 
 import model.map.Scroll;
+import ch.judos.generic.data.geometry.PointI;
 
 /**
  * @since 08.02.2015
@@ -15,20 +15,21 @@ public class Mouse {
 	private static Component	componentX;
 	private static Scroll		scrollX;
 
-	public static Point getMousePoint() {
+	public static PointI getMousePoint() {
 		Point r = componentX.getMousePosition();
 		if (r != null)
-			return r;
-		return new Point(-1, -1);
+			return new PointI(r);
+		return new PointI(-1, -1);
 	}
 
-	public static Point getMouseMapPoint() {
+	public static PointI getMouseMapPoint() {
 		Point p = componentX.getMousePosition();
 		if (p == null)
 			return null;
 		AffineTransform t = scrollX.getTransformScreenToMap();
-		Point2D r = t.transform(p, null);
-		return new Point((int) r.getX(), (int) r.getY());
+		PointI result = new PointI();
+		t.transform(p, result);
+		return result;
 	}
 
 	public static void initialize(Scroll scroll, Component component) {

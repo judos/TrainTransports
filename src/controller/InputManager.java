@@ -1,6 +1,5 @@
 package controller;
 
-import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -8,7 +7,6 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 import model.input.InputType;
@@ -20,6 +18,7 @@ import model.input.MouseWheelEvent2;
 import model.input.MouseWheelHandler;
 import model.map.Scroll;
 import view.Gui;
+import ch.judos.generic.data.geometry.PointI;
 
 /**
  * @since 28.01.2015
@@ -28,8 +27,8 @@ import view.Gui;
 public class InputManager implements MouseListener, KeyListener, MouseWheelListener {
 
 	/**
-	 * if this is set to true, an Listener handling an event will break the chain, and no further
-	 * objects will receive the same event
+	 * if this is set to true, an Listener handling an event will break the
+	 * chain, and no further objects will receive the same event
 	 */
 	public static boolean					breakChain	= true;
 
@@ -75,10 +74,11 @@ public class InputManager implements MouseListener, KeyListener, MouseWheelListe
 		handle(new MouseEvent2(InputType.PRESSED_AND_RELEASED, e, transform(e)));
 	}
 
-	private Point transform(MouseEvent e) {
+	private PointI transform(MouseEvent e) {
 		AffineTransform op = this.scroll.getTransformScreenToMap();
-		Point2D pointOnMap = op.transform(e.getPoint(), null);
-		return new Point((int) pointOnMap.getX(), (int) pointOnMap.getY());
+		PointI pointOnMap = new PointI();
+		op.transform(e.getPoint(), pointOnMap);
+		return pointOnMap;
 	}
 
 	@Override
@@ -99,10 +99,12 @@ public class InputManager implements MouseListener, KeyListener, MouseWheelListe
 	}
 
 	@Override
-	public void mouseEntered(MouseEvent e) {}
+	public void mouseEntered(MouseEvent e) {
+	}
 
 	@Override
-	public void mouseExited(MouseEvent e) {}
+	public void mouseExited(MouseEvent e) {
+	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {

@@ -17,6 +17,7 @@ public class LauncherSimTrackJ {
 		System.setProperty("sun.java2d.accthreshold", "0");
 
 		SwingUtilities.invokeLater(LauncherSimTrackJ::init);
+
 	}
 
 	private static void init() {
