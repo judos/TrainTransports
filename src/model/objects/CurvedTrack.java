@@ -18,7 +18,7 @@ import ch.judos.generic.graphics.ColorUtils;
  */
 public class CurvedTrack extends Track {
 
-	public static final int	STANDARD_CURVE_RADIUS	= 100;
+	public static final int	STANDARD_CURVE_RADIUS	= 200;
 
 	private PointF			center;
 

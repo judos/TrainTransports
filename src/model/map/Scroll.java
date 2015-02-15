@@ -7,6 +7,7 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 
 import model.Config;
+import model.input.InputType;
 import model.input.KeyEvent2;
 import model.input.KeyHandler;
 import model.input.MouseEvent2;
@@ -134,7 +135,7 @@ public class Scroll extends BorderlessScrolling implements KeyHandler, MouseWhee
 
 	@Override
 	public boolean handles(MouseEvent2 m) {
-		if (m.getButton() == MouseEvent.BUTTON2) {
+		if (m.getButton() == MouseEvent.BUTTON2 && m.getType() == InputType.PRESS) {
 			this.targetZoom = ORIGINAL_ZOOM_VALUE;
 			return true;
 		}

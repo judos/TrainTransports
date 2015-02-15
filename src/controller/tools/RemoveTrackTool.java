@@ -72,4 +72,13 @@ public class RemoveTrackTool implements ToolI {
 		return false;
 	}
 
+	@Override
+	public boolean isInInitialState() {
+		return true;
+	}
+
+	@Override
+	public void setInitialState() {
+	}
+
 }

@@ -2,6 +2,7 @@ package controller.tools;
 
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 
 import model.input.InputType;
@@ -45,11 +46,18 @@ public class ToolHandlerController implements ToolHandlerI, Drawable2d, MouseHan
 			this.currentTool.drawInMap(g);
 			g.setTransform(original);
 			this.currentTool.drawAbsolute(g);
+			g.setTransform(original);
 		}
 	}
 
 	@Override
 	public boolean handles(MouseEvent2 m) {
+		if (m.getType() == InputType.PRESS && m.getButton() == MouseEvent.BUTTON3) {
+			if (this.currentTool != null) {
+				revertStateOfTool();
+				return true;
+			}
+		}
 		if (this.currentTool != null)
 			return this.currentTool.handles(m);
 		return false;
@@ -59,13 +67,20 @@ public class ToolHandlerController implements ToolHandlerI, Drawable2d, MouseHan
 	public boolean handles(KeyEvent2 e) {
 		if (e.getType() == InputType.PRESS && e.getKeyCode() == KeyEvent.VK_ESCAPE) {
 			if (this.currentTool != null) {
-				setTool(null);
+				revertStateOfTool();
 				return true;
 			}
 		}
 		if (this.currentTool != null)
 			return this.currentTool.handles(e);
 		return false;
+	}
+
+	protected void revertStateOfTool() {
+		if (this.currentTool.isInInitialState())
+			setTool(null);
+		else
+			this.currentTool.setInitialState();
 	}
 
 }

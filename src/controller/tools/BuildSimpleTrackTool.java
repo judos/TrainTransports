@@ -61,15 +61,14 @@ public class BuildSimpleTrackTool implements ToolI {
 		}
 	}
 
-	private void setInitialState() {
+	@Override
+	public void setInitialState() {
 		this.state = State.READY;
 		updatePreviewAndBuilder();
 	}
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -102,6 +101,8 @@ public class BuildSimpleTrackTool implements ToolI {
 
 	private void drawSampleTrack(Graphics2D g) {
 		PointI p = Mouse.getMousePoint();
+		if (p == null || this.track == null)
+			return;
 		g.translate(p.x, p.y);
 		this.track.paint(g);
 		g.translate(-p.x, -p.y);
@@ -109,9 +110,11 @@ public class BuildSimpleTrackTool implements ToolI {
 
 	@Override
 	public boolean handles(MouseEvent2 m) {
-		if (m.getType() == InputType.PRESS && m.getButton() == MouseEvent.BUTTON3)
-			setInitialState();
-		if (m.getType() == InputType.PRESS && m.getButton() == MouseEvent.BUTTON1) {
+		if (m.getType() == InputType.PRESS && m.getButton() == MouseEvent.BUTTON2) {
+			this.trackType = this.trackType.prev();
+			updatePreviewAndBuilder();
+			return true;
+		} else if (m.getType() == InputType.PRESS && m.getButton() == MouseEvent.BUTTON1) {
 			if (this.state == State.READY) {
 				this.constraints = this.map.getTrackConnectionsFrom(m.getMapPosition());
 				this.currentConnection = 0;
@@ -169,6 +172,11 @@ public class BuildSimpleTrackTool implements ToolI {
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public boolean isInInitialState() {
+		return this.state == State.READY;
 	}
 
 }

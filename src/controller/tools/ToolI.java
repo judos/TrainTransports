@@ -19,6 +19,10 @@ public interface ToolI extends MouseHandler, KeyHandler {
 
 	public void initialize(Map map);
 
+	public boolean isInInitialState();
+
+	public void setInitialState();
+
 	/**
 	 * this is drawn over the content that is drawn in drawInMap(g)
 	 * 

@@ -59,7 +59,6 @@ public class GameController {
 		this.inputManager.addLast((MouseHandler) this.menuController);
 		this.inputManager.addLast((MouseHandler) this.toolHandler);
 		this.inputManager.addLast((MouseHandler) this.scroll);
-
 	}
 
 	private void addInputKeyListeners() {

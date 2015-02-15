@@ -1,6 +1,5 @@
 package controller.menu;
 
-import controller.tools.RemoveTrackTool;
 import controller.tools.ToolHandlerI;
 
 /**
@@ -11,10 +10,9 @@ public class MainMenu extends AbstractMenu {
 
 	public MainMenu(MenuNavigationI navigation, ToolHandlerI toolHandler) {
 		super(navigation, toolHandler);
-		this.addEntry("Build Tracks", () -> this.navigation.pushMenu(new BuildMenu(
-				this.navigation, this.toolHandler)));
-		this.addEntry("Remove Tracks",
-				() -> this.toolHandler.setTool(new RemoveTrackTool()));
+		this.addEntry("Tracks",
+				() -> navigation.pushMenu(new TrackMenu(navigation, toolHandler)));
+
 		this.addEntry("Exit", () -> System.exit(0));
 	}
 }
