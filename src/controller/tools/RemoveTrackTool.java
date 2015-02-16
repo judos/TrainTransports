@@ -18,7 +18,7 @@ import ch.judos.generic.data.geometry.PointI;
  * @since 09.02.2015
  * @author Julian Schelker
  */
-public class RemoveTrackTool implements ToolI {
+public class RemoveTrackTool extends AbstractTool {
 
 	private Map						map;
 	public static final BasicStroke	stroke	= new BasicStroke(5);

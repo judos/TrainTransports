@@ -36,6 +36,15 @@ public class CurvedTrack extends Track {
 				angleEnd * degreeToRadianFactor);
 	}
 
+	public CurvedTrack(int radius, PointF center, Angle aStart, Angle aEnd) {
+		this.center = center;
+		this.radius = radius;
+		this.startAngle = aStart.getRadian();
+		this.endAngle = aEnd.getRadian();
+		System.out.println("start: " + aStart + ", end: " + aEnd);
+		initializeMainConnections();
+	}
+
 	public CurvedTrack(int radius, PointF center, double angleStart, double angleEnd) {
 		this.center = center;
 		this.radius = radius;
@@ -250,6 +259,74 @@ public class CurvedTrack extends Track {
 		else
 			return angle.getRadian() >= this.startAngle
 					|| angle.getRadian() <= this.endAngle;
+	}
+
+	public static class LeftBuilder extends TrackBuilder {
+
+		private CurvedTrack	track;
+
+		public LeftBuilder(TrackBuildConstraint sc) {
+			DirectedPoint dp = sc.getDirPoint();
+			// System.out.println(dp.getAAngle() + ", "
+			// + absAngleToTrackLeft(dp.getAAngle()));
+			// turn left from the connection point 90°, then move by radius of
+			// the curve
+			PointF centerP = dp.getPointF().movePoint(dp.getAAngle().sub(Angle.A_90),
+					STANDARD_CURVE_RADIUS);
+			// the end point starts with the angle of the connection point
+			this.track = new CurvedTrack(STANDARD_CURVE_RADIUS, centerP, Angle.A_0,
+					absAngleToTrackLeft(dp.getAAngle()));
+
+		}
+
+		@Override
+		public Track getTrack() {
+			return track;
+		}
+
+		@Override
+		public void updateWithTarget(PointI mapTarget) {
+			// TODO remove, unused
+		}
+
+		@Override
+		public boolean isValid() {
+			// TODO remove, unused
+			return true;
+		}
+
+		public PointF getTrackCenter() {
+			return this.track.center;
+		}
+
+		public void setEndAngle(Angle angle) {
+			this.track.startAngle = absAngleToTrackLeft(angle).getRadian();
+		}
+
+	}
+
+	/**
+	 * converts an absolute angle that shows the track direction into a curved
+	 * track angle seen relative from the center of the curved track<br>
+	 * <b>Note:</b> This is only valid for curved tracks that bend to the left
+	 * 
+	 * @param aAngle
+	 * @return
+	 */
+	public static Angle absAngleToTrackLeft(Angle angle) {
+		return angle.add(Angle.A_90);
+	}
+
+	/**
+	 * converts an absolute angle that shows the track direction into a curved
+	 * track angle seen relative from the center of the curved track<br>
+	 * <b>Note:</b> This is only valid for curved tracks that bend to the right
+	 * 
+	 * @param aAngle
+	 * @return
+	 */
+	public static Angle absAngleToTrackRight(Angle angle) {
+		return angle.add(Angle.A_270);
 	}
 
 }

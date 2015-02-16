@@ -7,5 +7,5 @@ package controller.tools;
  */
 public interface ToolHandlerI {
 
-	public void setTool(ToolI t);
+	public void setTool(AbstractTool t);
 }

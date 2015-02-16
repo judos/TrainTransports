@@ -21,22 +21,14 @@ import ch.judos.generic.data.geometry.PointI;
  * @since 08.02.2015
  * @author Julian Schelker
  */
-public class BuildSimpleTrackTool implements ToolI {
+public class BuildSimpleTrackTool extends AbstractTool {
 
 	private Map							map;
 	private TrackBuilder				track;
-	private State						state;
 	private int							currentConnection;
 	private List<TrackBuildConstraint>	constraints;
 	private TrackType					trackType;
 	private PointI						startingPoint;
-
-	enum State {
-		// the tool is ready and no input is processed yet
-		READY,
-		// the first connection has already been chosen
-		STARTED;
-	}
 
 	@Override
 	public void initialize(Map map) {
@@ -63,7 +55,7 @@ public class BuildSimpleTrackTool implements ToolI {
 
 	@Override
 	public void setInitialState() {
-		this.state = State.READY;
+		super.setInitialState();
 		updatePreviewAndBuilder();
 	}
 
@@ -172,11 +164,6 @@ public class BuildSimpleTrackTool implements ToolI {
 			}
 		}
 		return false;
-	}
-
-	@Override
-	public boolean isInInitialState() {
-		return this.state == State.READY;
 	}
 
 }

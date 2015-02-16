@@ -20,7 +20,7 @@ import ch.judos.generic.graphics.Drawable2d;
  */
 public class ToolHandlerController implements ToolHandlerI, Drawable2d, MouseHandler,
 		KeyHandler {
-	private ToolI	currentTool;
+	private AbstractTool	currentTool;
 	private Map		map;
 	private Scroll	scroll;
 
@@ -30,7 +30,7 @@ public class ToolHandlerController implements ToolHandlerI, Drawable2d, MouseHan
 	}
 
 	@Override
-	public void setTool(ToolI t) {
+	public void setTool(AbstractTool t) {
 		if (this.currentTool != null)
 			this.currentTool.dispose();
 		this.currentTool = t;
