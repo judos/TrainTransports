@@ -2,6 +2,8 @@ package model;
 
 import java.util.List;
 
+import ch.judos.generic.data.geometry.DirectedPoint;
+
 /**
  * @since 08.02.2015
  * @author Julian Schelker

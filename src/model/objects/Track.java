@@ -6,8 +6,8 @@ import java.awt.Graphics2D;
 import java.awt.Stroke;
 import java.util.ArrayList;
 
-import model.DirectedPoint;
 import view.DrawableLayered;
+import ch.judos.generic.data.geometry.DirectedPoint;
 import ch.judos.generic.data.geometry.PointI;
 
 /**

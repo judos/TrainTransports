@@ -3,8 +3,8 @@ package model.objects;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 
-import model.DirectedPoint;
 import model.TrackBuildConstraint;
+import ch.judos.generic.data.geometry.DirectedPoint;
 import ch.judos.generic.data.geometry.LineI;
 import ch.judos.generic.data.geometry.PointF;
 import ch.judos.generic.data.geometry.PointI;

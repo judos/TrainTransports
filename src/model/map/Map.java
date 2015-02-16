@@ -4,11 +4,11 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.DirectedPoint;
 import model.TrackBuildConstraint;
 import model.objects.Track;
 import view.Floor;
 import ch.judos.generic.data.concurrent.SimpleList;
+import ch.judos.generic.data.geometry.DirectedPoint;
 import ch.judos.generic.data.geometry.PointI;
 import ch.judos.generic.graphics.Drawable2d;
 
