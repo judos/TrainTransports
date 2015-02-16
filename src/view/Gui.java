@@ -56,7 +56,7 @@ public class Gui implements Drawable2d {
 						}
 					}
 					try {
-						long remaining = (System.nanoTime() - lastFrame - delay) - 10000;
+						long remaining = lastFrame + delay - System.nanoTime() - 1000000;
 						if (remaining > 0)
 							Thread.sleep(remaining / 1000000, (int) (remaining % 1000000));
 					} catch (InterruptedException e) {

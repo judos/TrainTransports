@@ -1,11 +1,12 @@
 Features:
 
-- build tool shows connecting tracks
-- zooming with mouse wheel
+- build tool to place tracks and connect them
+- zooming, scrolling on infinite map
 - toolbar to select build tools
 
 Changelog:
-
+- fixed rendering loop bug (remaining sleep time was miscalculated)
+- building with single attachment to connection point
 - right curved tracks can also be built without connection points now
 - migrated to own Point, Line classes
 - tracks can be removed, also visual feedback for remove tool
