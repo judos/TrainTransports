@@ -17,11 +17,6 @@ public class TrackBuildConstraint {
 		this.dirPoint = d;
 	}
 
-	public boolean isDirectionValid(TrackType type) {
-		// TODO: implement
-		return true;
-	}
-
 	/**
 	 * @return the dirPoint
 	 */

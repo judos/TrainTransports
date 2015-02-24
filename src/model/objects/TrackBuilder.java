@@ -19,8 +19,6 @@ public abstract class TrackBuilder implements Drawable2d {
 
 	public abstract void updateWithTarget(PointI mapTarget);
 
-	public abstract boolean isValid();
-
 	@Override
 	public void paint(Graphics2D g) {
 		this.getTrack().paint(g, 0);

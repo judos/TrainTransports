@@ -58,7 +58,7 @@ public class CurvedTrack extends Track {
 		AffineTransform t = g.getTransform();
 		g.translate(this.center.x, this.center.y);
 		g.rotate(this.startAngle);
-		double deltaAngle = (this.endAngle + 2 * Math.PI - this.startAngle)
+		double deltaAngleRad = (this.endAngle + 2 * Math.PI - this.startAngle)
 				% (2 * Math.PI);
 
 		if (layer == 0) {
@@ -66,13 +66,19 @@ public class CurvedTrack extends Track {
 				g.setColor(ColorUtils.mix(bedColour, this.colorOver));
 			else
 				g.setColor(bedColour);
-			float perimeter = (float) (Math.PI * 2 * this.radius * deltaAngle / (2 * Math.PI));
-			int sleepers = (int) (perimeter / sleeperDistance);
+			float perimeter = (float) (Math.PI * 2 * this.radius * deltaAngleRad / (2 * Math.PI));
+			int sleepers = (int) Math.round(perimeter / sleeperDistance);
+			double dA = 0; // real angle between sleepers
+			if (sleepers > 1)
+				dA = (perimeter - sleeperDistance) / (sleepers - 1);
+			dA *= deltaAngleRad / perimeter;
+			g.rotate(((double) sleeperDistance * 0.5) / perimeter * deltaAngleRad);
+
 			g.translate(0, -this.radius);
 			for (int i = 0; i < sleepers; i++) {
 				g.fillRect(-sleeperWidth / 2, -sleeperLength / 2, sleeperWidth,
 						sleeperLength);
-				g.rotate(deltaAngle / sleepers, 0, this.radius);
+				g.rotate(dA, 0, this.radius);
 			}
 		}
 		if (layer == 1) {
@@ -84,10 +90,10 @@ public class CurvedTrack extends Track {
 			int r = this.radius + railDistance / 2;
 			double radianToDegreeFactor = 180.d / Math.PI;
 			g.drawArc(-r, -r, r * 2, r * 2, 90,
-					-(int) (deltaAngle * radianToDegreeFactor));
+					-(int) (deltaAngleRad * radianToDegreeFactor));
 			r = this.radius - railDistance / 2;
 			g.drawArc(-r, -r, r * 2, r * 2, 90,
-					-(int) (deltaAngle * radianToDegreeFactor));
+					-(int) (deltaAngleRad * radianToDegreeFactor));
 		}
 
 		g.setTransform(t);
@@ -96,7 +102,6 @@ public class CurvedTrack extends Track {
 
 		super.paint(g, layer);
 	}
-
 	@Override
 	protected void initializeMainConnections() {
 		int x = (int) (this.center.x + (double) this.radius
@@ -142,17 +147,6 @@ public class CurvedTrack extends Track {
 		}
 
 		@Override
-		public void paint(Graphics2D g) {
-			// XXX: debug code
-			super.paint(g);
-			g.setColor(Color.red);
-			g.fillRect(this.track.center.getXI(), this.track.center.getYI(), 5, 5);
-			g.setColor(Color.green);
-			if (this.start != null)
-				g.fillRect(this.start.x, this.start.y, 5, 5);
-		}
-
-		@Override
 		public void updateWithTarget(PointI mapTarget) {
 			if (this.start == null)
 				return;
@@ -179,13 +173,6 @@ public class CurvedTrack extends Track {
 			this.track.startAngle = this.track.endAngle - beta.getRadian();
 
 		}
-
-		@Override
-		public boolean isValid() {
-			// TODO Auto-generated method stub
-			return true;
-		}
-
 	}
 
 	public static class WithConstraintBuilder extends TrackBuilder {
@@ -207,18 +194,6 @@ public class CurvedTrack extends Track {
 		}
 
 		@Override
-		public void paint(Graphics2D g) {
-			// XXX: debug code
-			super.paint(g);
-			g.setColor(Color.red);
-			g.fillRect(this.track.center.getXI(), this.track.center.getYI(), 5, 5);
-			g.setColor(Color.green);
-			DirectedPoint start = this.constraint.getDirPoint();
-			if (start != null)
-				g.fillRect(start.getX(), start.getY(), 5, 5);
-		}
-
-		@Override
 		public void updateWithTarget(PointI mapTarget) {
 			DirectedPoint start = this.constraint.getDirPoint();
 
@@ -236,12 +211,6 @@ public class CurvedTrack extends Track {
 				this.track.endAngle = beta.add(Angle.A_90).getRadian();
 			}
 		}
-		@Override
-		public boolean isValid() {
-			// TODO Auto-generated method stub
-			return true;
-		}
-
 	}
 
 	@Override
@@ -286,13 +255,6 @@ public class CurvedTrack extends Track {
 
 		@Override
 		public void updateWithTarget(PointI mapTarget) {
-			// TODO remove, unused
-		}
-
-		@Override
-		public boolean isValid() {
-			// TODO remove, unused
-			return true;
 		}
 
 		public PointF getTrackCenter() {

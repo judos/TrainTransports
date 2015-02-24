@@ -16,11 +16,32 @@ import ch.judos.generic.data.geometry.PointI;
  */
 public abstract class Track implements DrawableLayered {
 
+	/**
+	 * distance between the rails
+	 */
 	public static final int				railDistance	= 20;
+
+	/**
+	 * the thickness of the rails
+	 */
 	public static final int				railSize		= 4;
+
+	/**
+	 * the length of the sleepers is a bit bigger than the distance between
+	 * rails
+	 */
 	public static final int				sleeperLength	= railDistance + 10;
+
+	/**
+	 * width of the sleepers, size along the railway
+	 */
 	public static final int				sleeperWidth	= 10;
+
+	/**
+	 * space between two sleepers
+	 */
 	public static final int				sleeperDistance	= sleeperWidth + 5;
+
 	public static final Color			bedColour		= Color.ORANGE.darker();
 	public static final Color			railColour		= Color.DARK_GRAY;
 	public static final Color			connectionColor	= Color.BLUE;

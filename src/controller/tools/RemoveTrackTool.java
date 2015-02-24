@@ -68,7 +68,6 @@ public class RemoveTrackTool extends AbstractTool {
 
 	@Override
 	public boolean handles(KeyEvent2 e) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

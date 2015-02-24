@@ -37,9 +37,16 @@ public class StraightTrack extends Track {
 				g.setColor(ColorUtils.mix(bedColour, this.colorOver));
 			else
 				g.setColor(bedColour);
-			// TODO: draw sleepers distributed better
-			for (int x = 0; x < length; x += sleeperDistance) {
-				g.fillRect(x, -sleeperLength / 2, sleeperWidth, sleeperLength);
+
+			int fits = (int) Math.round(length / sleeperDistance);
+			// real distance between two sleepers
+			double dS = 0;
+			if (fits > 1)
+				dS = (length - sleeperDistance) / (fits - 1);
+			double d = (sleeperDistance - sleeperWidth) / 2;
+			for (int i = 0; i < fits; i++) {
+				g.fillRect((int) d, -sleeperLength / 2, sleeperWidth, sleeperLength);
+				d += dS;
 			}
 		}
 		if (layer == 1) {
@@ -79,22 +86,16 @@ public class StraightTrack extends Track {
 		@Override
 		public void updateWithTarget(PointI mapTarget) {
 			DirectedPoint start = this.constraint.getDirPoint();
-			double beta = Math.atan2(mapTarget.y - start.getY(),
-					mapTarget.x - start.getX());
-			double length = Math.hypot(mapTarget.y - start.getY(),
-					mapTarget.x - start.getX());
+			double beta = Math.atan2(mapTarget.y - start.getY(), mapTarget.x
+					- start.getX());
+			double length = Math.hypot(mapTarget.y - start.getY(), mapTarget.x
+					- start.getX());
 
 			double actualLength = length * Math.cos(beta - start.getAngle());
 			PointF end = new PointF(actualLength * Math.cos(start.getAngle()),
 					actualLength * Math.sin(start.getAngle()));
 			end.addI(this.track.start);
 			this.track.end = end.getPointRounded();
-		}
-
-		@Override
-		public boolean isValid() {
-			// TODO: implement
-			return true;
 		}
 
 		@Override
@@ -117,12 +118,6 @@ public class StraightTrack extends Track {
 		@Override
 		public void updateWithTarget(PointI mapTarget) {
 			this.track.end = mapTarget;
-		}
-
-		@Override
-		public boolean isValid() {
-			// TODO: implement
-			return true;
 		}
 
 		@Override
