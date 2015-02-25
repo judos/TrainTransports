@@ -1,9 +1,9 @@
 package controller.tools;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +18,7 @@ import model.objects.CurvedTrack.LeftBuilder;
 import model.objects.CurvedTrack.RightBuilder;
 import model.objects.CurvedTrackBuilder;
 import model.objects.StraightTrack;
+import model.objects.Track;
 import model.objects.TrackBuilder;
 import ch.judos.generic.data.geometry.Angle;
 import ch.judos.generic.data.geometry.LineI;
@@ -34,6 +35,22 @@ public class TrackToTargetTool extends AbstractTool {
 	private ArrayList<TrackBuilder>		tracks;
 	private int							currentStartC;
 	private PointI						startPoint;
+	private ArrayList<Track>			demoTrack;
+
+	@Override
+	public void initialize(Map map) {
+		this.map = map;
+		this.tracks = new ArrayList<TrackBuilder>();
+		this.state = State.READY;
+		this.demoTrack = new ArrayList<Track>();
+		this.demoTrack.add(new StraightTrack(new PointI(10, -30), new PointI(-10, 30)));
+		this.demoTrack.add(new StraightTrack(new PointI(-10, -30), new PointI(10, 30)));
+	}
+
+	@Override
+	public void dispose() {
+
+	}
 
 	@Override
 	public boolean handles(MouseEvent2 m) {
@@ -66,23 +83,21 @@ public class TrackToTargetTool extends AbstractTool {
 	}
 
 	@Override
-	public void dispose() {
-
-	}
-
-	@Override
-	public void initialize(Map map) {
-		this.map = map;
-		this.tracks = new ArrayList<TrackBuilder>();
-		this.state = State.READY;
-	}
-
-	@Override
 	public void drawAbsolute(Graphics2D g) {
 		PointI p = Mouse.getMousePoint();
-		if (p != null) {
-			g.setColor(Color.black);
-			g.drawString("Complex", p.x, p.y);
+		if (p == null)
+			return;
+
+		if (this.state == State.READY) {
+			AffineTransform t2 = g.getTransform();
+			g.translate(p.x + 30, p.y + 10);
+			g.scale(0.5, 0.5);
+			for (Track t : this.demoTrack)
+				t.paint(g, 0);
+			for (Track t : this.demoTrack)
+				t.paint(g, 1);
+
+			g.setTransform(t2);
 		}
 	}
 
