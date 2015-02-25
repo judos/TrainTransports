@@ -2,6 +2,7 @@ package model.objects;
 
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Arc2D;
 
 import model.TrackBuildConstraint;
 import model.TrackType;
@@ -87,12 +88,16 @@ public class CurvedTrack extends Track {
 				g.setColor(railColour);
 			g.setStroke(railStroke);
 			int r = this.radius + railDistance / 2;
+
 			double radianToDegreeFactor = 180.d / Math.PI;
-			g.drawArc(-r, -r, r * 2, r * 2, 90,
-					-(int) (deltaAngleRad * radianToDegreeFactor));
+
+			Arc2D.Double arc = new Arc2D.Double(-r, -r, r * 2, r * 2, 90, -deltaAngleRad
+					* radianToDegreeFactor, Arc2D.OPEN);
+			g.draw(arc);
 			r = this.radius - railDistance / 2;
-			g.drawArc(-r, -r, r * 2, r * 2, 90,
-					-(int) (deltaAngleRad * radianToDegreeFactor));
+			arc = new Arc2D.Double(-r, -r, r * 2, r * 2, 90, -deltaAngleRad
+					* radianToDegreeFactor, Arc2D.OPEN);
+			g.draw(arc);
 		}
 
 		g.setTransform(t);
