@@ -1,5 +1,6 @@
 package controller.tools;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -14,6 +15,8 @@ import model.input.MouseEvent2;
 import model.map.Map;
 import model.objects.CurvedTrack;
 import model.objects.CurvedTrack.LeftBuilder;
+import model.objects.CurvedTrack.RightBuilder;
+import model.objects.CurvedTrackBuilder;
 import model.objects.StraightTrack;
 import model.objects.TrackBuilder;
 import ch.judos.generic.data.geometry.Angle;
@@ -77,12 +80,15 @@ public class TrackToTargetTool extends AbstractTool {
 	@Override
 	public void drawAbsolute(Graphics2D g) {
 		PointI p = Mouse.getMousePoint();
-		if (p != null)
+		if (p != null) {
+			g.setColor(Color.black);
 			g.drawString("Complex", p.x, p.y);
+		}
 	}
 
 	@Override
 	public void drawInMap(Graphics2D g) {
+		this.map.drawConnections(g);
 		this.tracks.clear();
 		updateCurrentTrackLayout();
 
@@ -113,17 +119,31 @@ public class TrackToTargetTool extends AbstractTool {
 				else {
 					LineI i = new LineI(sc.getDirPoint(), 100);
 					double dy = i.ptLineDistSigned(target);
-					if (dy > 0) {
-						LeftBuilder t = new LeftBuilder(sc);
+					CurvedTrackBuilder t;
+					if (dy > 0)
+						t = new LeftBuilder(sc);
+					else
+						t = new RightBuilder(sc);
 
-						// angle between straight track and line to curved track
-						// center
-						Angle alpha = Angle.fromTriangleOH(
-								CurvedTrack.STANDARD_CURVE_RADIUS, t.getTrackCenter()
-										.distance(target));
-						t.setEndAngle(i.getP1().getAAngleTo(target).sub(alpha));
-						this.tracks.add(t);
-					}
+					// angle between straight track and line to curved track
+					// center
+					Angle beta = Angle.fromTriangleOH(CurvedTrack.STANDARD_CURVE_RADIUS,
+							t.getTrackCenter().distance(target));
+					if (beta == null)
+						return;
+					Angle alpha = t.getTrackCenter().getAAngleTo(target);
+					Angle gamma;
+					if (dy > 0)
+						gamma = alpha.sub(beta);
+					else
+						gamma = alpha.add(beta);
+
+					t.setEndAngle(gamma);
+					this.tracks.add(t);
+
+					this.tracks.add(new StraightTrack.NoConstraintBuilder(
+							t.getEndPoint(), target));
+
 				}
 			}
 		}

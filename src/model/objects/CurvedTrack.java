@@ -1,6 +1,5 @@
 package model.objects;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 
@@ -20,7 +19,7 @@ public class CurvedTrack extends Track {
 
 	public static final int	STANDARD_CURVE_RADIUS	= 200;
 
-	private PointF			center;
+	PointF					center;
 
 	// always clock-wise oriented, angle is stored in RADIAN
 	private double			startAngle;
@@ -41,10 +40,10 @@ public class CurvedTrack extends Track {
 		this.radius = radius;
 		this.startAngle = aStart.getRadian();
 		this.endAngle = aEnd.getRadian();
-		System.out.println("start: " + aStart + ", end: " + aEnd);
 		initializeMainConnections();
 	}
 
+	@Deprecated
 	public CurvedTrack(int radius, PointF center, double angleStart, double angleEnd) {
 		this.center = center;
 		this.radius = radius;
@@ -97,13 +96,13 @@ public class CurvedTrack extends Track {
 		}
 
 		g.setTransform(t);
-		g.setColor(Color.red);
-		g.fillRect(0, 0, 5, 5);
-
 		super.paint(g, layer);
 	}
+
 	@Override
 	protected void initializeMainConnections() {
+		this.mainConnections.clear();
+
 		int x = (int) (this.center.x + (double) this.radius
 				* Math.cos(this.startAngle - Math.PI / 2));
 		int y = (int) (this.center.y + (double) this.radius
@@ -185,7 +184,7 @@ public class CurvedTrack extends Track {
 			this.track = new CurvedTrack(STANDARD_CURVE_RADIUS, c.getDirPoint()
 					.getPointF(), 0, 0);
 			this.constraint = c;
-			this.isLeft = trackType == TrackType.LEFT;
+			this.isLeft = (trackType == TrackType.LEFT);
 		}
 
 		@Override
@@ -230,14 +229,36 @@ public class CurvedTrack extends Track {
 					|| angle.getRadian() <= this.endAngle;
 	}
 
-	public static class LeftBuilder extends TrackBuilder {
+	public static class RightBuilder extends CurvedTrackBuilder {
 
-		private CurvedTrack	track;
+		public RightBuilder(TrackBuildConstraint sc) {
+			DirectedPoint dp = sc.getDirPoint();
+			// turn right from the connection point 90°, then move by radius of
+			// the curve
+			PointF centerP = dp.getPointF().movePoint(dp.getAAngle().add(Angle.A_90),
+					STANDARD_CURVE_RADIUS);
+			// the end point starts with the angle of the connection point
+			this.track = new CurvedTrack(STANDARD_CURVE_RADIUS, centerP,
+					absAngleToTrackRight(dp.getAAngle()), Angle.A_0);
+		}
+
+		@Override
+		public PointI getEndPoint() {
+			return this.track.mainConnections.get(1).getPoint();
+		}
+
+		@Override
+		public void setEndAngle(Angle angle) {
+			this.track.endAngle = absAngleToTrackRight(angle).getRadian();
+			this.track.initializeMainConnections();
+		}
+
+	}
+
+	public static class LeftBuilder extends CurvedTrackBuilder {
 
 		public LeftBuilder(TrackBuildConstraint sc) {
 			DirectedPoint dp = sc.getDirPoint();
-			// System.out.println(dp.getAAngle() + ", "
-			// + absAngleToTrackLeft(dp.getAAngle()));
 			// turn left from the connection point 90°, then move by radius of
 			// the curve
 			PointF centerP = dp.getPointF().movePoint(dp.getAAngle().sub(Angle.A_90),
@@ -245,24 +266,17 @@ public class CurvedTrack extends Track {
 			// the end point starts with the angle of the connection point
 			this.track = new CurvedTrack(STANDARD_CURVE_RADIUS, centerP, Angle.A_0,
 					absAngleToTrackLeft(dp.getAAngle()));
-
 		}
 
 		@Override
-		public Track getTrack() {
-			return track;
+		public PointI getEndPoint() {
+			return this.track.mainConnections.get(0).getPoint();
 		}
 
 		@Override
-		public void updateWithTarget(PointI mapTarget) {
-		}
-
-		public PointF getTrackCenter() {
-			return this.track.center;
-		}
-
 		public void setEndAngle(Angle angle) {
 			this.track.startAngle = absAngleToTrackLeft(angle).getRadian();
+			this.track.initializeMainConnections();
 		}
 
 	}
@@ -276,7 +290,7 @@ public class CurvedTrack extends Track {
 	 * @return
 	 */
 	public static Angle absAngleToTrackLeft(Angle angle) {
-		return angle.add(Angle.A_90);
+		return angle.add(Angle.A_180);
 	}
 
 	/**
@@ -288,7 +302,7 @@ public class CurvedTrack extends Track {
 	 * @return
 	 */
 	public static Angle absAngleToTrackRight(Angle angle) {
-		return angle.add(Angle.A_270);
+		return angle;
 	}
 
 }

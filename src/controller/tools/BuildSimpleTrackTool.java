@@ -40,8 +40,8 @@ public class BuildSimpleTrackTool extends AbstractTool {
 	private void updatePreviewAndBuilder() {
 		if (this.state == State.READY) {
 			if (this.trackType == TrackType.STRAIGHT)
-				this.track = new StraightTrack.NoConstraintBuilder(new PointI(5, -10),
-						new PointI(5, 10));
+				this.track = new StraightTrack.NoConstraintBuilder(new PointI(10, -10),
+						new PointI(10, 10));
 			if (this.trackType == TrackType.LEFT)
 				this.track = new CurvedTrack.NoConstraintBuilder(40, new PointI(-20, 0),
 						Math.PI / 2 - 0.6, Math.PI / 2 + 0.3);
@@ -73,15 +73,11 @@ public class BuildSimpleTrackTool extends AbstractTool {
 
 	@Override
 	public void drawInMap(Graphics2D g) {
-		drawConnections(g);
+		this.map.drawConnections(g);
 		if (this.state == State.READY) {
 		} else if (this.state == State.STARTED) {
 			drawCurrentTrackLayout(g);
 		}
-	}
-
-	private void drawConnections(Graphics2D g) {
-		this.map.drawConnections(g);
 	}
 
 	private void drawCurrentTrackLayout(Graphics2D g) {
@@ -127,16 +123,16 @@ public class BuildSimpleTrackTool extends AbstractTool {
 			if (constraints == null || constraints.size() == 0)
 				this.track = new StraightTrack.NoConstraintBuilder(this.startingPoint);
 			else {
-				this.track = new StraightTrack.WithConstraintBuilder(
-						constraints.get(this.currentConnection));
+				this.track = new StraightTrack.WithConstraintBuilder(constraints
+						.get(this.currentConnection));
 			}
 		} else {
 			if (constraints == null || constraints.size() == 0)
 				this.track = new CurvedTrack.NoConstraintBuilder(this.startingPoint,
 						this.trackType);
 			else {
-				this.track = new CurvedTrack.WithConstraintBuilder(
-						constraints.get(this.currentConnection), this.trackType);
+				this.track = new CurvedTrack.WithConstraintBuilder(constraints
+						.get(this.currentConnection), this.trackType);
 			}
 		}
 	}
