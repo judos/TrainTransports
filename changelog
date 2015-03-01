@@ -3,6 +3,7 @@ Features:
 - build tools to place tracks and connect them
 - zooming, scrolling on infinite map
 - toolbar to select build tools
+- map is stored on quit, and reloaded on launching the game
 
 Changelog:
 - better rendering for sleepers on tracks
