@@ -1,7 +1,7 @@
 classId = model.map.Map
 {
   tracks =var.1 = {
-    elementData =var.2 size=83 = {
+    elementData =var.2 size=96 = {
       [0] =var.3 =classId:model.objects.StraightTrack = {
         start =var.4 = {
           x = 920
@@ -764,6 +764,127 @@ classId = model.map.Map
         end =var.201 = {
           x = 1535
           y = 2538
+        }
+      }
+      [83] =var.202 =classId:model.objects.CurvedTrack = {
+        center =var.203 = {
+          x = 1869.009
+          y = 2603.579
+        }
+        startAngle = 5.74628507299353
+        endAngle = 5.805139299547536
+        radius = 200
+      }
+      [84] =var.204 =classId:model.objects.StraightTrack = {
+        start =var.205 = {
+          x = 1766
+          y = 2431
+        }
+        end =var.206 = {
+          x = 1652
+          y = 2500
+        }
+      }
+      [85] =var.207 =classId:model.objects.CurvedTrack = {
+        center =var.208 = {
+          x = 1548.4395
+          y = 2328.9
+        }
+        startAngle = 2.597312168643813
+        endAngle = 2.8287767756170514
+        radius = 200
+      }
+      [86] =var.209 =classId:model.objects.CurvedTrack = {
+        center =var.210 = {
+          x = 1518.089
+          y = 2338.7163
+        }
+        startAngle = 2.828776775617051
+        endAngle = 3.0569362365944315
+        radius = 200
+      }
+      [87] =var.211 =classId:model.objects.StraightTrack = {
+        start =var.212 = {
+          x = 1609
+          y = 2519
+        }
+        end =var.213 = {
+          x = 1579
+          y = 2529
+        }
+      }
+      [88] =var.214 =classId:model.objects.CurvedTrack = {
+        center =var.215 = {
+          x = 1414.992
+          y = 2641.4807
+        }
+        startAngle = 0.32577198043969197
+        endAngle = 0.3407558249097926
+        radius = 200
+      }
+      [89] =var.216 =classId:model.objects.CurvedTrack = {
+        center =var.217 = {
+          x = 1710.089
+          y = 2321.7163
+        }
+        startAngle = 3.056936236594431
+        endAngle = 3.4823484784995857
+        radius = 200
+      }
+      [90] =var.218 =classId:model.objects.StraightTrack = {
+        start =var.219 = {
+          x = 1481
+          y = 2452
+        }
+        end =var.220 = {
+          x = 1643
+          y = 2510
+        }
+      }
+      [91] =var.221 =classId:model.objects.CurvedTrack = {
+        center =var.222 = {
+          x = 1899.1002
+          y = 2674.48
+        }
+        startAngle = 5.793326473981779
+        endAngle = 3.148666992802526
+        radius = 200
+      }
+      [92] =var.223 =classId:model.objects.CurvedTrack = {
+        center =var.224 = {
+          x = 1395.1174
+          y = 2719.1855
+        }
+        startAngle = 2.936164624497071
+        endAngle = 0.3145752046127832
+        radius = 200
+      }
+      [93] =var.225 =classId:model.objects.CurvedTrack = {
+        center =var.226 = {
+          x = 1475.7972
+          y = 3109.7947
+        }
+        startAngle = 6.077757278086864
+        endAngle = 6.198111021435836
+        radius = 200
+      }
+      [94] =var.227 =classId:model.objects.CurvedTrack = {
+        center =var.228 = {
+          x = 1895.5851
+          y = 3073.995
+        }
+        startAngle = 6.198111021435835
+        endAngle = 0.007074339212732816
+        radius = 200
+      }
+      [95] =var.229 =classId:model.objects.StraightTrack = {
+        start =var.230 = {
+          x = 1458
+          y = 2910
+        }
+        end =var.231 = {
+          x = 1878
+          y = 2874
         }
       }
     }

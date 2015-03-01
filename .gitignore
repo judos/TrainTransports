@@ -1,11 +1,11 @@
 *.class
 bin/
+jar-in-jar-loader.zip
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
 # Package Files #
-*.jar
 *.war
 *.ear
 
