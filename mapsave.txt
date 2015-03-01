@@ -1,0 +1,78 @@
+classId = model.map.Map
+{
+  tracks =var.1 = {
+    elementData =var.2 size=7 = {
+      [0] =var.3 =classId:model.objects.StraightTrack = {
+        start =var.4 = {
+          x = 920
+          y = 75
+        }
+        end =var.5 = {
+          x = 922
+          y = 237
+        }
+      }
+      [1] =var.6 =classId:model.objects.StraightTrack = {
+        start =var.7 = {
+          x = 608
+          y = 809
+        }
+        end =var.8 = {
+          x = 733
+          y = 683
+        }
+      }
+      [2] =var.9 =classId:model.objects.StraightTrack = {
+        start =var.10 = {
+          x = 799
+          y = 900
+        }
+        end =var.11 = {
+          x = 801
+          y = 708
+        }
+      }
+      [3] =var.12 =classId:model.objects.StraightTrack = {
+        start =var.13 = {
+          x = 1168
+          y = 907
+        }
+        end =var.14 = {
+          x = 1167
+          y = 717
+        }
+      }
+      [4] =var.15 =classId:model.objects.StraightTrack = {
+        start =var.16 = {
+          x = 1460
+          y = 808
+        }
+        end =var.17 = {
+          x = 1262
+          y = 696
+        }
+      }
+      [5] =var.18 =classId:model.objects.StraightTrack = {
+        start =var.19 = {
+          x = 1487
+          y = 624
+        }
+        end =var.20 = {
+          x = 1277
+          y = 622
+        }
+      }
+      [6] =var.21 =classId:model.objects.StraightTrack = {
+        start =var.22 = {
+          x = 553
+          y = 677
+        }
+        end =var.23 = {
+          x = 271
+          y = 719
+        }
+      }
+    }
+  }
+  drawConnections = false
+}

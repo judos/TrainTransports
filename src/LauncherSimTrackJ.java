@@ -1,3 +1,5 @@
+import java.util.Optional;
+
 import javax.swing.SwingUtilities;
 
 import view.Gui;
@@ -16,18 +18,35 @@ public class LauncherSimTrackJ {
 		System.setProperty("sun.java2d.opengl", "True");
 		System.setProperty("sun.java2d.accthreshold", "0");
 
-		SwingUtilities.invokeLater(LauncherSimTrackJ::init);
+		LauncherSimTrackJ l = new LauncherSimTrackJ();
+		SwingUtilities.invokeLater(l::init);
 
 	}
 
-	private static void init() {
-		Gui w = new Gui();
+	private GameController	game;
+	private Gui				gui;
 
-		DrawableManager dm = new DrawableManager(w);
-		InputManager mm = new InputManager(w);
+	private void init() {
+		this.gui = new Gui(Optional.of(this::onQuit));
 
-		GameController g = new GameController(dm, mm);
-		w.startView(60);
+		DrawableManager dm = new DrawableManager(this.gui);
+		InputManager mm = new InputManager(this.gui);
+
+		this.game = new GameController(dm, mm, this::onQuit);
+		this.gui.startView(60);
+	}
+
+	private Object	onQuitLock	= new Object();
+	private void onQuit() {
+		synchronized (onQuitLock) {
+			try {
+				this.game.quit();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			this.gui.quit();
+			System.exit(0);
+		}
 	}
 
 }

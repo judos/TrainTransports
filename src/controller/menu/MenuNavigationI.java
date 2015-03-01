@@ -8,4 +8,6 @@ public interface MenuNavigationI {
 	public void pushMenu(MenuI menu);
 
 	public void popMenu(MenuI menu);
+
+	public void quit();
 }

@@ -7,6 +7,9 @@ import java.awt.Rectangle;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseWheelListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.Optional;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -23,8 +26,17 @@ public class Gui implements Drawable2d {
 	private Timer		timer;
 	private Drawable2d	drawable;
 
-	public Gui() {
+	public Gui(Optional<Runnable> onQuit) {
 		this.frame = new GuiFrame(this);
+		if (onQuit.isPresent()) {
+			this.frame.addWindowListener(new WindowAdapter() {
+				@Override
+				public void windowClosing(WindowEvent e) {
+					onQuit.get().run();
+					System.out.println(e);
+				}
+			});
+		}
 	}
 
 	public void startViewTimer(int fps) {
@@ -117,6 +129,11 @@ public class Gui implements Drawable2d {
 
 	public Component getComponent() {
 		return this.frame.getContentPane();
+	}
+
+	public void quit() {
+		this.frame.setVisible(false);
+		this.frame.dispose();
 	}
 
 }

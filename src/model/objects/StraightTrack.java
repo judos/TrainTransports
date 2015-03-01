@@ -4,20 +4,31 @@ import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 
 import model.TrackBuildConstraint;
+import ch.judos.generic.data.concurrent.SimpleList;
+import ch.judos.generic.data.geometry.Angle;
 import ch.judos.generic.data.geometry.DirectedPoint;
 import ch.judos.generic.data.geometry.LineI;
 import ch.judos.generic.data.geometry.PointF;
 import ch.judos.generic.data.geometry.PointI;
+import ch.judos.generic.data.serialization.RStorable;
 import ch.judos.generic.graphics.ColorUtils;
 
 /**
  * @since 28.01.2015
  * @author Julian Schelker
  */
-public class StraightTrack extends Track {
+public class StraightTrack extends Track implements RStorable {
 
 	protected PointI	start;
 	protected PointI	end;
+
+	/**
+	 * used for RStorage to create objects
+	 */
+	@SuppressWarnings("unused")
+	private StraightTrack() {
+		this.mainConnections = null;
+	}
 
 	public StraightTrack(PointI start, PointI end) {
 		this.start = start;
@@ -65,11 +76,10 @@ public class StraightTrack extends Track {
 
 	@Override
 	protected void initializeMainConnections() {
-		float angle = (float) Math.atan2(this.end.y - this.start.y, this.end.x
-				- this.start.x);
-		this.mainConnections.add(new DirectedPoint(this.end.x, this.end.y, angle));
-		this.mainConnections.add(new DirectedPoint(this.start.x, this.start.y,
-				(float) (angle - Math.PI)));
+		this.mainConnections = new SimpleList<DirectedPoint>();
+		Angle angle = this.start.getAAngleTo(this.end);
+		this.mainConnections.add(new DirectedPoint(this.end, angle));
+		this.mainConnections.add(new DirectedPoint(this.start, angle.sub(Angle.A_180)));
 	}
 
 	public static class WithConstraintBuilder extends TrackBuilder {

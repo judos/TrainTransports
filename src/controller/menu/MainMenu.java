@@ -10,9 +10,9 @@ public class MainMenu extends AbstractMenu {
 
 	public MainMenu(MenuNavigationI navigation, ToolHandlerI toolHandler) {
 		super(navigation, toolHandler);
-		this.addEntry("Tracks",
-				() -> navigation.pushMenu(new TrackMenu(navigation, toolHandler)));
+		this.addEntry("Tracks", () -> navigation.pushMenu(new TrackMenu(navigation,
+				toolHandler)));
 
-		this.addEntry("Exit", () -> System.exit(0));
+		this.addEntry("Exit", () -> navigation.quit());
 	}
 }

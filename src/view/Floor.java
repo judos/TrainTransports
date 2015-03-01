@@ -35,8 +35,7 @@ public class Floor implements DrawableLayered {
 				startY -= this.grassH;
 
 			for (int x = startX; x - startX < clip.width + this.grassW; x += this.grassW) {
-				for (int y = startY; y - startY < clip.height + this.grassH; y +=
-					this.grassH) {
+				for (int y = startY; y - startY < clip.height + this.grassH; y += this.grassH) {
 					g.drawImage(this.grass, x, y, null);
 				}
 			}

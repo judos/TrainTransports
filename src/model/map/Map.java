@@ -10,16 +10,17 @@ import view.Floor;
 import ch.judos.generic.data.concurrent.SimpleList;
 import ch.judos.generic.data.geometry.DirectedPoint;
 import ch.judos.generic.data.geometry.PointI;
+import ch.judos.generic.data.serialization.RStorable;
 import ch.judos.generic.graphics.Drawable2d;
 
 /**
  * @since 28.01.2015
  * @author Julian Schelker
  */
-public class Map implements Drawable2d {
+public class Map implements Drawable2d, RStorable {
 
 	private SimpleList<Track>	tracks;
-	private Floor				floor;
+	private transient Floor		floor;
 	private boolean				drawConnections;
 
 	public Map() {
@@ -34,8 +35,7 @@ public class Map implements Drawable2d {
 			drawTracks(g, layer);
 		}
 		if (this.drawConnections) {
-			for (Track t : this.tracks)
-				t.paintConnections(g);
+
 			this.drawConnections = false;
 		}
 	}
@@ -66,6 +66,8 @@ public class Map implements Drawable2d {
 	}
 
 	public void drawConnections(Graphics2D g) {
+		for (Track t : this.tracks)
+			t.paintConnections(g);
 		this.drawConnections = true;
 	}
 

@@ -7,17 +7,19 @@ import java.awt.geom.Arc2D;
 
 import model.TrackBuildConstraint;
 import model.TrackType;
+import ch.judos.generic.data.concurrent.SimpleList;
 import ch.judos.generic.data.geometry.Angle;
 import ch.judos.generic.data.geometry.DirectedPoint;
 import ch.judos.generic.data.geometry.PointF;
 import ch.judos.generic.data.geometry.PointI;
+import ch.judos.generic.data.serialization.RStorable;
 import ch.judos.generic.graphics.ColorUtils;
 
 /**
  * @since 29.01.2015
  * @author Julian Schelker
  */
-public class CurvedTrack extends Track {
+public class CurvedTrack extends Track implements RStorable {
 
 	public static final int	STANDARD_CURVE_RADIUS	= 200;
 
@@ -35,6 +37,14 @@ public class CurvedTrack extends Track {
 		double degreeToRadianFactor = Math.PI / 180;
 		return new CurvedTrack(radius, center, angleStart * degreeToRadianFactor,
 				angleEnd * degreeToRadianFactor);
+	}
+
+	/**
+	 * used for RStorage to create objects
+	 */
+	@SuppressWarnings("unused")
+	private CurvedTrack() {
+		this.mainConnections = null;
 	}
 
 	public CurvedTrack(int radius, PointF center, Angle aStart, Angle aEnd) {
@@ -107,7 +117,7 @@ public class CurvedTrack extends Track {
 
 	@Override
 	protected void initializeMainConnections() {
-		this.mainConnections.clear();
+		this.mainConnections = new SimpleList<DirectedPoint>();
 
 		int x = (int) (this.center.x + (double) this.radius
 				* Math.cos(this.startAngle - Math.PI / 2));

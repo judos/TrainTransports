@@ -7,6 +7,7 @@ import java.awt.Stroke;
 import java.util.ArrayList;
 
 import view.DrawableLayered;
+import ch.judos.generic.data.concurrent.SimpleList;
 import ch.judos.generic.data.geometry.DirectedPoint;
 import ch.judos.generic.data.geometry.PointI;
 
@@ -19,51 +20,54 @@ public abstract class Track implements DrawableLayered {
 	/**
 	 * distance between the rails
 	 */
-	public static final int				railDistance	= 20;
+	public static final int							railDistance	= 20;
 
 	/**
 	 * the thickness of the rails
 	 */
-	public static final int				railSize		= 4;
+	public static final int							railSize		= 4;
 
 	/**
 	 * the length of the sleepers is a bit bigger than the distance between
 	 * rails
 	 */
-	public static final int				sleeperLength	= railDistance + 10;
+	public static final int							sleeperLength	= railDistance + 10;
 
 	/**
 	 * width of the sleepers, size along the railway
 	 */
-	public static final int				sleeperWidth	= 10;
+	public static final int							sleeperWidth	= 10;
 
 	/**
 	 * space between two sleepers
 	 */
-	public static final int				sleeperDistance	= sleeperWidth + 5;
+	public static final int							sleeperDistance	= sleeperWidth + 5;
 
-	public static final Color			bedColour		= Color.ORANGE.darker();
-	public static final Color			railColour		= Color.DARK_GRAY;
-	public static final Color			connectionColor	= Color.BLUE;
-	public static final Stroke			railStroke		= new BasicStroke(railSize);
+	public static final Color						bedColour		= Color.ORANGE
+																			.darker();
+	public static final Color						railColour		= Color.DARK_GRAY;
+	public static final Color						connectionColor	= Color.BLUE;
+	public static final Stroke						railStroke		= new BasicStroke(
+																			railSize);
 
-	protected ArrayList<DirectedPoint>	mainConnections;
-	protected Color						colorOver;
+	protected transient SimpleList<DirectedPoint>	mainConnections;
+	protected transient Color						colorOver;
 
 	public Track() {
-		this.mainConnections = new ArrayList<DirectedPoint>();
 	}
 
 	protected abstract void initializeMainConnections();
 
 	public ArrayList<DirectedPoint> getMainConnections() {
+		if (this.mainConnections == null)
+			initializeMainConnections();
 		return this.mainConnections;
 	}
 
 	public void paintConnections(Graphics2D g) {
 		g.setStroke(new BasicStroke(5));
 		g.setColor(connectionColor);
-		for (DirectedPoint d : this.mainConnections) {
+		for (DirectedPoint d : getMainConnections()) {
 			// querlinie
 			int dx = (int) ((double) sleeperLength / 2 * Math.cos(d.getAngle() + Math.PI
 					/ 2));

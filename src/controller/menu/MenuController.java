@@ -19,12 +19,8 @@ import controller.tools.ToolHandlerI;
  * @since 07.02.2015
  * @author Julian Schelker
  */
-public class MenuController
-		implements
-			Drawable2d,
-			MouseHandler,
-			KeyHandler,
-			MenuNavigationI {
+public class MenuController implements Drawable2d, MouseHandler, KeyHandler,
+		MenuNavigationI {
 
 	public static final int	MENU_WIDTH	= 600;
 	public static final int	MENU_HEIGHT	= 100;
@@ -32,10 +28,12 @@ public class MenuController
 	private Stack<MenuI>	menuStack;
 	private int				dx;
 	private int				dy;
+	private Runnable		onQuit;
 
-	public MenuController(ToolHandlerI toolHandler) {
+	public MenuController(ToolHandlerI toolHandler, Runnable onQuit) {
 		this.menuStack = new Stack<MenuI>();
 		this.menuStack.push(new MainMenu(this, toolHandler));
+		this.onQuit = onQuit;
 	}
 
 	@Override
@@ -82,11 +80,16 @@ public class MenuController
 	@Override
 	public void popMenu(MenuI menu) {
 		if (menu instanceof MainMenu) {
-			System.exit(0);
+			quit();
 			return;
 		}
 		if (this.menuStack.peek() == menu)
 			this.menuStack.pop();
+	}
+
+	@Override
+	public void quit() {
+		this.onQuit.run();
 	}
 
 }

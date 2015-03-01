@@ -1,15 +1,23 @@
 package controller;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 import model.Mouse;
 import model.input.KeyHandler;
 import model.input.MouseHandler;
 import model.input.MouseWheelHandler;
 import model.map.Map;
 import model.map.Scroll;
-import model.objects.CurvedTrack;
+import util.RStorableSimpleList;
 import view.DebugInformationView;
-import ch.judos.generic.data.geometry.Angle;
-import ch.judos.generic.data.geometry.PointF;
+import ch.judos.generic.data.concurrent.SimpleList;
+import ch.judos.generic.data.serialization.DeserializeException;
+import ch.judos.generic.data.serialization.ReadableStorageImpl;
+import ch.judos.generic.files.FileUtils;
 import controller.menu.MenuController;
 import controller.tools.ToolHandlerController;
 
@@ -27,7 +35,7 @@ public class GameController {
 	private DebugInformationView	debug;
 	private Scroll					scroll;
 
-	public GameController(DrawableManager drawManager, InputManager mm) {
+	public GameController(DrawableManager drawManager, InputManager mm, Runnable onQuit) {
 		this.drawManager = drawManager;
 		this.inputManager = mm;
 
@@ -37,10 +45,10 @@ public class GameController {
 		this.inputManager.setScrollObject(this.scroll);
 		this.drawManager.setScrollObject(this.scroll);
 
-		this.map = new Map();
+		loadMap();
 
 		this.toolHandler = new ToolHandlerController(this.map, this.scroll);
-		this.menuController = new MenuController(this.toolHandler);
+		this.menuController = new MenuController(this.toolHandler, onQuit);
 
 		this.debug = new DebugInformationView();
 
@@ -49,11 +57,6 @@ public class GameController {
 		addInputMouseListeners();
 		this.inputManager.addLast((MouseWheelHandler) this.scroll);
 
-		// just for testing
-		map.addTrack(new CurvedTrack(160, new PointF(200, 200), Angle.A_0, Angle
-				.fromDegree(100)));
-		// map.addTrack(new CurvedTrack(100, new PointF(200, 200), 1f, Math.PI -
-		// 1));
 	}
 
 	private void addInputMouseListeners() {
@@ -77,7 +80,36 @@ public class GameController {
 		this.drawManager.addDrawable(this.menuController);
 		this.drawManager.addDrawable(this.toolHandler);
 		this.drawManager.addDrawable(this.debug);
+	}
 
+	private void loadMap() {
+		File mapsave = new File("mapsave.txt");
+		if (!mapsave.exists()) {
+			this.map = new Map();
+			return;
+		}
+		try (BufferedReader reader = FileUtils.getReaderForFile(mapsave)) {
+			ReadableStorageImpl rs = getRStorage();
+			this.map = (Map) rs.readObject(reader);
+		} catch (FileNotFoundException e) {
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (DeserializeException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void quit() throws IOException {
+		BufferedWriter wr = FileUtils.getWriterForFile(new File("mapsave.txt"));
+		ReadableStorageImpl rs = getRStorage();
+		rs.storeTo(this.map, wr);
+		wr.close();
+	}
+
+	private ReadableStorageImpl getRStorage() {
+		ReadableStorageImpl rs = new ReadableStorageImpl();
+		rs.addStorableWrapper(SimpleList.class, new RStorableSimpleList.Factory(rs));
+		return rs;
 	}
 
 }

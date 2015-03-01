@@ -188,10 +188,8 @@ public class TrackToTargetTool extends AbstractTool {
 			if (sameCurved) {
 				Angle beta = Angle.fromTriangleOH(2 * CurvedTrack.STANDARD_CURVE_RADIUS,
 						c1.distance(c2));
-				if (beta == null) {
-					beta = Angle.fromTriangleOH(2 * CurvedTrack.STANDARD_CURVE_RADIUS, c1
-							.distance(c2));
-				}
+				if (beta == null)
+					return;
 				Angle alpha = c1.getAAngleTo(c2);
 				if (dist[i] > 0)
 					abs = alpha.sub(beta);

@@ -24,7 +24,7 @@ public class GuiFrame extends JFrame implements InputProvider {
 		super();
 		this.drawable = drawable;
 		this.setTitle("Sim Track");
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		// this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(1920, 1080);
 		this.setUndecorated(false);
 		this.setAlwaysOnTop(false);
@@ -46,9 +46,8 @@ public class GuiFrame extends JFrame implements InputProvider {
 
 			Graphics2D g = (Graphics2D) strategy.getDrawGraphics();
 			if (!this.isUndecorated()) {
-				PointF t = new PointF(this.getContentPane()
-						.getLocationOnScreen()).subtract(this
-						.getLocationOnScreen());
+				PointF t = new PointF(this.getContentPane().getLocationOnScreen())
+						.subtract(this.getLocationOnScreen());
 				g.translate(t.x, t.y);
 				Dimension size = this.getContentPane().getSize();
 				g.setClip(0, 0, size.width, size.height);
