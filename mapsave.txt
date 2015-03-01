@@ -1,7 +1,7 @@
 classId = model.map.Map
 {
   tracks =var.1 = {
-    elementData =var.2 size=7 = {
+    elementData =var.2 size=83 = {
       [0] =var.3 =classId:model.objects.StraightTrack = {
         start =var.4 = {
           x = 920
@@ -70,6 +70,700 @@ classId = model.map.Map
         end =var.23 = {
           x = 271
           y = 719
+        }
+      }
+      [7] =var.24 =classId:model.objects.StraightTrack = {
+        start =var.25 = {
+          x = 1135
+          y = 1319
+        }
+        end =var.26 = {
+          x = 1705
+          y = 1321
+        }
+      }
+      [8] =var.27 =classId:model.objects.StraightTrack = {
+        start =var.28 = {
+          x = 1700
+          y = 1390
+        }
+        end =var.29 = {
+          x = 1129
+          y = 1386
+        }
+      }
+      [9] =var.30 =classId:model.objects.StraightTrack = {
+        start =var.31 = {
+          x = 1125
+          y = 1563
+        }
+        end =var.32 = {
+          x = 1718
+          y = 1560
+        }
+      }
+      [10] =var.33 =classId:model.objects.StraightTrack = {
+        start =var.34 = {
+          x = 1715
+          y = 1609
+        }
+        end =var.35 = {
+          x = 1122
+          y = 1615
+        }
+      }
+      [11] =var.36 =classId:model.objects.StraightTrack = {
+        start =var.37 = {
+          x = 208
+          y = 1411
+        }
+        end =var.38 = {
+          x = 581
+          y = 1417
+        }
+      }
+      [12] =var.39 =classId:model.objects.StraightTrack = {
+        start =var.40 = {
+          x = 202
+          y = 1462
+        }
+        end =var.41 = {
+          x = 577
+          y = 1467
+        }
+      }
+      [13] =var.42 =classId:model.objects.StraightTrack = {
+        start -> var.38
+        end =var.43 = {
+          x = 844
+          y = 1421
+        }
+      }
+      [14] =var.44 =classId:model.objects.CurvedTrack = {
+        center =var.45 = {
+          x = 840.55225
+          y = 1620.9702
+        }
+        startAngle = 6.076265819643995
+        endAngle = 0.017239671194529294
+        radius = 200
+      }
+      [15] =var.46 =classId:model.objects.CurvedTrack = {
+        center =var.47 = {
+          x = 579.66644
+          y = 1267.0178
+        }
+        startAngle = 2.9346731660542016
+        endAngle = 3.154925196883939
+        radius = 200
+      }
+      [16] =var.48 =classId:model.objects.StraightTrack = {
+        start =var.49 = {
+          x = 799
+          y = 1425
+        }
+        end =var.50 = {
+          x = 620
+          y = 1462
+        }
+      }
+      [17] =var.51 =classId:model.objects.CurvedTrack = {
+        center =var.52 = {
+          x = 847.0415
+          y = 1221.0232
+        }
+        startAngle = 2.6343222769487546
+        endAngle = 3.1568006065155303
+        radius = 200
+      }
+      [18] =var.53 =classId:model.objects.CurvedTrack = {
+        center =var.54 = {
+          x = 1134.2982
+          y = 1518.9988
+        }
+        startAngle = 5.775914930538549
+        endAngle = 0.0035087575305379204
+        radius = 200
+      }
+      [19] =var.55 =classId:model.objects.StraightTrack = {
+        start =var.56 = {
+          x = 944
+          y = 1395
+        }
+        end =var.57 = {
+          x = 1037
+          y = 1344
+        }
+      }
+      [20] =var.58 =classId:model.objects.CurvedTrack = {
+        center -> var.52
+        startAngle = 3.0040156122878727
+        endAngle = 3.1568006065155303
+        radius = 200
+      }
+      [21] =var.59 =classId:model.objects.CurvedTrack = {
+        center =var.60 = {
+          x = 1127.599
+          y = 1585.9951
+        }
+        startAngle = 6.145608265877665
+        endAngle = 0.007005139352859402
+        radius = 200
+      }
+      [22] =var.61 =classId:model.objects.StraightTrack = {
+        start =var.62 = {
+          x = 874
+          y = 1419
+        }
+        end =var.63 = {
+          x = 1100
+          y = 1387
+        }
+      }
+      [23] =var.64 =classId:model.objects.CurvedTrack = {
+        center =var.65 = {
+          x = 1119.9764
+          y = 1415.0103
+        }
+        startAngle = 3.131474955001339
+        endAngle = 3.9657982043564153
+        radius = 200
+      }
+      [24] =var.66 =classId:model.objects.CurvedTrack = {
+        center =var.67 = {
+          x = 826.1983
+          y = 1685.8281
+        }
+        startAngle = 6.247884423587988
+        endAngle = 0.8242055507666222
+        radius = 200
+      }
+      [25] =var.68 =classId:model.objects.CurvedTrack = {
+        center =var.69 = {
+          x = 1123.9882
+          y = 1363.0026
+        }
+        startAngle = 3.1365336748264037
+        endAngle = 3.4640399047644417
+        radius = 200
+      }
+      [26] =var.70 =classId:model.objects.CurvedTrack = {
+        center =var.71 = {
+          x = 825.1826
+          y = 1684.9044
+        }
+        startAngle = 6.2522673276165435
+        endAngle = 0.32244725117464856
+        radius = 200
+      }
+      [27] =var.72 =classId:model.objects.StraightTrack = {
+        start =var.73 = {
+          x = 1060
+          y = 1552
+        }
+        end =var.74 = {
+          x = 888
+          y = 1495
+        }
+      }
+      [28] =var.75 =classId:model.objects.CurvedTrack = {
+        center =var.76 = {
+          x = 574.33356
+          y = 1666.9822
+        }
+        startAngle = 0.013332543294145679
+        endAngle = 0.08182261718618378
+        radius = 200
+      }
+      [29] =var.77 =classId:model.objects.CurvedTrack = {
+        center =var.78 = {
+          x = 811.9413
+          y = 1285.1246
+        }
+        startAngle = 3.106291769998194
+        endAngle = 3.223415270775978
+        radius = 200
+      }
+      [30] =var.79 =classId:model.objects.StraightTrack = {
+        start =var.80 = {
+          x = 590
+          y = 1467
+        }
+        end =var.81 = {
+          x = 795
+          y = 1484
+        }
+      }
+      [31] =var.82 =classId:model.objects.CurvedTrack = {
+        center =var.83 = {
+          x = 811.34625
+          y = 1284.6692
+        }
+        startAngle = 3.223415270775978
+        endAngle = 3.5796382242858287
+        radius = 200
+      }
+      [32] =var.84 =classId:model.objects.CurvedTrack = {
+        center =var.85 = {
+          x = 577.78326
+          y = 1616.9741
+        }
+        startAngle = 0.016084403686305395
+        endAngle = 0.438045570696036
+        radius = 200
+      }
+      [33] =var.86 =classId:model.objects.StraightTrack = {
+        start =var.87 = {
+          x = 726
+          y = 1465
+        }
+        end =var.88 = {
+          x = 662
+          y = 1435
+        }
+      }
+      [34] =var.89 =classId:model.objects.StraightTrack = {
+        start -> var.37
+        end =var.90 = {
+          x = -345
+          y = 1402
+        }
+      }
+      [35] =var.91 =classId:model.objects.StraightTrack = {
+        start -> var.40
+        end =var.92 = {
+          x = -255
+          y = 1456
+        }
+      }
+      [36] =var.93 =classId:model.objects.CurvedTrack = {
+        center =var.94 = {
+          x = -257.62558
+          y = 1655.9828
+        }
+        startAngle = 3.436922249433243
+        endAngle = 0.013128348553539837
+        radius = 200
+      }
+      [37] =var.95 =classId:model.objects.StraightTrack = {
+        start =var.96 = {
+          x = -387
+          y = 1929
+        }
+        end =var.97 = {
+          x = 1457
+          y = 2529
+        }
+      }
+      [38] =var.98 =classId:model.objects.CurvedTrack = {
+        center =var.99 = {
+          x = -373.21103
+          y = 2038.3413
+        }
+        startAngle = 0.29532959584344987
+        endAngle = 0.3253055706547727
+        radius = 200
+      }
+      [39] =var.100 =classId:model.objects.StraightTrack = {
+        start =var.101 = {
+          x = -309
+          y = 1848
+        }
+        end =var.102 = {
+          x = 1479
+          y = 2452
+        }
+      }
+      [40] =var.103 =classId:model.objects.CurvedTrack = {
+        center =var.104 = {
+          x = -325.1175
+          y = 1738.8145
+        }
+        startAngle = 3.4561678582025763
+        endAngle = 4.544893203676949
+        radius = 200
+      }
+      [41] =var.105 =classId:model.objects.CurvedTrack = {
+        center =var.106 = {
+          x = -348.25455
+          y = 1601.9735
+        }
+        startAngle = 4.544893203676949
+        endAngle = 0.01627342769010287
+        radius = 200
+      }
+      [42] =var.107 =classId:model.objects.StraightTrack = {
+        start =var.108 = {
+          x = -522
+          y = 1772
+        }
+        end =var.109 = {
+          x = -545
+          y = 1635
+        }
+      }
+      [43] =var.110 =classId:model.objects.CurvedTrack = {
+        center =var.111 = {
+          x = 1716.9882
+          y = 1360.0026
+        }
+        startAngle = 2.9649535620513685
+        endAngle = 3.1365336748264028
+        radius = 200
+      }
+      [44] =var.112 =classId:model.objects.CurvedTrack = {
+        center =var.113 = {
+          x = 1845.5583
+          y = 1337.0529
+        }
+        startAngle = 2.5862806373845793
+        endAngle = 2.9649535620513685
+        radius = 200
+      }
+      [45] =var.114 =classId:model.objects.StraightTrack = {
+        start =var.115 = {
+          x = 1752
+          y = 1556
+        }
+        end =var.116 = {
+          x = 1880
+          y = 1533
+        }
+      }
+      [46] =var.117 =classId:model.objects.CurvedTrack = {
+        center -> var.113
+        startAngle = 2.5862806373845793
+        endAngle = 2.6443410496944626
+        radius = 200
+      }
+      [47] =var.118 =classId:model.objects.CurvedTrack = {
+        center =var.119 = {
+          x = 1712.9764
+          y = 1409.0103
+        }
+        startAngle = 2.6443410496944626
+        endAngle = 3.131474955001339
+        radius = 200
+      }
+      [48] =var.120 =classId:model.objects.CurvedTrack = {
+        center =var.121 = {
+          x = 1704.2982
+          y = 1520.9988
+        }
+        startAngle = 0.0035087575305385818
+        endAngle = 0.33798771206175093
+        radius = 200
+      }
+      [49] =var.122 =classId:model.objects.StraightTrack = {
+        start =var.123 = {
+          x = 1770
+          y = 1332
+        }
+        end =var.124 = {
+          x = 1987
+          y = 1408
+        }
+      }
+      [50] =var.125 =classId:model.objects.CurvedTrack = {
+        center =var.126 = {
+          x = 1698.599
+          y = 1589.9951
+        }
+        startAngle = 0.007005139352859402
+        endAngle = 0.030421307155448853
+        radius = 200
+      }
+      [51] =var.127 =classId:model.objects.CurvedTrack = {
+        center =var.128 = {
+          x = 1920.8959
+          y = 1596.7598
+        }
+        startAngle = 0.03042130715544822
+        endAngle = 0.33685514577554
+        radius = 200
+      }
+      [52] =var.129 =classId:model.objects.StraightTrack = {
+        start =var.130 = {
+          x = 1704
+          y = 1390
+        }
+        end =var.131 = {
+          x = 1926
+          y = 1396
+        }
+      }
+      [53] =var.132 =classId:model.objects.CurvedTrack = {
+        center =var.133 = {
+          x = 2186.2546
+          y = 1238.0265
+        }
+        startAngle = 3.157866081279896
+        endAngle = 3.2817502039558435
+        radius = 200
+      }
+      [54] =var.134 =classId:model.objects.CurvedTrack = {
+        center =var.135 = {
+          x = 2053.109
+          y = 1219.242
+        }
+        startAngle = 3.2817502039558435
+        endAngle = 3.4784727274892373
+        radius = 200
+      }
+      [55] =var.136 =classId:model.objects.StraightTrack = {
+        start =var.137 = {
+          x = 2158
+          y = 1436
+        }
+        end =var.138 = {
+          x = 2025
+          y = 1417
+        }
+      }
+      [56] =var.139 =classId:model.objects.CurvedTrack = {
+        center =var.140 = {
+          x = 1903.4023
+          y = 1759.7794
+        }
+        startAngle = 5.785933703284256
+        endAngle = 5.791964094062324
+        radius = 200
+      }
+      [57] =var.141 =classId:model.objects.CurvedTrack = {
+        center =var.142 = {
+          x = 1845.1984
+          y = 1337.2766
+        }
+        startAngle = 2.5841615620138523
+        endAngle = 2.650371440472532
+        radius = 200
+      }
+      [58] =var.143 =classId:model.objects.StraightTrack = {
+        start =var.144 = {
+          x = 1809
+          y = 1583
+        }
+        end =var.145 = {
+          x = 1939
+          y = 1513
+        }
+      }
+      [59] =var.146 =classId:model.objects.CurvedTrack = {
+        center =var.147 = {
+          x = 2056.4417
+          y = 1676.9471
+        }
+        startAngle = 5.727873290974372
+        endAngle = 5.9770437816704645
+        radius = 200
+      }
+      [60] =var.148 =classId:model.objects.CurvedTrack = {
+        center =var.149 = {
+          x = 2179.7454
+          y = 1637.9735
+        }
+        startAngle = 5.9770437816704645
+        endAngle = 0.01627342769010287
+        radius = 200
+      }
+      [61] =var.150 =classId:model.objects.StraightTrack = {
+        start =var.151 = {
+          x = 1996
+          y = 1486
+        }
+        end =var.152 = {
+          x = 2119
+          y = 1447
+        }
+      }
+      [62] =var.153 =classId:model.objects.StraightTrack = {
+        start =var.154 = {
+          x = 2735
+          y = 1506
+        }
+        end =var.155 = {
+          x = 2233
+          y = 1502
+        }
+      }
+      [63] =var.156 =classId:model.objects.CurvedTrack = {
+        center =var.157 = {
+          x = 1920.8911
+          y = 1596.758
+        }
+        startAngle = 0.3368800738994441
+        endAngle = 0.4381384787881153
+        radius = 200
+      }
+      [64] =var.158 =classId:model.objects.CurvedTrack = {
+        center =var.159 = {
+          x = 2234.5935
+          y = 1302.0063
+        }
+        startAngle = 3.1495606124513147
+        endAngle = 3.5797311323779084
+        radius = 200
+      }
+      [65] =var.160 =classId:model.objects.StraightTrack = {
+        start =var.161 = {
+          x = 2005
+          y = 1415
+        }
+        end =var.162 = {
+          x = 2149
+          y = 1483
+        }
+      }
+      [66] =var.163 =classId:model.objects.CurvedTrack = {
+        center -> var.147
+        startAngle = 5.727873290974372
+        endAngle = 0.1729032311981351
+        radius = 200
+      }
+      [67] =var.164 =classId:model.objects.CurvedTrack = {
+        center -> var.159
+        startAngle = 3.1495606124513147
+        endAngle = 3.3144958847879282
+        radius = 200
+      }
+      [68] =var.165 =classId:model.objects.StraightTrack = {
+        start =var.166 = {
+          x = 2090
+          y = 1479
+        }
+        end =var.167 = {
+          x = 2200
+          y = 1499
+        }
+      }
+      [69] =var.168 =classId:model.objects.CurvedTrack = {
+        center =var.169 = {
+          x = 2733.4065
+          y = 1705.9937
+        }
+        startAngle = 0.007967958861521574
+        endAngle = 2.664139435489238
+        radius = 200
+      }
+      [70] =var.170 =classId:model.objects.StraightTrack = {
+        start =var.171 = {
+          x = 2825
+          y = 1883
+        }
+        end =var.172 = {
+          x = 1777
+          y = 2426
+        }
+      }
+      [71] =var.173 =classId:model.objects.StraightTrack = {
+        start =var.174 = {
+          x = 2859
+          y = 1937
+        }
+        end =var.175 = {
+          x = 1805
+          y = 2499
+        }
+      }
+      [72] =var.176 =classId:model.objects.StraightTrack = {
+        start -> var.174
+        end =var.177 = {
+          x = 2917
+          y = 1906
+        }
+      }
+      [73] =var.178 =classId:model.objects.StraightTrack = {
+        start =var.179 = {
+          x = 2182
+          y = 1437
+        }
+        end =var.180 = {
+          x = 2805
+          y = 1447
+        }
+      }
+      [74] =var.181 =classId:model.objects.CurvedTrack = {
+        center =var.182 = {
+          x = 2801.79
+          y = 1646.9742
+        }
+        startAngle = 0.01604998605416603
+        endAngle = 1.3226913541450058
+        radius = 200
+      }
+      [75] =var.183 =classId:model.objects.CurvedTrack = {
+        center =var.184 = {
+          x = 2822.7246
+          y = 1729.6136
+        }
+        startAngle = 1.3226913541450056
+        endAngle = 2.650740873191774
+        radius = 200
+      }
+      [76] =var.185 =classId:model.objects.StraightTrack = {
+        start =var.186 = {
+          x = 2995
+          y = 1597
+        }
+        end =var.187 = {
+          x = 3016
+          y = 1680
+        }
+      }
+      [77] =var.188 =classId:model.objects.CurvedTrack = {
+        center =var.189 = {
+          x = 1684.991
+          y = 2248.421
+        }
+        startAngle = 2.663546645957743
+        endAngle = 3.0426207052783494
+        radius = 200
+      }
+      [78] =var.190 =classId:model.objects.CurvedTrack = {
+        center =var.191 = {
+          x = 1543.008
+          y = 2262.5193
+        }
+        startAngle = 3.042620705278349
+        endAngle = 3.4673646340294852
+        radius = 200
+      }
+      [79] =var.192 =classId:model.objects.StraightTrack = {
+        start =var.193 = {
+          x = 1704
+          y = 2447
+        }
+        end =var.194 = {
+          x = 1562
+          y = 2461
+        }
+      }
+      [80] =var.195 =classId:model.objects.CurvedTrack = {
+        center =var.196 = {
+          x = 1710.8998
+          y = 2322.52
+        }
+        startAngle = 2.651733820391986
+        endAngle = 3.056936236594431
+        radius = 200
+      }
+      [81] =var.197 =classId:model.objects.CurvedTrack = {
+        center =var.198 = {
+          x = 1518.8826
+          y = 2338.8145
+        }
+        startAngle = 3.0569362365944315
+        endAngle = 3.4561678582025763
+        radius = 200
+      }
+      [82] =var.199 =classId:model.objects.StraightTrack = {
+        start =var.200 = {
+          x = 1727
+          y = 2521
+        }
+        end =var.201 = {
+          x = 1535
+          y = 2538
         }
       }
     }

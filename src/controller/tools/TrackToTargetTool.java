@@ -82,7 +82,7 @@ public class TrackToTargetTool extends AbstractTool {
 							&& (this.targetC == null || this.targetC.size() == 0))
 						this.currentStartC = (this.currentStartC + 1)
 								% this.startConstraints.size();
-					else if (this.targetC != null)
+					else if (this.targetC != null && this.targetC.size() > 0)
 						this.targetCIndex = (this.targetCIndex + 1) % this.targetC.size();
 
 					return true;
@@ -172,7 +172,8 @@ public class TrackToTargetTool extends AbstractTool {
 
 			// depending on curve, minimal distance from line varies
 			Angle c = oc.getDirPoint().getAAngle().sub(cc.getDirPoint().getAAngle());
-			if (c.inInterval(Angle.A_0, Angle.A_180))
+			if ((dist[i] > 0 && c.inInterval(Angle.A_0, Angle.A_180))
+					|| (dist[i] < 0 && c.inInterval(Angle.A_180, Angle.A_360)))
 				dist[i] -= CurvedTrack.STANDARD_CURVE_RADIUS * (1 + c.getCos());
 
 			if (dist[i] > 0)
@@ -203,6 +204,9 @@ public class TrackToTargetTool extends AbstractTool {
 
 			this.tracks.add(xb[i]);
 		}
+
+		this.tracks.add(new StraightTrack.NoConstraintBuilder(xb[0].getEndPoint(), xb[1]
+				.getEndPoint()));
 	}
 
 	private void trackToTargetWithStartConstraint(TrackBuildConstraint sc, PointI target) {
