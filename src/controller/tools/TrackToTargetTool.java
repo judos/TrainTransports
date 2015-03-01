@@ -169,26 +169,37 @@ public class TrackToTargetTool extends AbstractTool {
 
 			LineI l = new LineI(cc.getDirPoint(), 100);
 			dist[i] = l.ptLineDistSigned(oc.getDirPoint().getPoint());
+
+			// depending on curve, minimal distance from line varies
+			Angle c = oc.getDirPoint().getAAngle().sub(cc.getDirPoint().getAAngle());
+			if (c.inInterval(Angle.A_0, Angle.A_180))
+				dist[i] -= CurvedTrack.STANDARD_CURVE_RADIUS * (1 + c.getCos());
+
 			if (dist[i] > 0)
 				xb[i] = new LeftBuilder(cc);
 			else
 				xb[i] = new RightBuilder(cc);
 		}
+		boolean sameCurved = (dist[0] > 0 == dist[1] > 0);
 		for (int i = 0; i < 2; i++) {
 			PointF c1 = xb[i].getTrackCenter();
 			PointF c2 = xb[1 - i].getTrackCenter();
-			Angle beta = Angle.fromTriangleOH(2 * CurvedTrack.STANDARD_CURVE_RADIUS, c1
-					.distance(c2));
-			if (beta == null) {
-				beta = Angle.fromTriangleOH(2 * CurvedTrack.STANDARD_CURVE_RADIUS, c1
-						.distance(c2));
-			}
-			Angle alpha = c1.getAAngleTo(c2);
 			Angle abs;
-			if (dist[i] > 0)
-				abs = alpha.sub(beta);
-			else
-				abs = alpha.add(beta);
+			if (sameCurved) {
+				Angle beta = Angle.fromTriangleOH(2 * CurvedTrack.STANDARD_CURVE_RADIUS,
+						c1.distance(c2));
+				if (beta == null) {
+					beta = Angle.fromTriangleOH(2 * CurvedTrack.STANDARD_CURVE_RADIUS, c1
+							.distance(c2));
+				}
+				Angle alpha = c1.getAAngleTo(c2);
+				if (dist[i] > 0)
+					abs = alpha.sub(beta);
+				else
+					abs = alpha.add(beta);
+			} else {
+				abs = c1.getAAngleTo(c2);
+			}
 
 			xb[i].setEndAngle(abs);
 
