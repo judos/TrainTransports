@@ -1,5 +1,6 @@
 package model.objects;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Arc2D;
@@ -253,6 +254,14 @@ public class CurvedTrack extends Track {
 		}
 
 		@Override
+		public void paint(Graphics2D g) {
+			// TODO: debug code
+			g.setColor(Color.red);
+			g.fillRect(this.track.center.getXI(), this.track.center.getYI(), 5, 5);
+			super.paint(g);
+		}
+
+		@Override
 		public void setEndAngle(Angle angle) {
 			this.track.endAngle = absAngleToTrackRight(angle).getRadian();
 			this.track.initializeMainConnections();
@@ -282,6 +291,14 @@ public class CurvedTrack extends Track {
 		public void setEndAngle(Angle angle) {
 			this.track.startAngle = absAngleToTrackLeft(angle).getRadian();
 			this.track.initializeMainConnections();
+		}
+
+		@Override
+		public void paint(Graphics2D g) {
+			// TODO: debug code
+			g.setColor(Color.red);
+			g.fillRect(this.track.center.getXI(), this.track.center.getYI(), 5, 5);
+			super.paint(g);
 		}
 
 	}

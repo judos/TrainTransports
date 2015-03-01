@@ -22,6 +22,7 @@ import model.objects.Track;
 import model.objects.TrackBuilder;
 import ch.judos.generic.data.geometry.Angle;
 import ch.judos.generic.data.geometry.LineI;
+import ch.judos.generic.data.geometry.PointF;
 import ch.judos.generic.data.geometry.PointI;
 
 /**
@@ -36,6 +37,8 @@ public class TrackToTargetTool extends AbstractTool {
 	private int							currentStartC;
 	private PointI						startPoint;
 	private ArrayList<Track>			demoTrack;
+	private List<TrackBuildConstraint>	targetC;
+	private int							targetCIndex;
 
 	@Override
 	public void initialize(Map map) {
@@ -61,6 +64,10 @@ public class TrackToTargetTool extends AbstractTool {
 				this.startPoint = m.getMapPosition();
 				this.state = State.STARTED;
 				return true;
+			} else if (this.state == State.STARTED) {
+				for (TrackBuilder b : this.tracks)
+					this.map.addTrack(b.getTrackNew());
+				setInitialState();
 			}
 		}
 		return false;
@@ -71,11 +78,14 @@ public class TrackToTargetTool extends AbstractTool {
 		if (e.getType() == InputType.PRESS) {
 			if (e.getKeyCode() == KeyEvent.VK_TAB) {
 				if (this.state == State.STARTED) {
-					if (this.startConstraints.size() > 1) {
+					if (this.startConstraints.size() > 1
+							&& (this.targetC == null || this.targetC.size() == 0))
 						this.currentStartC = (this.currentStartC + 1)
 								% this.startConstraints.size();
-						return true;
-					}
+					else if (this.targetC != null)
+						this.targetCIndex = (this.targetCIndex + 1) % this.targetC.size();
+
+					return true;
 				}
 			}
 		}
@@ -112,6 +122,7 @@ public class TrackToTargetTool extends AbstractTool {
 	}
 
 	private void updateCurrentTrackLayout() {
+		this.targetC = null;
 		if (this.state == State.STARTED) {
 			PointI target = Mouse.getMouseMapPoint();
 			if (target == null)
@@ -122,51 +133,100 @@ public class TrackToTargetTool extends AbstractTool {
 			if (this.startConstraints.size() > 0)
 				sc = this.startConstraints.get(this.currentStartC);
 
-			List<TrackBuildConstraint> targetC = this.map.getTrackConnectionsFrom(target);
+			this.targetC = this.map.getTrackConnectionsFrom(target);
 			TrackBuildConstraint tc = null;
-			if (targetC.size() > 0)
-				tc = targetC.get(0);
+			if (this.targetC.size() > 0) {
+				if (this.targetCIndex >= this.targetC.size())
+					this.targetCIndex = 0;
+				tc = this.targetC.get(this.targetCIndex);
+			}
+
+			// switch start and target
+			if (tc != null && sc == null) {
+				sc = tc;
+				tc = null;
+				target = this.startPoint;
+			}
 
 			if (tc == null) {
 				if (sc == null)
 					this.tracks.add(new StraightTrack.NoConstraintBuilder(
 							this.startPoint, target));
-				else {
-					LineI i = new LineI(sc.getDirPoint(), 100);
-					double dy = i.ptLineDistSigned(target);
-					CurvedTrackBuilder t;
-					if (dy > 0)
-						t = new LeftBuilder(sc);
-					else
-						t = new RightBuilder(sc);
-
-					// angle between straight track and line to curved track
-					// center
-					Angle beta = Angle.fromTriangleOH(CurvedTrack.STANDARD_CURVE_RADIUS,
-							t.getTrackCenter().distance(target));
-					if (beta == null)
-						return;
-					Angle alpha = t.getTrackCenter().getAAngleTo(target);
-					Angle gamma;
-					if (dy > 0)
-						gamma = alpha.sub(beta);
-					else
-						gamma = alpha.add(beta);
-
-					t.setEndAngle(gamma);
-					this.tracks.add(t);
-
-					this.tracks.add(new StraightTrack.NoConstraintBuilder(
-							t.getEndPoint(), target));
-
-				}
-			}
+				else
+					trackToTargetWithStartConstraint(sc, target);
+			} else if (tc != null && sc != null)
+				trackFromTo(sc, tc);
 		}
 	}
+
+	private void trackFromTo(TrackBuildConstraint sc, TrackBuildConstraint tc) {
+		TrackBuildConstraint[] x = {sc, tc};
+		double[] dist = new double[2];
+		CurvedTrackBuilder[] xb = new CurvedTrackBuilder[2];
+		for (int i = 0; i < 2; i++) {
+			TrackBuildConstraint cc = x[i]; // current constraint
+			TrackBuildConstraint oc = x[1 - i]; // other constraint
+
+			LineI l = new LineI(cc.getDirPoint(), 100);
+			dist[i] = l.ptLineDistSigned(oc.getDirPoint().getPoint());
+			if (dist[i] > 0)
+				xb[i] = new LeftBuilder(cc);
+			else
+				xb[i] = new RightBuilder(cc);
+		}
+		for (int i = 0; i < 2; i++) {
+			PointF c1 = xb[i].getTrackCenter();
+			PointF c2 = xb[1 - i].getTrackCenter();
+			Angle beta = Angle.fromTriangleOH(2 * CurvedTrack.STANDARD_CURVE_RADIUS, c1
+					.distance(c2));
+			if (beta == null) {
+				beta = Angle.fromTriangleOH(2 * CurvedTrack.STANDARD_CURVE_RADIUS, c1
+						.distance(c2));
+			}
+			Angle alpha = c1.getAAngleTo(c2);
+			Angle abs;
+			if (dist[i] > 0)
+				abs = alpha.sub(beta);
+			else
+				abs = alpha.add(beta);
+
+			xb[i].setEndAngle(abs);
+
+			this.tracks.add(xb[i]);
+		}
+	}
+
+	private void trackToTargetWithStartConstraint(TrackBuildConstraint sc, PointI target) {
+		LineI i = new LineI(sc.getDirPoint(), 100);
+		double dy = i.ptLineDistSigned(target);
+		CurvedTrackBuilder t;
+		if (dy > 0)
+			t = new LeftBuilder(sc);
+		else
+			t = new RightBuilder(sc);
+
+		// angle between straight track and line to curved track
+		// center
+		Angle beta = Angle.fromTriangleOH(CurvedTrack.STANDARD_CURVE_RADIUS, t
+				.getTrackCenter().distance(target));
+		if (beta == null)
+			return;
+		Angle alpha = t.getTrackCenter().getAAngleTo(target);
+		Angle gamma;
+		if (dy > 0)
+			gamma = alpha.sub(beta);
+		else
+			gamma = alpha.add(beta);
+
+		t.setEndAngle(gamma);
+		this.tracks.add(t);
+
+		this.tracks.add(new StraightTrack.NoConstraintBuilder(t.getEndPoint(), target));
+	}
+
 	@Override
 	public void setInitialState() {
 		super.setInitialState();
-
 	}
 
 }
