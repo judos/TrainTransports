@@ -75,8 +75,8 @@ public abstract class Track implements DrawableLayered {
 					/ 2));
 			g.drawLine(d.getX() + dx, d.getY() + dy, d.getX() - dx, d.getY() - dy);
 			// pfeil richtung
-			dx = (int) (15.d * Math.cos(d.getAngle()));
-			dy = (int) (15.d * Math.sin(d.getAngle()));
+			dx = (int) (15.d * d.getAAngle().getCos());
+			dy = (int) (15.d * d.getAAngle().getSin());
 			g.drawLine(d.getX(), d.getY(), d.getX() + dx, d.getY() + dy);
 		}
 	}

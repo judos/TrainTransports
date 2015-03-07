@@ -96,15 +96,11 @@ public class StraightTrack extends Track implements RStorable {
 		@Override
 		public void updateWithTarget(PointI mapTarget) {
 			DirectedPoint start = this.constraint.getDirPoint();
-			double beta = Math.atan2(mapTarget.y - start.getY(), mapTarget.x
-					- start.getX());
-			double length = Math.hypot(mapTarget.y - start.getY(), mapTarget.x
-					- start.getX());
+			Angle beta = start.getPointF().getAAngleTo(mapTarget);
+			double length = start.getPoint().distance(mapTarget);
 
-			double actualLength = length * Math.cos(beta - start.getAngle());
-			PointF end = new PointF(actualLength * Math.cos(start.getAngle()),
-					actualLength * Math.sin(start.getAngle()));
-			end.addI(this.track.start);
+			double actualLength = length * beta.sub(start.getAAngle()).getCos();
+			PointF end = this.track.start.f().movePoint(start.getAAngle(), actualLength);
 			this.track.end = end.getPointRounded();
 		}
 
