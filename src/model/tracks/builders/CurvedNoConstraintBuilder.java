@@ -1,8 +1,8 @@
-package model.objects.trackBuilders;
+package model.tracks.builders;
 
-import model.TrackType;
-import model.objects.CurvedTrack;
-import model.objects.Track;
+import model.tracks.CurvedTrack;
+import model.tracks.Track;
+import model.tracks.TrackType;
 import ch.judos.generic.data.geometry.Angle;
 import ch.judos.generic.data.geometry.PointF;
 import ch.judos.generic.data.geometry.PointI;

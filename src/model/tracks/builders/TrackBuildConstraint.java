@@ -1,7 +1,8 @@
-package model;
+package model.tracks.builders;
 
 import java.util.List;
 
+import model.tracks.TrackType;
 import ch.judos.generic.data.geometry.DirectedPoint;
 
 /**

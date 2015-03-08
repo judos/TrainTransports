@@ -1,8 +1,7 @@
-package model.objects.trackBuilders;
+package model.tracks.builders;
 
-import model.TrackBuildConstraint;
-import model.objects.StraightTrack;
-import model.objects.Track;
+import model.tracks.StraightTrack;
+import model.tracks.Track;
 import ch.judos.generic.data.geometry.Angle;
 import ch.judos.generic.data.geometry.DirectedPoint;
 import ch.judos.generic.data.geometry.PointF;

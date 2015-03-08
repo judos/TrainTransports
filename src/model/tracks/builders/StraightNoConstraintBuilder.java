@@ -1,7 +1,7 @@
-package model.objects.trackBuilders;
+package model.tracks.builders;
 
-import model.objects.StraightTrack;
-import model.objects.Track;
+import model.tracks.StraightTrack;
+import model.tracks.Track;
 import ch.judos.generic.data.geometry.PointI;
 
 /**

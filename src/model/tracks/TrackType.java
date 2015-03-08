@@ -1,4 +1,4 @@
-package model;
+package model.tracks;
 
 /**
  * @since 08.02.2015

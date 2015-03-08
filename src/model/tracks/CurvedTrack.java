@@ -1,4 +1,4 @@
-package model.objects;
+package model.tracks;
 
 import java.awt.Graphics2D;
 

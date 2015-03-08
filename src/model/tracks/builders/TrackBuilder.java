@@ -1,8 +1,8 @@
-package model.objects.trackBuilders;
+package model.tracks.builders;
 
 import java.awt.Graphics2D;
 
-import model.objects.Track;
+import model.tracks.Track;
 import ch.judos.generic.data.geometry.PointI;
 import ch.judos.generic.graphics.Drawable2d;
 

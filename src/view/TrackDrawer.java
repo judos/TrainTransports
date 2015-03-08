@@ -1,6 +1,6 @@
 package view;
 
-import static model.objects.Track.*;
+import static model.tracks.Track.*;
 
 import java.awt.BasicStroke;
 import java.awt.Color;

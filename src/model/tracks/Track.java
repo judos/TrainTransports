@@ -1,4 +1,4 @@
-package model.objects;
+package model.tracks;
 
 import java.awt.BasicStroke;
 import java.awt.Color;

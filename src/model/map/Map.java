@@ -4,8 +4,8 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.TrackBuildConstraint;
-import model.objects.Track;
+import model.tracks.Track;
+import model.tracks.builders.TrackBuildConstraint;
 import view.Floor;
 import ch.judos.generic.data.concurrent.SimpleList;
 import ch.judos.generic.data.geometry.DirectedPoint;

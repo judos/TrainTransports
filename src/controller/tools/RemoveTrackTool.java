@@ -11,7 +11,7 @@ import model.input.InputType;
 import model.input.KeyEvent2;
 import model.input.MouseEvent2;
 import model.map.Map;
-import model.objects.Track;
+import model.tracks.Track;
 import ch.judos.generic.data.geometry.PointI;
 
 /**

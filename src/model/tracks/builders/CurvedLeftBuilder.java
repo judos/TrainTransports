@@ -1,7 +1,6 @@
-package model.objects.trackBuilders;
+package model.tracks.builders;
 
-import model.TrackBuildConstraint;
-import model.objects.CurvedTrack;
+import model.tracks.CurvedTrack;
 import ch.judos.generic.data.geometry.Angle;
 import ch.judos.generic.data.geometry.DirectedPoint;
 import ch.judos.generic.data.geometry.PointF;
@@ -11,26 +10,26 @@ import ch.judos.generic.data.geometry.PointI;
  * @since 08.03.2015
  * @author Julian Schelker
  */
-public class CurvedRightBuilder extends CurvedTrackBuilder {
-	public CurvedRightBuilder(TrackBuildConstraint sc) {
+public class CurvedLeftBuilder extends CurvedTrackBuilder {
+	public CurvedLeftBuilder(TrackBuildConstraint sc) {
 		DirectedPoint dp = sc.getDirPoint();
-		// turn right from the connection point 90°, then move by radius of
+		// turn left from the connection point 90°, then move by radius of
 		// the curve
-		PointF centerP = dp.getPointF().movePoint(dp.getAAngle().add(Angle.A_90),
+		PointF centerP = dp.getPointF().movePoint(dp.getAAngle().sub(Angle.A_90),
 			CurvedTrack.STANDARD_CURVE_RADIUS);
 		// the end point starts with the angle of the connection point
 		this.track = new CurvedTrack(CurvedTrack.STANDARD_CURVE_RADIUS, centerP,
-			absAngleToTrackRight(dp.getAAngle()), Angle.A_0);
+			Angle.A_0, absAngleToTrackLeft(dp.getAAngle()));
 	}
 
 	@Override
 	public PointI getEndPoint() {
-		return this.track.getMainConnections().get(1).getPoint();
+		return this.track.getMainConnections().get(0).getPoint();
 	}
 
 	@Override
 	public void setEndAngle(Angle angle) {
-		this.track.endAngle = absAngleToTrackRight(angle);
+		this.track.startAngle = absAngleToTrackLeft(angle);
 		this.track.initializeMainConnections();
 	}
 

@@ -6,17 +6,12 @@ import java.awt.event.MouseEvent;
 import java.util.List;
 
 import model.Mouse;
-import model.TrackBuildConstraint;
-import model.TrackType;
 import model.input.InputType;
 import model.input.KeyEvent2;
 import model.input.MouseEvent2;
 import model.map.Map;
-import model.objects.trackBuilders.CurvedNoConstraintBuilder;
-import model.objects.trackBuilders.CurvedWithConstraintBuilder;
-import model.objects.trackBuilders.StraightNoConstraintBuilder;
-import model.objects.trackBuilders.StraightWithConstraintBuilder;
-import model.objects.trackBuilders.TrackBuilder;
+import model.tracks.TrackType;
+import model.tracks.builders.*;
 import ch.judos.generic.data.geometry.Angle;
 import ch.judos.generic.data.geometry.PointI;
 
