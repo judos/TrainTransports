@@ -7,8 +7,8 @@ import java.awt.Stroke;
 import java.util.ArrayList;
 
 import view.DrawableLayered;
+import view.TrackDrawer;
 import ch.judos.generic.data.concurrent.SimpleList;
-import ch.judos.generic.data.geometry.Angle;
 import ch.judos.generic.data.geometry.DirectedPoint;
 import ch.judos.generic.data.geometry.PointI;
 
@@ -66,24 +66,7 @@ public abstract class Track implements DrawableLayered {
 	}
 
 	public void paintConnections(Graphics2D g) {
-		g.setStroke(new BasicStroke(5));
-		g.setColor(connectionColor);
-		ArrayList<DirectedPoint> x = getMainConnections();
-		if (x == null) {
-			x = getMainConnections();
-		}
-		for (DirectedPoint d : x) {
-			// querlinie
-			int dx = (int) ((double) sleeperLength / 2 * d.getAAngle().add(Angle.A_90)
-				.getCos());
-			int dy = (int) ((double) sleeperLength / 2 * d.getAAngle().add(Angle.A_90)
-				.getSin());
-			g.drawLine(d.getX() + dx, d.getY() + dy, d.getX() - dx, d.getY() - dy);
-			// pfeil richtung
-			dx = (int) (15.d * d.getAAngle().getCos());
-			dy = (int) (15.d * d.getAAngle().getSin());
-			g.drawLine(d.getX(), d.getY(), d.getX() + dx, d.getY() + dy);
-		}
+		TrackDrawer.paintConnections(g, getMainConnections());
 	}
 
 	@Override
