@@ -50,7 +50,10 @@ public class DrawableManager implements Drawable2d {
 	}
 
 	public void addDrawable(Drawable2d m) {
-		this.drawables.add(m);
+		if (m != null)
+			this.drawables.add(m);
+		else
+			throw new RuntimeException("Can't add null objects as drawables");
 	}
 
 	public Dimension getViewSize() {

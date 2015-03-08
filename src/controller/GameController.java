@@ -3,7 +3,6 @@ package controller;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import model.Mouse;
@@ -84,19 +83,16 @@ public class GameController {
 
 	private void loadMap() {
 		File mapsave = new File("mapsave.txt");
-		if (!mapsave.exists()) {
-			this.map = new Map();
-			return;
+		if (mapsave.exists()) {
+			try (BufferedReader reader = FileUtils.getReaderForFile(mapsave)) {
+				ReadableStorageImpl rs = getRStorage();
+				this.map = (Map) rs.readObject(reader);
+				return;
+			} catch (IOException | DeserializeException e) {
+				e.printStackTrace();
+			}
 		}
-		try (BufferedReader reader = FileUtils.getReaderForFile(mapsave)) {
-			ReadableStorageImpl rs = getRStorage();
-			this.map = (Map) rs.readObject(reader);
-		} catch (FileNotFoundException e) {
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (DeserializeException e) {
-			e.printStackTrace();
-		}
+		this.map = new Map();
 	}
 
 	public void quit() throws IOException {
