@@ -1,5 +1,7 @@
-Features:
+Todo:
+- track knows length, returns position+angle dependent on one index[0,1]
 
+Features:
 - build tools to place tracks and connect them
 - zooming, scrolling on infinite map
 - toolbar to select build tools

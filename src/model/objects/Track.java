@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import view.DrawableLayered;
 import ch.judos.generic.data.concurrent.SimpleList;
+import ch.judos.generic.data.geometry.Angle;
 import ch.judos.generic.data.geometry.DirectedPoint;
 import ch.judos.generic.data.geometry.PointI;
 
@@ -44,11 +45,11 @@ public abstract class Track implements DrawableLayered {
 	public static final int							sleeperDistance	= sleeperWidth + 5;
 
 	public static final Color						bedColour		= Color.ORANGE
-																			.darker();
+																		.darker();
 	public static final Color						railColour		= Color.DARK_GRAY;
 	public static final Color						connectionColor	= Color.BLUE;
 	public static final Stroke						railStroke		= new BasicStroke(
-																			railSize);
+																		railSize);
 
 	protected transient SimpleList<DirectedPoint>	mainConnections;
 	protected transient Color						colorOver;
@@ -69,10 +70,10 @@ public abstract class Track implements DrawableLayered {
 		g.setColor(connectionColor);
 		for (DirectedPoint d : getMainConnections()) {
 			// querlinie
-			int dx = (int) ((double) sleeperLength / 2 * Math.cos(d.getAngle() + Math.PI
-					/ 2));
-			int dy = (int) ((double) sleeperLength / 2 * Math.sin(d.getAngle() + Math.PI
-					/ 2));
+			int dx = (int) ((double) sleeperLength / 2 * d.getAAngle().add(Angle.A_90)
+				.getCos());
+			int dy = (int) ((double) sleeperLength / 2 * d.getAAngle().add(Angle.A_90)
+				.getSin());
 			g.drawLine(d.getX() + dx, d.getY() + dy, d.getX() - dx, d.getY() - dy);
 			// pfeil richtung
 			dx = (int) (15.d * d.getAAngle().getCos());

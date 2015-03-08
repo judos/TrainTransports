@@ -26,17 +26,17 @@ public class CurvedTrack extends Track implements RStorable {
 	PointF					center;
 
 	// always clock-wise oriented, angle is stored in RADIAN
-	private double			startAngle;
+	private Angle			startAngle;
 	// always clock-wise oriented, angle is stored in RADIAN
-	private double			endAngle;
+	private Angle			endAngle;
 
 	private int				radius;
 
 	public static CurvedTrack createWithDegreeAngles(int radius, PointF center,
-			double angleStart, double angleEnd) {
+		double angleStart, double angleEnd) {
 		double degreeToRadianFactor = Math.PI / 180;
 		return new CurvedTrack(radius, center, angleStart * degreeToRadianFactor,
-				angleEnd * degreeToRadianFactor);
+			angleEnd * degreeToRadianFactor);
 	}
 
 	/**
@@ -50,8 +50,8 @@ public class CurvedTrack extends Track implements RStorable {
 	public CurvedTrack(int radius, PointF center, Angle aStart, Angle aEnd) {
 		this.center = center;
 		this.radius = radius;
-		this.startAngle = aStart.getRadian();
-		this.endAngle = aEnd.getRadian();
+		this.startAngle = aStart;
+		this.endAngle = aEnd;
 		initializeMainConnections();
 	}
 
@@ -59,8 +59,8 @@ public class CurvedTrack extends Track implements RStorable {
 	public CurvedTrack(int radius, PointF center, double angleStart, double angleEnd) {
 		this.center = center;
 		this.radius = radius;
-		this.startAngle = angleStart;
-		this.endAngle = angleEnd;
+		this.startAngle = Angle.fromRadian(angleStart);
+		this.endAngle = Angle.fromRadian(angleEnd);
 		initializeMainConnections();
 	}
 
@@ -68,9 +68,8 @@ public class CurvedTrack extends Track implements RStorable {
 	public void paint(Graphics2D g, int layer) {
 		AffineTransform t = g.getTransform();
 		g.translate(this.center.x, this.center.y);
-		g.rotate(this.startAngle);
-		double deltaAngleRad = (this.endAngle + 2 * Math.PI - this.startAngle)
-				% (2 * Math.PI);
+		g.rotate(this.startAngle.getRadian());
+		double deltaAngleRad = this.endAngle.sub(this.startAngle).getRadian();
 
 		if (layer == 0) {
 			if (this.colorOver != null)
@@ -88,7 +87,7 @@ public class CurvedTrack extends Track implements RStorable {
 			g.translate(0, -this.radius);
 			for (int i = 0; i < sleepers; i++) {
 				g.fillRect(-sleeperWidth / 2, -sleeperLength / 2, sleeperWidth,
-						sleeperLength);
+					sleeperLength);
 				g.rotate(dA, 0, this.radius);
 			}
 		}
@@ -103,11 +102,11 @@ public class CurvedTrack extends Track implements RStorable {
 			double radianToDegreeFactor = 180.d / Math.PI;
 
 			Arc2D.Double arc = new Arc2D.Double(-r, -r, r * 2, r * 2, 90, -deltaAngleRad
-					* radianToDegreeFactor, Arc2D.OPEN);
+				* radianToDegreeFactor, Arc2D.OPEN);
 			g.draw(arc);
 			r = this.radius - railDistance / 2;
 			arc = new Arc2D.Double(-r, -r, r * 2, r * 2, 90, -deltaAngleRad
-					* radianToDegreeFactor, Arc2D.OPEN);
+				* radianToDegreeFactor, Arc2D.OPEN);
 			g.draw(arc);
 		}
 
@@ -118,18 +117,12 @@ public class CurvedTrack extends Track implements RStorable {
 	@Override
 	protected void initializeMainConnections() {
 		this.mainConnections = new SimpleList<DirectedPoint>();
+		PointF p1 = this.center.movePoint(this.startAngle.sub(Angle.A_90), this.radius);
+		this.mainConnections.add(new DirectedPoint(p1.getPoint(), this.startAngle
+			.add(Angle.A_180)));
 
-		int x = (int) (this.center.x + (double) this.radius
-				* Math.cos(this.startAngle - Math.PI / 2));
-		int y = (int) (this.center.y + (double) this.radius
-				* Math.sin(this.startAngle - Math.PI / 2));
-		this.mainConnections.add(new DirectedPoint(x, y, this.startAngle + Math.PI));
-
-		x = (int) (this.center.x + (double) this.radius
-				* Math.cos(this.endAngle - Math.PI / 2));
-		y = (int) (this.center.y + (double) this.radius
-				* Math.sin(this.endAngle - Math.PI / 2));
-		this.mainConnections.add(new DirectedPoint(x, y, this.endAngle));
+		PointF p2 = this.center.movePoint(this.endAngle.sub(Angle.A_90), this.radius);
+		this.mainConnections.add(new DirectedPoint(p2.getPoint(), this.endAngle));
 	}
 
 	@Override
@@ -144,13 +137,13 @@ public class CurvedTrack extends Track implements RStorable {
 		private boolean		isLeft;
 
 		public NoConstraintBuilder(int radius, PointI center, double angleStart,
-				double angleEnd) {
+			double angleEnd) {
 			this.track = new CurvedTrack(radius, new PointF(center), angleStart, angleEnd);
 		}
 
 		public NoConstraintBuilder(PointI startingPoint, TrackType trackType) {
 			this.track = new CurvedTrack(STANDARD_CURVE_RADIUS,
-					new PointF(startingPoint), 0, 0);
+				new PointF(startingPoint), 0, 0);
 			if (startingPoint == null)
 				System.out.println("Constructing with null value");
 			this.start = startingPoint;
@@ -167,7 +160,7 @@ public class CurvedTrack extends Track implements RStorable {
 				return;
 			Angle alpha = this.start.getAAngleTo(mapTarget);
 			Angle beta = Angle.fromRadianUncapped(this.start.distance(mapTarget)
-					/ (2 * STANDARD_CURVE_RADIUS) * Math.PI);
+				/ (2 * STANDARD_CURVE_RADIUS) * Math.PI);
 			beta.setIfHigherTo(Math.PI);
 			Angle phi = (Angle.A_180.sub(beta)).div(2);
 
@@ -177,15 +170,15 @@ public class CurvedTrack extends Track implements RStorable {
 			else
 				fromStartToCenter = alpha.add(phi);
 			this.track.center = this.start.f().movePoint(fromStartToCenter,
-					STANDARD_CURVE_RADIUS);
+				STANDARD_CURVE_RADIUS);
 
 			Angle addEnd;
 			if (this.isLeft)
 				addEnd = Angle.A_270;
 			else
 				addEnd = Angle.A_90;
-			this.track.endAngle = alpha.sub(phi).add(addEnd).getRadian();
-			this.track.startAngle = this.track.endAngle - beta.getRadian();
+			this.track.endAngle = alpha.sub(phi).add(addEnd);
+			this.track.startAngle = this.track.endAngle.sub(beta);
 
 		}
 	}
@@ -198,7 +191,7 @@ public class CurvedTrack extends Track implements RStorable {
 
 		public WithConstraintBuilder(TrackBuildConstraint c, TrackType trackType) {
 			this.track = new CurvedTrack(STANDARD_CURVE_RADIUS, c.getDirPoint()
-					.getPointF(), 0, 0);
+				.getPointF(), 0, 0);
 			this.constraint = c;
 			this.isLeft = (trackType == TrackType.LEFT);
 		}
@@ -215,15 +208,15 @@ public class CurvedTrack extends Track implements RStorable {
 			Angle dAngle = (this.isLeft ? Angle.A_270 : Angle.A_90);
 
 			this.track.center = start.getPointF().movePoint(
-					dAngle.add(start.getAAngle()), this.track.radius);
+				dAngle.add(start.getAAngle()), this.track.radius);
 
 			Angle beta = this.track.center.getAAngleTo(mapTarget);
 			if (this.isLeft) {
-				this.track.startAngle = beta.add(Angle.A_90).getRadian();
-				this.track.endAngle = start.getAAngle().sub(Angle.A_180).getRadian();
+				this.track.startAngle = beta.add(Angle.A_90);
+				this.track.endAngle = start.getAAngle().sub(Angle.A_180);
 			} else {
-				this.track.startAngle = start.getAAngle().getRadian();
-				this.track.endAngle = beta.add(Angle.A_90).getRadian();
+				this.track.startAngle = start.getAAngle();
+				this.track.endAngle = beta.add(Angle.A_90);
 			}
 		}
 	}
@@ -234,15 +227,11 @@ public class CurvedTrack extends Track implements RStorable {
 		if (r < -Track.sleeperLength / 2 || r > Track.sleeperLength / 2)
 			return false;
 		Angle angle = this.center.getAAngleTo(mouse);
-		angle.turnClockwise(Math.PI / 2); // subtracted because start and end
+		angle.turnClockwise(Angle.A_90); // subtracted because start and end
 											// angle of the curved track are
 											// defined strangely
-		if (this.startAngle < this.endAngle)
-			return this.startAngle <= angle.getRadian()
-					&& angle.getRadian() <= this.endAngle;
-		else
-			return angle.getRadian() >= this.startAngle
-					|| angle.getRadian() <= this.endAngle;
+
+		return angle.inIntervalUncapped(this.startAngle, this.endAngle);
 	}
 
 	public static class RightBuilder extends CurvedTrackBuilder {
@@ -252,10 +241,10 @@ public class CurvedTrack extends Track implements RStorable {
 			// turn right from the connection point 90°, then move by radius of
 			// the curve
 			PointF centerP = dp.getPointF().movePoint(dp.getAAngle().add(Angle.A_90),
-					STANDARD_CURVE_RADIUS);
+				STANDARD_CURVE_RADIUS);
 			// the end point starts with the angle of the connection point
 			this.track = new CurvedTrack(STANDARD_CURVE_RADIUS, centerP,
-					absAngleToTrackRight(dp.getAAngle()), Angle.A_0);
+				absAngleToTrackRight(dp.getAAngle()), Angle.A_0);
 		}
 
 		@Override
@@ -273,7 +262,7 @@ public class CurvedTrack extends Track implements RStorable {
 
 		@Override
 		public void setEndAngle(Angle angle) {
-			this.track.endAngle = absAngleToTrackRight(angle).getRadian();
+			this.track.endAngle = absAngleToTrackRight(angle);
 			this.track.initializeMainConnections();
 		}
 
@@ -286,10 +275,10 @@ public class CurvedTrack extends Track implements RStorable {
 			// turn left from the connection point 90°, then move by radius of
 			// the curve
 			PointF centerP = dp.getPointF().movePoint(dp.getAAngle().sub(Angle.A_90),
-					STANDARD_CURVE_RADIUS);
+				STANDARD_CURVE_RADIUS);
 			// the end point starts with the angle of the connection point
 			this.track = new CurvedTrack(STANDARD_CURVE_RADIUS, centerP, Angle.A_0,
-					absAngleToTrackLeft(dp.getAAngle()));
+				absAngleToTrackLeft(dp.getAAngle()));
 		}
 
 		@Override
@@ -299,7 +288,7 @@ public class CurvedTrack extends Track implements RStorable {
 
 		@Override
 		public void setEndAngle(Angle angle) {
-			this.track.startAngle = absAngleToTrackLeft(angle).getRadian();
+			this.track.startAngle = absAngleToTrackLeft(angle);
 			this.track.initializeMainConnections();
 		}
 
