@@ -69,6 +69,16 @@ public abstract class Track implements DrawableLayered {
 		TrackDrawer.paintConnections(g, getMainConnections());
 	}
 
+	public abstract double getTrackLength();
+
+	/**
+	 * @param index
+	 *            positional index [0,1]
+	 * @return the direction is always pointing into forward direction on the
+	 *         track, if you are facing backward angle must be rotated by 180°
+	 */
+	public abstract DirectedPoint getDirPointForIndex(double index);
+
 	@Override
 	public void paint(Graphics2D g, int layer) {
 		if (layer == 1)

@@ -4,10 +4,7 @@ import java.awt.Graphics2D;
 
 import view.TrackDrawer;
 import ch.judos.generic.data.concurrent.SimpleList;
-import ch.judos.generic.data.geometry.Angle;
-import ch.judos.generic.data.geometry.DirectedPoint;
-import ch.judos.generic.data.geometry.LineI;
-import ch.judos.generic.data.geometry.PointI;
+import ch.judos.generic.data.geometry.*;
 import ch.judos.generic.data.serialization.RStorable;
 
 /**
@@ -62,6 +59,19 @@ public class StraightTrack extends Track implements RStorable {
 		if (Math.abs(dist) > 0)
 			return false;
 		return true;
+	}
+
+	@Override
+	public double getTrackLength() {
+		// TODO: improve performance by storing this
+		return this.start.distance(this.end);
+	}
+
+	@Override
+	public DirectedPoint getDirPointForIndex(double index) {
+		Angle angle = this.start.getAAngleTo(this.end);
+		PointF point = this.start.f().movePoint(angle, index * getTrackLength());
+		return new DirectedPoint(point.i(), angle);
 	}
 
 }

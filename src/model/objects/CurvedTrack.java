@@ -78,4 +78,18 @@ public class CurvedTrack extends Track implements RStorable {
 		return angle.inIntervalUncapped(this.startAngle, this.endAngle);
 	}
 
+	@Override
+	public double getTrackLength() {
+		Angle angleD = this.endAngle.sub(this.startAngle);
+		return 2 * this.radius * Math.PI * angleD.getRadian() / Angle.A_360.getRadian();
+	}
+
+	@Override
+	public DirectedPoint getDirPointForIndex(double index) {
+		Angle angleD = this.startAngle.add(this.endAngle.sub(this.startAngle).mul(index));
+		Angle angle = angleD.add(Angle.A_90);
+		PointF point = this.center.movePoint(angleD, this.radius);
+		return new DirectedPoint(point.i(), angle);
+	}
+
 }
