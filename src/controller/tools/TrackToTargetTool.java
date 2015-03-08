@@ -60,7 +60,7 @@ public class TrackToTargetTool extends AbstractTool {
 		if (m.getButton() == MouseEvent.BUTTON1 && m.getType() == InputType.PRESS) {
 			if (this.state == State.READY) {
 				this.startConstraints = this.map.getTrackConnectionsFrom(m
-						.getMapPosition());
+					.getMapPosition());
 				this.startPoint = m.getMapPosition();
 				this.state = State.STARTED;
 				return true;
@@ -79,9 +79,9 @@ public class TrackToTargetTool extends AbstractTool {
 			if (e.getKeyCode() == KeyEvent.VK_TAB) {
 				if (this.state == State.STARTED) {
 					if (this.startConstraints.size() > 1
-							&& (this.targetC == null || this.targetC.size() == 0))
+						&& (this.targetC == null || this.targetC.size() == 0))
 						this.currentStartC = (this.currentStartC + 1)
-								% this.startConstraints.size();
+							% this.startConstraints.size();
 					else if (this.targetC != null && this.targetC.size() > 0)
 						this.targetCIndex = (this.targetCIndex + 1) % this.targetC.size();
 
@@ -151,7 +151,7 @@ public class TrackToTargetTool extends AbstractTool {
 			if (tc == null) {
 				if (sc == null)
 					this.tracks.add(new StraightTrack.NoConstraintBuilder(
-							this.startPoint, target));
+						this.startPoint, target));
 				else
 					trackToTargetWithStartConstraint(sc, target);
 			} else if (tc != null && sc != null)
@@ -173,7 +173,7 @@ public class TrackToTargetTool extends AbstractTool {
 			// depending on curve, minimal distance from line varies
 			Angle c = oc.getDirPoint().getAAngle().sub(cc.getDirPoint().getAAngle());
 			if ((dist[i] > 0 && c.inInterval(Angle.A_0, Angle.A_180))
-					|| (dist[i] < 0 && c.inInterval(Angle.A_180, Angle.A_360)))
+				|| (dist[i] < 0 && c.inInterval(Angle.A_180, Angle.A_360)))
 				dist[i] -= CurvedTrack.STANDARD_CURVE_RADIUS * (1 + c.getCos());
 
 			if (dist[i] > 0)
@@ -188,7 +188,7 @@ public class TrackToTargetTool extends AbstractTool {
 			Angle abs;
 			if (sameCurved) {
 				Angle beta = Angle.fromTriangleOH(2 * CurvedTrack.STANDARD_CURVE_RADIUS,
-						c1.distance(c2));
+					c1.distance(c2));
 				if (beta == null)
 					return;
 				Angle alpha = c1.getAAngleTo(c2);
@@ -206,7 +206,7 @@ public class TrackToTargetTool extends AbstractTool {
 		}
 
 		this.tracks.add(new StraightTrack.NoConstraintBuilder(xb[0].getEndPoint(), xb[1]
-				.getEndPoint()));
+			.getEndPoint()));
 	}
 
 	private void trackToTargetWithStartConstraint(TrackBuildConstraint sc, PointI target) {
@@ -221,7 +221,7 @@ public class TrackToTargetTool extends AbstractTool {
 		// angle between straight track and line to curved track
 		// center
 		Angle beta = Angle.fromTriangleOH(CurvedTrack.STANDARD_CURVE_RADIUS, t
-				.getTrackCenter().distance(target));
+			.getTrackCenter().distance(target));
 		if (beta == null)
 			return;
 		Angle alpha = t.getTrackCenter().getAAngleTo(target);

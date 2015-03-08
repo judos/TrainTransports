@@ -20,7 +20,7 @@ import controller.tools.ToolHandlerI;
  * @author Julian Schelker
  */
 public class MenuController implements Drawable2d, MouseHandler, KeyHandler,
-		MenuNavigationI {
+	MenuNavigationI {
 
 	public static final int	MENU_WIDTH	= 600;
 	public static final int	MENU_HEIGHT	= 100;
@@ -61,7 +61,7 @@ public class MenuController implements Drawable2d, MouseHandler, KeyHandler,
 		MouseEvent2 copy = m.deepCopy();
 		copy.getScreenPosition().translate(-dx, -dy);
 		Shape menuShape = new Rectangle(0, 0, MenuController.MENU_WIDTH,
-				MenuController.MENU_HEIGHT);
+			MenuController.MENU_HEIGHT);
 		if (!menuShape.contains(copy.getScreenPosition()))
 			return false;
 		return this.menuStack.peek().handles(copy);

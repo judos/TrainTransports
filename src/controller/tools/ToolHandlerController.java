@@ -19,10 +19,10 @@ import ch.judos.generic.graphics.Drawable2d;
  * @author Julian Schelker
  */
 public class ToolHandlerController implements ToolHandlerI, Drawable2d, MouseHandler,
-		KeyHandler {
+	KeyHandler {
 	private AbstractTool	currentTool;
-	private Map		map;
-	private Scroll	scroll;
+	private Map				map;
+	private Scroll			scroll;
 
 	public ToolHandlerController(Map map, Scroll scroll) {
 		this.map = map;

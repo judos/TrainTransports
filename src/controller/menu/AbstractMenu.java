@@ -58,7 +58,7 @@ public class AbstractMenu implements MenuI {
 	public boolean handles(KeyEvent2 e) {
 		int key = e.getKeyCode();
 		if (e.getType() == InputType.PRESS && key >= KeyEvent.VK_1
-				&& key <= KeyEvent.VK_9) {
+			&& key <= KeyEvent.VK_9) {
 			int nrPressedS0 = key - KeyEvent.VK_1;
 			if (nrPressedS0 < this.entries.size()) {
 				this.entries.get(nrPressedS0).r.run();

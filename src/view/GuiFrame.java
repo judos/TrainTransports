@@ -47,7 +47,7 @@ public class GuiFrame extends JFrame implements InputProvider {
 			Graphics2D g = (Graphics2D) strategy.getDrawGraphics();
 			if (!this.isUndecorated()) {
 				PointF t = new PointF(this.getContentPane().getLocationOnScreen())
-						.subtract(this.getLocationOnScreen());
+					.subtract(this.getLocationOnScreen());
 				g.translate(t.x, t.y);
 				Dimension size = this.getContentPane().getSize();
 				g.setClip(0, 0, size.width, size.height);

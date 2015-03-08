@@ -41,13 +41,13 @@ public class BuildSimpleTrackTool extends AbstractTool {
 		if (this.state == State.READY) {
 			if (this.trackType == TrackType.STRAIGHT)
 				this.track = new StraightTrack.NoConstraintBuilder(new PointI(10, -10),
-						new PointI(10, 10));
+					new PointI(10, 10));
 			if (this.trackType == TrackType.LEFT)
 				this.track = new CurvedTrack.NoConstraintBuilder(40, new PointI(-20, 0),
-						Math.PI / 2 - 0.6, Math.PI / 2 + 0.3);
+					Math.PI / 2 - 0.6, Math.PI / 2 + 0.3);
 			if (this.trackType == TrackType.RIGHT)
 				this.track = new CurvedTrack.NoConstraintBuilder(40, new PointI(60, 0),
-						-Math.PI / 2 - 0.3, -Math.PI / 2 + 0.6);
+					-Math.PI / 2 - 0.3, -Math.PI / 2 + 0.6);
 		} else {
 			selectTrackBuilder();
 		}
@@ -124,15 +124,15 @@ public class BuildSimpleTrackTool extends AbstractTool {
 				this.track = new StraightTrack.NoConstraintBuilder(this.startingPoint);
 			else {
 				this.track = new StraightTrack.WithConstraintBuilder(constraints
-						.get(this.currentConnection));
+					.get(this.currentConnection));
 			}
 		} else {
 			if (constraints == null || constraints.size() == 0)
 				this.track = new CurvedTrack.NoConstraintBuilder(this.startingPoint,
-						this.trackType);
+					this.trackType);
 			else {
 				this.track = new CurvedTrack.WithConstraintBuilder(constraints
-						.get(this.currentConnection), this.trackType);
+					.get(this.currentConnection), this.trackType);
 			}
 		}
 	}
@@ -152,7 +152,7 @@ public class BuildSimpleTrackTool extends AbstractTool {
 				if (this.state == State.STARTED) {
 					if (this.constraints != null && this.constraints.size() > 1) {
 						this.currentConnection = (this.currentConnection + 1)
-								% this.constraints.size();
+							% this.constraints.size();
 						selectTrackBuilder();
 						return true;
 					}

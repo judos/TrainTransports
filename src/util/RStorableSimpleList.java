@@ -48,7 +48,7 @@ public class RStorableSimpleList extends RStorableObjectWrapperImpl {
 
 	@Override
 	public Object getFieldData(Field f) throws IllegalArgumentException,
-			IllegalAccessException {
+		IllegalAccessException {
 		if (f.getName().equals("elementData"))
 			return ((SimpleList<?>) this.wrapped).toArray();
 		return super.getFieldData(f);
@@ -56,7 +56,7 @@ public class RStorableSimpleList extends RStorableObjectWrapperImpl {
 
 	@Override
 	public Object readFrom(BufferedReader r) throws IOException, DeserializeException,
-			ClassNotFoundException {
+		ClassNotFoundException {
 		Object object = super.readFrom(r);
 		try {
 			Field sizeField = Fields.getAnyField(object.getClass(), "size");

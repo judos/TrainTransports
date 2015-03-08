@@ -33,11 +33,11 @@ public class DrawableManager implements Drawable2d {
 		// antiAliasing can be implemented without frame
 		// drops when using GPU
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-				RenderingHints.VALUE_ANTIALIAS_ON);
+			RenderingHints.VALUE_ANTIALIAS_ON);
 		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-				RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+			RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 		g.setRenderingHint(RenderingHints.KEY_RENDERING,
-				RenderingHints.VALUE_RENDER_SPEED);
+			RenderingHints.VALUE_RENDER_SPEED);
 
 		AffineTransform original = g.getTransform();
 		if (this.scroll != null)

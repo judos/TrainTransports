@@ -21,7 +21,7 @@ import ch.judos.generic.games.BorderlessScrolling;
  * @author Julian Schelker
  */
 public class Scroll extends BorderlessScrolling implements KeyHandler, MouseWheelHandler,
-		MouseHandler {
+	MouseHandler {
 
 	private boolean				scrollLeft;
 	private boolean				scrollRight;

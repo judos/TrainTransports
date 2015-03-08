@@ -14,9 +14,9 @@ public abstract class AbstractTool implements MouseHandler, KeyHandler {
 
 	enum State {
 		// the tool is ready and no input is processed yet
-		READY,
-		// the first connection has already been chosen
-		STARTED;
+			READY,
+			// the first connection has already been chosen
+			STARTED;
 	}
 
 	protected State	state;

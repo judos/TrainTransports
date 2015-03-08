@@ -55,8 +55,8 @@ public class MouseEvent2 {
 	}
 
 	public MouseEvent2 deepCopy() {
-		return new MouseEvent2(type, this.screenPosition.deepCopy(),
-				this.mapPosition.deepCopy(), this.button);
+		return new MouseEvent2(type, this.screenPosition.deepCopy(), this.mapPosition
+			.deepCopy(), this.button);
 	}
 
 }
