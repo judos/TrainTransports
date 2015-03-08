@@ -1,7 +1,7 @@
 classId = model.map.Map
 {
 	tracks =var.1 = {
-		elementData =var.2 size=37 = {
+		elementData =var.2 size=49 = {
 			[0] =var.3 =classId:model.objects.StraightTrack = {
 				start =var.4 = {
 					x = 418
@@ -398,38 +398,175 @@ classId = model.map.Map
 			}
 			[34] =var.123 =classId:model.objects.CurvedTrack = {
 				center =var.124 = {
-					x = 1565.374
-					y = 381.9934
-				}
-				startAngle =var.125 = {
-					radian = 0.008129902179943912
-				}
-				endAngle =var.126 = {
-					radian = 3.1533223886698427
-				}
-				radius = 200
-			}
-			[35] =var.127 =classId:model.objects.CurvedTrack = {
-				center =var.128 = {
 					x = 710.7775
 					y = 771.9963
 				}
-				startAngle =var.129 = {
+				startAngle =var.125 = {
 					radian = 0.0061123933140890705
 				}
-				endAngle =var.130 = {
+				endAngle =var.126 = {
 					radian = 0.011729735080049153
 				}
 				radius = 200
 			}
-			[36] =var.131 =classId:model.objects.StraightTrack = {
-				start =var.132 = {
+			[35] =var.127 =classId:model.objects.StraightTrack = {
+				start =var.128 = {
 					x = 1563
 					y = 582
 				}
-				end =var.133 = {
+				end =var.129 = {
 					x = 713
 					y = 572
+				}
+			}
+			[36] =var.130 =classId:model.objects.CurvedTrack = {
+				center =var.131 = {
+					x = 710.6541
+					y = 771.9862
+				}
+				startAngle -> var.126
+				endAngle =var.132 = {
+					radian = 0.4067141413370514
+				}
+				radius = 200
+			}
+			[37] =var.133 =classId:model.objects.CurvedTrack = {
+				center =var.134 = {
+					x = 1271.4286
+					y = 578.0008
+				}
+				startAngle =var.135 = {
+					radian = 3.1387355185071506
+				}
+				endAngle =var.136 = {
+					radian = 3.548306794926845
+				}
+				radius = 200
+			}
+			[38] =var.137 =classId:model.objects.StraightTrack = {
+				start =var.138 = {
+					x = 790
+					y = 588
+				}
+				end =var.139 = {
+					x = 1192
+					y = 762
+				}
+			}
+			[39] =var.140 =classId:model.objects.CurvedTrack = {
+				center -> var.124
+				startAngle =var.141 = {
+					radian = 2.666064250360833
+				}
+				endAngle =var.142 = {
+					radian = 0.006112393314088749
+				}
+				radius = 200
+			}
+			[40] =var.143 =classId:model.objects.CurvedTrack = {
+				center =var.144 = {
+					x = 893.56165
+					y = 1127.8102
+				}
+				startAngle =var.145 = {
+					radian = 5.807656903950626
+				}
+				endAngle =var.146 = {
+					radian = 5.9067636478676295
+				}
+				radius = 200
+			}
+			[41] =var.147 =classId:model.objects.CurvedTrack = {
+				center =var.148 = {
+					x = 1272.5714
+					y = 977.9992
+				}
+				startAngle =var.149 = {
+					radian = 5.9067636478676295
+				}
+				endAngle =var.150 = {
+					radian = 6.280328172096944
+				}
+				radius = 200
+			}
+			[42] =var.151 =classId:model.objects.StraightTrack = {
+				start =var.152 = {
+					x = 820
+					y = 942
+				}
+				end =var.153 = {
+					x = 1199
+					y = 792
+				}
+			}
+			[43] =var.154 =classId:model.objects.CurvedTrack = {
+				center =var.155 = {
+					x = 1565.3528
+					y = 382.01385
+				}
+				startAngle =var.156 = {
+					radian = 1.5605033929418548
+				}
+				endAngle =var.157 = {
+					radian = 3.1533568167395516
+				}
+				radius = 200
+			}
+			[44] =var.158 =classId:model.objects.CurvedTrack = {
+				center =var.159 = {
+					x = 1565.374
+					y = 381.9934
+				}
+				startAngle =var.160 = {
+					radian = 0.008129902179943912
+				}
+				endAngle =var.161 = {
+					radian = 1.5615087702816979
+				}
+				radius = 200
+			}
+			[45] =var.162 =classId:model.objects.StraightTrack = {
+				start =var.163 = {
+					x = 1272
+					y = 778
+				}
+				end =var.164 = {
+					x = 1512
+					y = 777
+				}
+			}
+			[46] =var.165 =classId:model.objects.CurvedTrack = {
+				center =var.166 = {
+					x = 1511.1666
+					y = 577.0017
+				}
+				startAngle =var.167 = {
+					radian = 1.8400073966567874
+				}
+				endAngle =var.168 = {
+					radian = 3.1374260110355294
+				}
+				radius = 200
+			}
+			[47] =var.169 =classId:model.objects.CurvedTrack = {
+				center =var.170 = {
+					x = 1565.0087
+					y = 381.85748
+				}
+				startAngle -> var.161
+				endAngle =var.171 = {
+					radian = 1.8400073966567865
+				}
+				radius = 200
+			}
+			[48] =var.172 =classId:model.objects.StraightTrack = {
+				start =var.173 = {
+					x = 1704
+					y = 630
+				}
+				end =var.174 = {
+					x = 1758
+					y = 435
 				}
 			}
 		}

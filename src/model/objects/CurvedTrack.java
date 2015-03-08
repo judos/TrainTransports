@@ -1,12 +1,9 @@
 package model.objects;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Arc2D;
 
-import model.TrackBuildConstraint;
-import model.TrackType;
 import ch.judos.generic.data.concurrent.SimpleList;
 import ch.judos.generic.data.geometry.Angle;
 import ch.judos.generic.data.geometry.DirectedPoint;
@@ -23,21 +20,14 @@ public class CurvedTrack extends Track implements RStorable {
 
 	public static final int	STANDARD_CURVE_RADIUS	= 200;
 
-	PointF					center;
+	public PointF			center;
 
 	// always clock-wise oriented, angle is stored in RADIAN
-	private Angle			startAngle;
+	public Angle			startAngle;
 	// always clock-wise oriented, angle is stored in RADIAN
-	private Angle			endAngle;
+	public Angle			endAngle;
 
-	private int				radius;
-
-	public static CurvedTrack createWithDegreeAngles(int radius, PointF center,
-		double angleStart, double angleEnd) {
-		double degreeToRadianFactor = Math.PI / 180;
-		return new CurvedTrack(radius, center, angleStart * degreeToRadianFactor,
-			angleEnd * degreeToRadianFactor);
-	}
+	public int				radius;
 
 	/**
 	 * used for RStorage to create objects
@@ -52,15 +42,6 @@ public class CurvedTrack extends Track implements RStorable {
 		this.radius = radius;
 		this.startAngle = aStart;
 		this.endAngle = aEnd;
-		initializeMainConnections();
-	}
-
-	@Deprecated
-	public CurvedTrack(int radius, PointF center, double angleStart, double angleEnd) {
-		this.center = center;
-		this.radius = radius;
-		this.startAngle = Angle.fromRadian(angleStart);
-		this.endAngle = Angle.fromRadian(angleEnd);
 		initializeMainConnections();
 	}
 
@@ -115,7 +96,7 @@ public class CurvedTrack extends Track implements RStorable {
 	}
 
 	@Override
-	protected void initializeMainConnections() {
+	public void initializeMainConnections() {
 		this.mainConnections = new SimpleList<DirectedPoint>();
 		PointF p1 = this.center.movePoint(this.startAngle.sub(Angle.A_90), this.radius);
 		this.mainConnections.add(new DirectedPoint(p1.getPoint(), this.startAngle
@@ -130,97 +111,6 @@ public class CurvedTrack extends Track implements RStorable {
 		return new CurvedTrack(this.radius, this.center, this.startAngle, this.endAngle);
 	}
 
-	public static class NoConstraintBuilder extends TrackBuilder {
-
-		private CurvedTrack	track;
-		private PointI		start;
-		private boolean		isLeft;
-
-		public NoConstraintBuilder(int radius, PointI center, double angleStart,
-			double angleEnd) {
-			this.track = new CurvedTrack(radius, new PointF(center), angleStart, angleEnd);
-		}
-
-		public NoConstraintBuilder(PointI startingPoint, TrackType trackType) {
-			this.track = new CurvedTrack(STANDARD_CURVE_RADIUS,
-				new PointF(startingPoint), 0, 0);
-			if (startingPoint == null)
-				System.out.println("Constructing with null value");
-			this.start = startingPoint;
-			this.isLeft = trackType == TrackType.LEFT;
-		}
-		@Override
-		public Track getTrack() {
-			return this.track;
-		}
-
-		@Override
-		public void updateWithTarget(PointI mapTarget) {
-			if (this.start == null)
-				return;
-			Angle alpha = this.start.getAAngleTo(mapTarget);
-			Angle beta = Angle.fromRadianUncapped(this.start.distance(mapTarget)
-				/ (2 * STANDARD_CURVE_RADIUS) * Math.PI);
-			beta.setIfHigherTo(Math.PI);
-			Angle phi = (Angle.A_180.sub(beta)).div(2);
-
-			Angle fromStartToCenter;
-			if (this.isLeft)
-				fromStartToCenter = alpha.sub(phi);
-			else
-				fromStartToCenter = alpha.add(phi);
-			this.track.center = this.start.f().movePoint(fromStartToCenter,
-				STANDARD_CURVE_RADIUS);
-
-			Angle addEnd;
-			if (this.isLeft)
-				addEnd = Angle.A_270;
-			else
-				addEnd = Angle.A_90;
-			this.track.endAngle = alpha.sub(phi).add(addEnd);
-			this.track.startAngle = this.track.endAngle.sub(beta);
-
-		}
-	}
-
-	public static class WithConstraintBuilder extends TrackBuilder {
-
-		private CurvedTrack				track;
-		private TrackBuildConstraint	constraint;
-		private boolean					isLeft;
-
-		public WithConstraintBuilder(TrackBuildConstraint c, TrackType trackType) {
-			this.track = new CurvedTrack(STANDARD_CURVE_RADIUS, c.getDirPoint()
-				.getPointF(), 0, 0);
-			this.constraint = c;
-			this.isLeft = (trackType == TrackType.LEFT);
-		}
-
-		@Override
-		public Track getTrack() {
-			return this.track;
-		}
-
-		@Override
-		public void updateWithTarget(PointI mapTarget) {
-			DirectedPoint start = this.constraint.getDirPoint();
-
-			Angle dAngle = (this.isLeft ? Angle.A_270 : Angle.A_90);
-
-			this.track.center = start.getPointF().movePoint(
-				dAngle.add(start.getAAngle()), this.track.radius);
-
-			Angle beta = this.track.center.getAAngleTo(mapTarget);
-			if (this.isLeft) {
-				this.track.startAngle = beta.add(Angle.A_90);
-				this.track.endAngle = start.getAAngle().sub(Angle.A_180);
-			} else {
-				this.track.startAngle = start.getAAngle();
-				this.track.endAngle = beta.add(Angle.A_90);
-			}
-		}
-	}
-
 	@Override
 	public boolean contains(PointI mouse) {
 		float r = this.center.distanceTo(mouse) - this.radius;
@@ -232,98 +122,6 @@ public class CurvedTrack extends Track implements RStorable {
 											// defined strangely
 
 		return angle.inIntervalUncapped(this.startAngle, this.endAngle);
-	}
-
-	public static class RightBuilder extends CurvedTrackBuilder {
-
-		public RightBuilder(TrackBuildConstraint sc) {
-			DirectedPoint dp = sc.getDirPoint();
-			// turn right from the connection point 90°, then move by radius of
-			// the curve
-			PointF centerP = dp.getPointF().movePoint(dp.getAAngle().add(Angle.A_90),
-				STANDARD_CURVE_RADIUS);
-			// the end point starts with the angle of the connection point
-			this.track = new CurvedTrack(STANDARD_CURVE_RADIUS, centerP,
-				absAngleToTrackRight(dp.getAAngle()), Angle.A_0);
-		}
-
-		@Override
-		public PointI getEndPoint() {
-			return this.track.mainConnections.get(1).getPoint();
-		}
-
-		@Override
-		public void paint(Graphics2D g) {
-			// TODO: debug code
-			g.setColor(Color.red);
-			g.fillRect(this.track.center.getXI(), this.track.center.getYI(), 5, 5);
-			super.paint(g);
-		}
-
-		@Override
-		public void setEndAngle(Angle angle) {
-			this.track.endAngle = absAngleToTrackRight(angle);
-			this.track.initializeMainConnections();
-		}
-
-	}
-
-	public static class LeftBuilder extends CurvedTrackBuilder {
-
-		public LeftBuilder(TrackBuildConstraint sc) {
-			DirectedPoint dp = sc.getDirPoint();
-			// turn left from the connection point 90°, then move by radius of
-			// the curve
-			PointF centerP = dp.getPointF().movePoint(dp.getAAngle().sub(Angle.A_90),
-				STANDARD_CURVE_RADIUS);
-			// the end point starts with the angle of the connection point
-			this.track = new CurvedTrack(STANDARD_CURVE_RADIUS, centerP, Angle.A_0,
-				absAngleToTrackLeft(dp.getAAngle()));
-		}
-
-		@Override
-		public PointI getEndPoint() {
-			return this.track.mainConnections.get(0).getPoint();
-		}
-
-		@Override
-		public void setEndAngle(Angle angle) {
-			this.track.startAngle = absAngleToTrackLeft(angle);
-			this.track.initializeMainConnections();
-		}
-
-		@Override
-		public void paint(Graphics2D g) {
-			// TODO: debug code
-			g.setColor(Color.red);
-			g.fillRect(this.track.center.getXI(), this.track.center.getYI(), 5, 5);
-			super.paint(g);
-		}
-
-	}
-
-	/**
-	 * converts an absolute angle that shows the track direction into a curved
-	 * track angle seen relative from the center of the curved track<br>
-	 * <b>Note:</b> This is only valid for curved tracks that bend to the left
-	 * 
-	 * @param aAngle
-	 * @return
-	 */
-	public static Angle absAngleToTrackLeft(Angle angle) {
-		return angle.add(Angle.A_180);
-	}
-
-	/**
-	 * converts an absolute angle that shows the track direction into a curved
-	 * track angle seen relative from the center of the curved track<br>
-	 * <b>Note:</b> This is only valid for curved tracks that bend to the right
-	 * 
-	 * @param aAngle
-	 * @return
-	 */
-	public static Angle absAngleToTrackRight(Angle angle) {
-		return angle;
 	}
 
 }

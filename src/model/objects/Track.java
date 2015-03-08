@@ -68,7 +68,11 @@ public abstract class Track implements DrawableLayered {
 	public void paintConnections(Graphics2D g) {
 		g.setStroke(new BasicStroke(5));
 		g.setColor(connectionColor);
-		for (DirectedPoint d : getMainConnections()) {
+		ArrayList<DirectedPoint> x = getMainConnections();
+		if (x == null) {
+			x = getMainConnections();
+		}
+		for (DirectedPoint d : x) {
 			// querlinie
 			int dx = (int) ((double) sleeperLength / 2 * d.getAAngle().add(Angle.A_90)
 				.getCos());

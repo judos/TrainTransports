@@ -12,9 +12,12 @@ import model.input.InputType;
 import model.input.KeyEvent2;
 import model.input.MouseEvent2;
 import model.map.Map;
-import model.objects.CurvedTrack;
-import model.objects.StraightTrack;
-import model.objects.TrackBuilder;
+import model.objects.trackBuilders.CurvedNoConstraintBuilder;
+import model.objects.trackBuilders.CurvedWithConstraintBuilder;
+import model.objects.trackBuilders.StraightNoConstraintBuilder;
+import model.objects.trackBuilders.StraightWithConstraintBuilder;
+import model.objects.trackBuilders.TrackBuilder;
+import ch.judos.generic.data.geometry.Angle;
 import ch.judos.generic.data.geometry.PointI;
 
 /**
@@ -40,14 +43,14 @@ public class BuildSimpleTrackTool extends AbstractTool {
 	private void updatePreviewAndBuilder() {
 		if (this.state == State.READY) {
 			if (this.trackType == TrackType.STRAIGHT)
-				this.track = new StraightTrack.NoConstraintBuilder(new PointI(10, -10),
+				this.track = new StraightNoConstraintBuilder(new PointI(10, -10),
 					new PointI(10, 10));
 			if (this.trackType == TrackType.LEFT)
-				this.track = new CurvedTrack.NoConstraintBuilder(40, new PointI(-20, 0),
-					Math.PI / 2 - 0.6, Math.PI / 2 + 0.3);
+				this.track = new CurvedNoConstraintBuilder(40, new PointI(-20, 0), Angle
+					.fromDegree(55.6), Angle.fromDegree(107.2));
 			if (this.trackType == TrackType.RIGHT)
-				this.track = new CurvedTrack.NoConstraintBuilder(40, new PointI(60, 0),
-					-Math.PI / 2 - 0.3, -Math.PI / 2 + 0.6);
+				this.track = new CurvedNoConstraintBuilder(40, new PointI(60, 0), Angle
+					.fromDegree(252.8), Angle.fromDegree(304.4));
 		} else {
 			selectTrackBuilder();
 		}
@@ -121,17 +124,17 @@ public class BuildSimpleTrackTool extends AbstractTool {
 	private void selectTrackBuilder() {
 		if (trackType == TrackType.STRAIGHT) {
 			if (constraints == null || constraints.size() == 0)
-				this.track = new StraightTrack.NoConstraintBuilder(this.startingPoint);
+				this.track = new StraightNoConstraintBuilder(this.startingPoint);
 			else {
-				this.track = new StraightTrack.WithConstraintBuilder(constraints
+				this.track = new StraightWithConstraintBuilder(constraints
 					.get(this.currentConnection));
 			}
 		} else {
 			if (constraints == null || constraints.size() == 0)
-				this.track = new CurvedTrack.NoConstraintBuilder(this.startingPoint,
+				this.track = new CurvedNoConstraintBuilder(this.startingPoint,
 					this.trackType);
 			else {
-				this.track = new CurvedTrack.WithConstraintBuilder(constraints
+				this.track = new CurvedWithConstraintBuilder(constraints
 					.get(this.currentConnection), this.trackType);
 			}
 		}

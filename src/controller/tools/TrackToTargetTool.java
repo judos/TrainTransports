@@ -14,12 +14,13 @@ import model.input.KeyEvent2;
 import model.input.MouseEvent2;
 import model.map.Map;
 import model.objects.CurvedTrack;
-import model.objects.CurvedTrack.LeftBuilder;
-import model.objects.CurvedTrack.RightBuilder;
-import model.objects.CurvedTrackBuilder;
 import model.objects.StraightTrack;
 import model.objects.Track;
-import model.objects.TrackBuilder;
+import model.objects.trackBuilders.CurvedLeftBuilder;
+import model.objects.trackBuilders.CurvedRightBuilder;
+import model.objects.trackBuilders.CurvedTrackBuilder;
+import model.objects.trackBuilders.StraightNoConstraintBuilder;
+import model.objects.trackBuilders.TrackBuilder;
 import ch.judos.generic.data.geometry.Angle;
 import ch.judos.generic.data.geometry.LineI;
 import ch.judos.generic.data.geometry.PointF;
@@ -130,8 +131,11 @@ public class TrackToTargetTool extends AbstractTool {
 
 			// Get constraints
 			TrackBuildConstraint sc = null;
-			if (this.startConstraints.size() > 0)
+			if (this.startConstraints.size() > 0) {
+				if (this.currentStartC >= this.startConstraints.size())
+					this.currentStartC = this.startConstraints.size() - 1;
 				sc = this.startConstraints.get(this.currentStartC);
+			}
 
 			this.targetC = this.map.getTrackConnectionsFrom(target);
 			TrackBuildConstraint tc = null;
@@ -150,8 +154,8 @@ public class TrackToTargetTool extends AbstractTool {
 
 			if (tc == null) {
 				if (sc == null)
-					this.tracks.add(new StraightTrack.NoConstraintBuilder(
-						this.startPoint, target));
+					this.tracks.add(new StraightNoConstraintBuilder(this.startPoint,
+						target));
 				else
 					trackToTargetWithStartConstraint(sc, target);
 			} else if (tc != null && sc != null)
@@ -177,9 +181,9 @@ public class TrackToTargetTool extends AbstractTool {
 				dist[i] -= CurvedTrack.STANDARD_CURVE_RADIUS * (1 + c.getCos());
 
 			if (dist[i] > 0)
-				xb[i] = new LeftBuilder(cc);
+				xb[i] = new CurvedLeftBuilder(cc);
 			else
-				xb[i] = new RightBuilder(cc);
+				xb[i] = new CurvedRightBuilder(cc);
 		}
 		boolean sameCurved = (dist[0] > 0 == dist[1] > 0);
 		for (int i = 0; i < 2; i++) {
@@ -205,7 +209,7 @@ public class TrackToTargetTool extends AbstractTool {
 			this.tracks.add(xb[i]);
 		}
 
-		this.tracks.add(new StraightTrack.NoConstraintBuilder(xb[0].getEndPoint(), xb[1]
+		this.tracks.add(new StraightNoConstraintBuilder(xb[0].getEndPoint(), xb[1]
 			.getEndPoint()));
 	}
 
@@ -214,9 +218,9 @@ public class TrackToTargetTool extends AbstractTool {
 		double dy = i.ptLineDistSigned(target);
 		CurvedTrackBuilder t;
 		if (dy > 0)
-			t = new LeftBuilder(sc);
+			t = new CurvedLeftBuilder(sc);
 		else
-			t = new RightBuilder(sc);
+			t = new CurvedRightBuilder(sc);
 
 		// angle between straight track and line to curved track
 		// center
@@ -234,7 +238,7 @@ public class TrackToTargetTool extends AbstractTool {
 		t.setEndAngle(gamma);
 		this.tracks.add(t);
 
-		this.tracks.add(new StraightTrack.NoConstraintBuilder(t.getEndPoint(), target));
+		this.tracks.add(new StraightNoConstraintBuilder(t.getEndPoint(), target));
 	}
 
 	@Override

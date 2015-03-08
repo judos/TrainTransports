@@ -3,12 +3,10 @@ package model.objects;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 
-import model.TrackBuildConstraint;
 import ch.judos.generic.data.concurrent.SimpleList;
 import ch.judos.generic.data.geometry.Angle;
 import ch.judos.generic.data.geometry.DirectedPoint;
 import ch.judos.generic.data.geometry.LineI;
-import ch.judos.generic.data.geometry.PointF;
 import ch.judos.generic.data.geometry.PointI;
 import ch.judos.generic.data.serialization.RStorable;
 import ch.judos.generic.graphics.ColorUtils;
@@ -19,8 +17,8 @@ import ch.judos.generic.graphics.ColorUtils;
  */
 public class StraightTrack extends Track implements RStorable {
 
-	protected PointI	start;
-	protected PointI	end;
+	public PointI	start;
+	public PointI	end;
 
 	/**
 	 * used for RStorage to create objects
@@ -80,56 +78,6 @@ public class StraightTrack extends Track implements RStorable {
 		Angle angle = this.start.getAAngleTo(this.end);
 		this.mainConnections.add(new DirectedPoint(this.end, angle));
 		this.mainConnections.add(new DirectedPoint(this.start, angle.sub(Angle.A_180)));
-	}
-
-	public static class WithConstraintBuilder extends TrackBuilder {
-
-		private TrackBuildConstraint	constraint;
-		private StraightTrack			track;
-
-		public WithConstraintBuilder(TrackBuildConstraint trackBuildConstraint) {
-			this.constraint = trackBuildConstraint;
-			PointI start = this.constraint.getDirPoint().getPoint();
-			this.track = new StraightTrack(start, start);
-		}
-
-		@Override
-		public void updateWithTarget(PointI mapTarget) {
-			DirectedPoint start = this.constraint.getDirPoint();
-			Angle beta = start.getPointF().getAAngleTo(mapTarget);
-			double length = start.getPoint().distance(mapTarget);
-
-			double actualLength = length * beta.sub(start.getAAngle()).getCos();
-			PointF end = this.track.start.f().movePoint(start.getAAngle(), actualLength);
-			this.track.end = end.getPointRounded();
-		}
-
-		@Override
-		public Track getTrack() {
-			return this.track;
-		}
-	}
-
-	public static class NoConstraintBuilder extends TrackBuilder {
-		private StraightTrack	track;
-
-		public NoConstraintBuilder(PointI start) {
-			this(start, start);
-		}
-
-		public NoConstraintBuilder(PointI start, PointI end) {
-			this.track = new StraightTrack(start, end);
-		}
-
-		@Override
-		public void updateWithTarget(PointI mapTarget) {
-			this.track.end = mapTarget;
-		}
-
-		@Override
-		public Track getTrack() {
-			return this.track;
-		}
 	}
 
 	@Override
