@@ -1,5 +1,5 @@
 Todo:
-- track knows length, returns position+angle dependent on one index[0,1]
+- trackPosition model object for trains
 
 Features:
 - build tools to place tracks and connect them
@@ -8,6 +8,7 @@ Features:
 - map is stored on quit, and reloaded on launching the game
 
 Changelog:
+- track knows length, returns position+angle dependent on one index[0,1]
 - better rendering for sleepers on tracks
 - improved building tool, builds connected tracks at once
 - fixed rendering loop bug (remaining sleep time was miscalculated)

@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
 import java.util.ArrayList;
+import java.util.List;
 
 import view.DrawableLayered;
 import view.TrackDrawer;
@@ -44,12 +45,10 @@ public abstract class Track implements DrawableLayered {
 	 */
 	public static final int							sleeperDistance	= sleeperWidth + 5;
 
-	public static final Color						bedColour		= Color.ORANGE
-																		.darker();
+	public static final Color						bedColour		= Color.ORANGE.darker();
 	public static final Color						railColour		= Color.DARK_GRAY;
 	public static final Color						connectionColor	= Color.BLUE;
-	public static final Stroke						railStroke		= new BasicStroke(
-																		railSize);
+	public static final Stroke						railStroke		= new BasicStroke(railSize);
 
 	protected transient SimpleList<DirectedPoint>	mainConnections;
 	protected transient Color						colorOver;
@@ -92,4 +91,65 @@ public abstract class Track implements DrawableLayered {
 	}
 
 	public abstract boolean contains(PointI point);
+
+	/**
+	 * @param trackPos
+	 * @param speed
+	 * @param targetTrack
+	 * @return remainingSpeed
+	 */
+	public double positionalMove(TrackPosition trackPos, double speed, Track targetTrack) {
+		// handles the special case when speed is negative, and delegates the
+		// main purpose
+		int direction = trackPos.direction;
+		double sign = Math.signum(speed);
+		if (speed < 0)
+			direction = 1 - direction;
+		double remainingSpeed = positionalMoveAbsSpeed(trackPos, direction, Math.abs(speed),
+			targetTrack);
+		return sign * remainingSpeed;
+	}
+
+	/**
+	 * @param trackPos
+	 * @param direction
+	 * @param remainingSpeed
+	 *            must be positive
+	 * @param targetTrack
+	 * @return
+	 */
+	private double positionalMoveAbsSpeed(TrackPosition trackPos, int direction,
+		double remainingSpeed, Track targetTrack) {
+		double trackLength = getTrackLength();
+		double wayRemainsOnTrack = Math.abs((1 - direction) * trackLength - trackPos.position);
+		if (remainingSpeed < wayRemainsOnTrack) {
+			if (direction == 0)
+				trackPos.position += remainingSpeed;
+			else
+				trackPos.position -= remainingSpeed;
+			return 0;
+		}
+
+		// Track, new direction for that connection
+		List<TrackConnection> connections = getConnectionsForEndpoint(1 - direction);
+		TrackConnection target = null;
+		for (TrackConnection t : connections) {
+			if (t.connected == targetTrack) {
+				target = t;
+				break;
+			}
+		}
+		if (target == null && connections.size() > 0)
+			target = connections.get(0);
+		else if (target == null)
+			throw new RuntimeException("no track available");
+
+		trackPos.direction = target.directionOnConnectedTrack;
+		trackPos.position = target.getPositionOnTargetTrack();
+		trackPos.track = target.connected;
+
+		return remainingSpeed - wayRemainsOnTrack;
+	}
+
+	public abstract List<TrackConnection> getConnectionsForEndpoint(int i);
 }

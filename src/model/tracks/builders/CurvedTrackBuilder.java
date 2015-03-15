@@ -37,7 +37,7 @@ public abstract class CurvedTrackBuilder extends TrackBuilder {
 	 * track angle seen relative from the center of the curved track<br>
 	 * <b>Note:</b> This is only valid for curved tracks that bend to the left
 	 * 
-	 * @param aAngle
+	 * @param angle
 	 * @return
 	 */
 	public static Angle absAngleToTrackLeft(Angle angle) {
@@ -49,7 +49,7 @@ public abstract class CurvedTrackBuilder extends TrackBuilder {
 	 * track angle seen relative from the center of the curved track<br>
 	 * <b>Note:</b> This is only valid for curved tracks that bend to the right
 	 * 
-	 * @param aAngle
+	 * @param angle
 	 * @return
 	 */
 	public static Angle absAngleToTrackRight(Angle angle) {

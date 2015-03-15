@@ -19,7 +19,7 @@ import ch.judos.generic.graphics.Drawable2d;
  */
 public class Map implements Drawable2d, RStorable {
 
-	// TODO: improve performance by using hashset
+	// XXX: improve performance by using hashset
 	private SimpleList<Track>	tracks;
 	private transient Floor		floor;
 	private boolean				drawConnections;
@@ -42,7 +42,7 @@ public class Map implements Drawable2d, RStorable {
 	}
 
 	private void drawTracks(Graphics2D g, int layer) {
-		// TODO: improve performance by drawing only visible tracks
+		// XXX: improve performance by drawing only visible tracks
 		for (Track t : this.tracks) {
 			t.paint(g, layer);
 		}
@@ -57,7 +57,7 @@ public class Map implements Drawable2d, RStorable {
 	}
 
 	public List<TrackBuildConstraint> getTrackConnectionsFrom(PointI mapPosition) {
-		// TODO: improve performance by checking only local tracks
+		// XXX: improve performance by checking only local tracks
 		ArrayList<TrackBuildConstraint> result = new ArrayList<TrackBuildConstraint>();
 		for (Track t : this.tracks) {
 			for (DirectedPoint point : t.getMainConnections()) {
@@ -69,14 +69,14 @@ public class Map implements Drawable2d, RStorable {
 	}
 
 	public void drawConnections(Graphics2D g) {
-		// TODO: improve performance: draw only visible connections
+		// XXX: improve performance: draw only visible connections
 		for (Track t : this.tracks)
 			t.paintConnections(g);
 		this.drawConnections = true;
 	}
 
 	public List<Track> getTrackByPoint(PointI point) {
-		// TODO: improve performance: check only local tracks
+		// XXX: improve performance: check only local tracks
 		ArrayList<Track> result = new ArrayList<Track>();
 		if (point == null)
 			return result;

@@ -63,7 +63,7 @@ public class StraightTrack extends Track implements RStorable {
 
 	@Override
 	public double getTrackLength() {
-		// TODO: improve performance by storing this
+		// XXX: improve performance by storing this
 		return this.start.distance(this.end);
 	}
 
