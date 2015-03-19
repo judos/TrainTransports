@@ -21,13 +21,13 @@ public class StraightTrack extends Track implements RStorable {
 	 */
 	@SuppressWarnings("unused")
 	private StraightTrack() {
-		this.mainConnections = null;
+		this.connectionPoints = null;
 	}
 
 	public StraightTrack(PointI start, PointI end) {
 		this.start = start;
 		this.end = end;
-		initializeMainConnections();
+		initializeConnectionPoints();
 	}
 
 	@Override
@@ -37,11 +37,11 @@ public class StraightTrack extends Track implements RStorable {
 	}
 
 	@Override
-	protected void initializeMainConnections() {
-		this.mainConnections = new SimpleList<DirectedPoint>();
+	protected void initializeConnectionPoints() {
+		this.connectionPoints = new SimpleList<DirectedPoint>();
 		Angle angle = this.start.getAAngleTo(this.end);
-		this.mainConnections.add(new DirectedPoint(this.end, angle));
-		this.mainConnections.add(new DirectedPoint(this.start, angle.sub(Angle.A_180)));
+		this.connectionPoints.add(new DirectedPoint(this.end, angle));
+		this.connectionPoints.add(new DirectedPoint(this.start, angle.sub(Angle.A_180)));
 	}
 
 	@Override

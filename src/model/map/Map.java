@@ -49,10 +49,17 @@ public class Map implements Drawable2d, RStorable {
 	}
 
 	public void addTrack(Track t) {
+		int c = 0;
+		for (Track tr : this.tracks) {
+			if (tr.tryAndConnect(t))
+				c++;
+		}
+
 		this.tracks.add(t);
 	}
 
 	public void removeTrack(Track t) {
+		t.dispose();
 		this.tracks.remove(t);
 	}
 
@@ -60,7 +67,7 @@ public class Map implements Drawable2d, RStorable {
 		// XXX: improve performance by checking only local tracks
 		ArrayList<TrackBuildConstraint> result = new ArrayList<TrackBuildConstraint>();
 		for (Track t : this.tracks) {
-			for (DirectedPoint point : t.getMainConnections()) {
+			for (DirectedPoint point : t.getConnectionPoints()) {
 				if (point.getPoint().distance(mapPosition) < Track.sleeperLength / 2)
 					result.add(new TrackBuildConstraint(point));
 			}

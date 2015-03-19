@@ -32,7 +32,7 @@ public class CurvedTrack extends Track implements RStorable {
 	 */
 	@SuppressWarnings("unused")
 	private CurvedTrack() {
-		this.mainConnections = null;
+		this.connectionPoints = null;
 	}
 
 	public CurvedTrack(int radius, PointF center, Angle aStart, Angle aEnd) {
@@ -40,7 +40,7 @@ public class CurvedTrack extends Track implements RStorable {
 		this.radius = radius;
 		this.startAngle = aStart;
 		this.endAngle = aEnd;
-		initializeMainConnections();
+		initializeConnectionPoints();
 	}
 
 	@Override
@@ -51,14 +51,14 @@ public class CurvedTrack extends Track implements RStorable {
 	}
 
 	@Override
-	public void initializeMainConnections() {
-		this.mainConnections = new SimpleList<DirectedPoint>();
+	public void initializeConnectionPoints() {
+		this.connectionPoints = new SimpleList<DirectedPoint>();
 		PointF p1 = this.center.movePoint(this.startAngle.sub(Angle.A_90), this.radius);
-		this.mainConnections.add(new DirectedPoint(p1.getPoint(), this.startAngle
+		this.connectionPoints.add(new DirectedPoint(p1.getPoint(), this.startAngle
 			.add(Angle.A_180)));
 
 		PointF p2 = this.center.movePoint(this.endAngle.sub(Angle.A_90), this.radius);
-		this.mainConnections.add(new DirectedPoint(p2.getPoint(), this.endAngle));
+		this.connectionPoints.add(new DirectedPoint(p2.getPoint(), this.endAngle));
 	}
 
 	@Override
@@ -91,5 +91,4 @@ public class CurvedTrack extends Track implements RStorable {
 		PointF point = this.center.movePoint(angleD, this.radius);
 		return new DirectedPoint(point.i(), angle);
 	}
-
 }

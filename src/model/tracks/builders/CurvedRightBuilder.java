@@ -24,13 +24,13 @@ public class CurvedRightBuilder extends CurvedTrackBuilder {
 
 	@Override
 	public PointI getEndPoint() {
-		return this.track.getMainConnections().get(1).getPoint();
+		return this.track.getConnectionPoints().get(1).getPoint();
 	}
 
 	@Override
 	public void setEndAngle(Angle angle) {
 		this.track.endAngle = absAngleToTrackRight(angle);
-		this.track.initializeMainConnections();
+		this.track.initializeConnectionPoints();
 	}
 
 }

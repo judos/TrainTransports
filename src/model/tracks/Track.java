@@ -4,12 +4,15 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import view.DrawableLayered;
 import view.TrackDrawer;
 import ch.judos.generic.data.concurrent.SimpleList;
+import ch.judos.generic.data.geometry.Angle;
 import ch.judos.generic.data.geometry.DirectedPoint;
 import ch.judos.generic.data.geometry.PointI;
 
@@ -50,22 +53,28 @@ public abstract class Track implements DrawableLayered {
 	public static final Color						connectionColor	= Color.BLUE;
 	public static final Stroke						railStroke		= new BasicStroke(railSize);
 
-	protected transient SimpleList<DirectedPoint>	mainConnections;
+	protected transient SimpleList<DirectedPoint>	connectionPoints;
 	protected transient Color						colorOver;
 
+	protected Set<TrackConnection>[]				connections;
+
+	@SuppressWarnings("unchecked")
 	public Track() {
+		connections = new Set[2];
+		connections[0] = new HashSet<TrackConnection>();
+		connections[1] = new HashSet<TrackConnection>();
 	}
 
-	protected abstract void initializeMainConnections();
+	protected abstract void initializeConnectionPoints();
 
-	public ArrayList<DirectedPoint> getMainConnections() {
-		if (this.mainConnections == null)
-			initializeMainConnections();
-		return this.mainConnections;
+	public ArrayList<DirectedPoint> getConnectionPoints() {
+		if (this.connectionPoints == null)
+			initializeConnectionPoints();
+		return this.connectionPoints;
 	}
 
 	public void paintConnections(Graphics2D g) {
-		TrackDrawer.paintConnections(g, getMainConnections());
+		TrackDrawer.paintConnections(g, getConnectionPoints());
 	}
 
 	public abstract double getTrackLength();
@@ -131,16 +140,10 @@ public abstract class Track implements DrawableLayered {
 		}
 
 		// Track, new direction for that connection
-		List<TrackConnection> connections = getConnectionsForEndpoint(1 - direction);
-		TrackConnection target = null;
-		for (TrackConnection t : connections) {
-			if (t.connected == targetTrack) {
-				target = t;
-				break;
-			}
-		}
+		Set<TrackConnection> connections = getConnectionsForEndpoint(1 - direction);
+		TrackConnection target = getConnectionForTrack(targetTrack, connections);
 		if (target == null && connections.size() > 0)
-			target = connections.get(0);
+			target = connections.iterator().next();
 		else if (target == null)
 			throw new RuntimeException("no track available");
 
@@ -151,5 +154,56 @@ public abstract class Track implements DrawableLayered {
 		return remainingSpeed - wayRemainsOnTrack;
 	}
 
-	public abstract List<TrackConnection> getConnectionsForEndpoint(int i);
+	public Set<TrackConnection> getConnectionsForEndpoint(int i) {
+		if (i != 0 && i != 1)
+			throw new InvalidParameterException("only endpoint 0 and 1 exist");
+		return this.connections[i];
+	}
+
+	public void dispose() {
+		for (int i = 0; i <= 1; i++)
+			for (TrackConnection x : this.connections[i])
+				x.connected.disposeTrack(this);
+	}
+
+	private void disposeTrack(Track track) {
+		for (int i = 0; i <= 1; i++) {
+			TrackConnection c = getConnectionForTrack(track, this.connections[i]);
+			if (c != null)
+				this.connections[i].remove(c);
+		}
+	}
+
+	public static TrackConnection getConnectionForTrack(Track t, Set<TrackConnection> c) {
+		for (TrackConnection x : c)
+			if (x.connected == t)
+				return x;
+		return null;
+	}
+
+	public boolean tryAndConnect(Track t) {
+		int i = 0;
+		for (DirectedPoint c1 : getConnectionPoints()) {
+			int j = 0;
+			for (DirectedPoint c2 : t.getConnectionPoints()) {
+				if (pointsConnect(c1, c2)) {
+					this.connections[i].add(new TrackConnection(t, j));
+					t.connections[j].add(new TrackConnection(this, i));
+					return true;
+				}
+				j++;
+			}
+			i++;
+		}
+		return false;
+	}
+
+	private boolean pointsConnect(DirectedPoint c1, DirectedPoint c2) {
+		if (c1.getPoint().distance(c2.getPoint()) <= 2) {
+			if (c1.getAAngle().almostEquals(c2.getAAngle().add(Angle.A_180),
+				Angle.fromDegree(3)))
+				return true;
+		}
+		return false;
+	}
 }
