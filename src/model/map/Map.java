@@ -50,6 +50,7 @@ public class Map implements Drawable2d, RStorable {
 
 	public void addTrack(Track t) {
 		int c = 0;
+		// XXX: to try connect solely with nearby tracks
 		for (Track tr : this.tracks) {
 			if (tr.tryAndConnect(t))
 				c++;

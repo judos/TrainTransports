@@ -1,15 +1,8 @@
 classId = model.map.Map
 {
 	tracks =var.1 = {
-		elementData =var.2 size=3 = {
-			[0] =var.3 =classId:model.tracks.StraightTrack = {
-				start =var.4 = {
-					x = 755
-					y = 529
-				}
-				end =var.5 = {
-					x = 746
-					y = 363
-				}
-				connections =var.6 size=2 = {
-					[0]
+		elementData =var.2 size=0 = {
+		}
+	}
+	drawConnections = false
+}
